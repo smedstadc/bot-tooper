@@ -106,7 +106,7 @@ while True:
         if message_line.find(jita_trigger) != -1:
             if DEBUG:
                 print('.jita command received, processing trigger...')
-            jita_args = message_line[message_line.find(jita_trigger) + len(jita_trigger)+1:].split(', ')
+            jita_args = message_line[message_line.find(jita_trigger) + len(jita_trigger)+1:].split('; ')
             if DEBUG:
                 print(jita_args)
             for arg in jita_args:
