@@ -2,77 +2,70 @@ __author__ = 'Corey'
 
 from xml.etree.ElementTree import parse
 import urllib.request
-import os
-
-typeid_url = 'http://eve-files.com/chribba/typeid.txt'
-typeid_filename = 'typeid.txt'
-typeid_old_filename = 'old_typeid.txt'
-typeid_dict = {}
+import time
 
 
-# TODO implement a relevant eve_database, dictionary lookups are limiting partial matches, etc.
-#      initializing and updating the database should be the responsibility of a separate module.
-def update_typeid_file():
-    """Downloads a new copy of the typeid.txt file and renames the previous file. WILL OVERWRITE!"""
-    if os.path.isfile(typeid_filename):
-        os.rename(typeid_filename, typeid_old_filename)
-    urllib.request.urlretrieve(typeid_url, typeid_filename)
-
-
-def update_typeid_data(retry):
-    """Attempt to update the typeid dictionary. Returns True if successful else False."""
+def typeids_from_csv(filename):
+    """
+    Returns a dict of {type_name : type_id} from a csv file ordered as type_id, type_name.
+    :rtype : dict
+    """
+    pairs = []
     try:
-        with open(typeid_filename, 'r', encoding='utf-8') as types_file:
-            # Skip the first two lines
-            types_file.readline()  # typeid ...
-            types_file.readline()  # ----------- ...
-            for line in types_file:
-                if len(line) > 1:  # End of file readline() is an empty string, which makes string indexing unhappy.
-                    s = line.split(None, 1)
-                    typeid = s[0]
-                    item_name = s[1].strip('\r\n').lower()
-                    typeid_dict[item_name] = typeid
-            print('Update successful.')
+        with open(filename, 'r', encoding='utf-8') as file:
+            for line in file:
+                pairs.append(line.lower().strip('\r\n').split(',', 1))
+        return {type_name: type_id for type_id, type_name in pairs}  #
     except IOError:
-        print('Failed to open {}, attempting to retrieve file from {}.'.format(typeid_filename, typeid_url))
-        try:
-            update_typeid_file()
-            if retry:
-                print('Retry once...')
-                update_typeid_data(False)
-        except IOError:
-            print("Exception while retrieving {}, possibly a connection problem or problem opening file for writing.")
-            return False
-    return True
+        return {}
 
 
-# TODO allow partial searches.
-def get_price_message(item):
-    """Returns a message string that will be sent in response to a .jita price check command."""
-    try:
-        # Get typeid using item as key
-        typeid = typeid_dict[item]
-        xml = get_marketstat_xml(typeid)
-        if xml is not None:
-            xml = xml.getroot()
-            max_buy = xml.find('./marketstat/type/buy/max').text
-            min_sell = xml.find('./marketstat/type/sell/min').text
-            # Set message string <item> sell: <price> Jita buy: <price>
-            message = '{}, sell: {:,.2f}, buy: {:,.2f}'.format(item, float(min_sell), float(max_buy))
+def partial_key_matches(partial):
+    """
+    Returns a list of keys that a partial string matches.
+    :rtype : list
+    """
+    keys = []
+    for key in typeid_dict.keys():
+        if key.startswith(partial):
+            keys.append(key)
+    return keys
+
+
+# TODO return list of messages for multiple arguments or partial matches.
+# TODO generate multi-parameter marketstat requests and interpret the xml results.
+def get_price_messages(args):
+    """Returns a list of message strings that will be sent by an IRC bot in response to a price check trigger."""
+    messages = []
+    for arg in args:
+        names = partial_key_matches(arg)
+        if len(names) > 5:
+            messages.append('Too many partial matches for \'{}\'. Try to be more specific.'.format(arg))
         else:
-            message = 'Problem with API result.'
-    except KeyError:
-        message = 'Invalid or missing item name.'
-    return message
+            for name in names:
+                try:
+                    xml = get_marketstat_xml(typeid_dict[name])
+                    if xml is not None:
+                        xml = xml.getroot()
+                        max_buy = xml.find('./marketstat/type/buy/max').text
+                        min_sell = xml.find('./marketstat/type/sell/min').text
+                        # Set message string <item> sell: <price> Jita buy: <price>
+                        messages.append('{}, sell: {:,.2f}, buy: {:,.2f}'.format(name, float(min_sell), float(max_buy)))
+                    else:
+                        messages.append('Problem with API result for {}.'.format(name))
+                    time.sleep(.5)
+                except KeyError:
+                    messages.append('Could not find type_id for {}.'.format(name))
+    return messages
 
 
 def get_marketstat_xml(typeid):
-    """Returns the XML element tree result of an eve-central marketstat api query. Returns None if request fails."""
+    """Returns the XML element tree result of an eve-central marketstat api request. Returns None if request fails."""
     # Build api request url
     jita = '30000142'
     endpoint = 'http://api.eve-central.com/api/marketstat'
-    query = '?typeid={}&usesystem={}'.format(str(typeid), jita)
-    request_url = endpoint + query
+    parameters = '?typeid={}&usesystem={}'.format(str(typeid), jita)
+    request_url = endpoint + parameters
     try:
         # Retrieve request url, parse result into an xml element tree
         xml = parse(urllib.request.urlopen(request_url))
@@ -80,4 +73,5 @@ def get_marketstat_xml(typeid):
         xml = None
     return xml
 
-update_typeid_data(True)
+typeid_filename = 'market_only_typeids.csv'
+typeid_dict = typeids_from_csv(typeid_filename)  # { type_name : type_id }

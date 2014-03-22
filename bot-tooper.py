@@ -48,6 +48,7 @@ def passw(a_password):
     cmd = 'PASS {}\r\n'.format(a_password)
     command(cmd)
 
+# TODO implement support for multiple channels
 # TODO implement proper logging instead of if DEBUG = TRUE: print() calls.
 # enable/disable debug print statements
 DEBUG = True
@@ -108,16 +109,17 @@ while True:
                 print('Greeting received. Joining channels.')
             join(bot_channel)
 
+        # TODO add 30day argument to .jita
         # TRIGGER ".jita"
         jita_trigger = '.jita'
         if message_line.find(jita_trigger) != -1:
             if DEBUG:
                 print('.jita command received, processing trigger...')
-            jita_args = message_line[message_line.find(jita_trigger) + len(jita_trigger)+1:].split('; ')
+            jita_args = message_line[message_line.find(jita_trigger) + len(jita_trigger)+1:].strip('\r\n').split('; ')
             if DEBUG:
                 print(jita_args)
-            for arg in jita_args:
-                chanmsg(bot_channel, jita.get_price_message(str(arg).lower().strip('\r\n')))
-                time.sleep(1)
+            messages = jita.get_price_messages(jita_args)
 
-        # TODO add 30day argument to .jita
+            for message in messages:
+                chanmsg(bot_channel, message)
+                time.sleep(1)
