@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 __author__ = 'Corey'
 
 from socket import *
@@ -7,39 +8,47 @@ import jita
 
 
 def command(cmd):
+    """Encodes a string for transport over the socket and sends it as a command to the IRC server."""
     irc.send(cmd.encode('utf-8'))
 
 
 def join(a_channel):
+    """Sends a JOIN command."""
     cmd = 'JOIN {}\r\n'.format(a_channel)
     print('Attempting to join {} '.format(a_channel))
     command(cmd)
 
 
 def nick(a_nickname):
+    """Sends a NICK command."""
     cmd = 'NICK {}\r\n'.format(a_nickname)
     command(cmd)
 
 
 def user(a_username, a_hostname, a_servername, a_realname):
+    """Sends a USER command. (Important for registering with the server upon connecting.)"""
     cmd = 'USER {} {} {} :{}\r\n'.format(a_username, a_hostname, a_servername, a_realname)
     command(cmd)
 
 
 def privmsg(a_message):
+    """Sends a PRIVMSG command."""
     cmd = 'PRIVMSG {}\r\n'.format(a_message)
     command(cmd)
 
 
 def chanmsg(channel, message):
+    """Like privmsg(), but takes a channel as an argument."""
     cmd = 'PRIVMSG {} :{}\r\n'.format(channel, message)
     command(cmd)
 
 
 def passw(a_password):
+    """Sends a PASS command."""
     cmd = 'PASS {}\r\n'.format(a_password)
     command(cmd)
 
+# TODO implement proper logging instead of if DEBUG = TRUE: print() calls.
 # enable/disable debug print statements
 DEBUG = True
 
@@ -73,13 +82,11 @@ time.sleep(3)
 if DEBUG:
     print('waiting for PING before sending JOIN...')
 
-data_received = ""
-
 # TODO: Alter message processing to use a queue.
 
 while True:
     # Read next 8kb from socket
-    data_received = irc.recv(8192).decode('utf-8') # if 8kb isn't enough definitely leftpop a queue
+    data_received = irc.recv(8192).decode('utf-8')
 
     # Process one chat line at a time.
     for message_line in data_received.split('\n'):
@@ -112,3 +119,5 @@ while True:
             for arg in jita_args:
                 chanmsg(bot_channel, jita.get_price_message(str(arg).lower().strip('\r\n')))
                 time.sleep(1)
+
+        # TODO add 30day argument to .jita
