@@ -59,12 +59,12 @@ PORT = 6667
 ADDR = (HOST, PORT)
 
 # client info
-nickname = 'bottooper'
-username = 'bottooper'
-hostname = 'nosperg'
-servername = 'nosperg'
-realname = 'tskbot'
-bot_channel = '#tsk'
+nickname = 'testbottooper'
+username = 'testbottooper'
+hostname = 'testnosperg'
+servername = 'testnosperg'
+realname = 'testtskbot'
+bot_channel = '#test'
 
 # connect / do the dance
 irc = socket(AF_INET, SOCK_STREAM)
@@ -84,7 +84,7 @@ if DEBUG:
     print('waiting for PING before sending JOIN...')
 
 # TODO: Alter message processing to use a queue.
-
+# TODO: Refactor elements of the loop into functions so it will be easier to read & edit.
 while True:
     # Read next 8kb from socket
     data_received = irc.recv(8192).decode('utf-8')
@@ -115,7 +115,7 @@ while True:
         if message_line.find(jita_trigger) != -1:
             if DEBUG:
                 print('.jita command received, processing trigger...')
-            jita_args = message_line[message_line.find(jita_trigger) + len(jita_trigger)+1:].strip('\r\n').split('; ')
+            jita_args = message_line[message_line.find(jita_trigger) + len(jita_trigger) + 1:].strip('\r\n').split('; ')
             if DEBUG:
                 print(jita_args)
             messages = jita.get_price_messages(jita_args)
