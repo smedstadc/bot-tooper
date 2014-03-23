@@ -59,12 +59,12 @@ PORT = 6667
 ADDR = (HOST, PORT)
 
 # client info
-nickname = 'testbottooper'
-username = 'testbottooper'
-hostname = 'testnosperg'
-servername = 'testnosperg'
-realname = 'testtskbot'
-bot_channel = '#test'
+nickname = 'bottooper'
+username = 'bottooper'
+hostname = 'nosperg'
+servername = 'tnosperg'
+realname = 'tskbot'
+bot_channel = '#tsk'
 
 # connect / do the dance
 irc = socket(AF_INET, SOCK_STREAM)
