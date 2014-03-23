@@ -73,5 +73,55 @@ def get_marketstat_xml(typeid):
         xml = None
     return xml
 
+
+def get_price_messages_multi(args):
+    """Alternate implementation that relies on results from get_marketstat_xml_multi."""
+    messages = []
+    for arg in args:
+        names = partial_key_matches(arg)
+        if len(names) > 5:
+            messages.append('Too many partial matches for \'{}\'. Try to be more specific.'.format(arg))
+        else:
+            typeids = []
+            for name in names:
+                typeids.append(typeid_dict[name])
+            try:
+                xml = get_marketstat_xml_multi(typeids)
+                buy_max_prices = []
+                sell_min_prices = []
+                if xml is not None:
+                    xml = xml.getroot()
+                    for child in xml[0]:
+                        sell_min_prices.append(child[1][3].text)  # SELL MIN
+                        buy_max_prices.append(child[0][2].text)  # BUY MAX
+                    for index in range(len(names)):
+                        messages.append('{}, sell: {:,.2f}, buy: {:,.2f}'.format(names[index], float(sell_min_prices[index]), float(buy_max_prices[index])))
+                else:
+                    messages.append('Problem with API results.')
+                time.sleep(.5)
+            except KeyError:
+                messages.append('Could not find type_id for {}.'.format(name))
+    return messages
+
+
+def get_marketstat_xml_multi(typeids):
+    """
+    Alternate implementation that makes fewer api requests, instead of one per item name. Hulls with custom paint
+    will cause requests to fail until eve-c updates their market data to include the new ships.
+    """
+    jita = '30000142'
+    endpoint = 'http://api.eve-central.com/api/marketstat'
+    parameters = '?typeid={}'.format(str(typeids[0]))
+    if len(typeids) > 1:
+        for typeid in typeids[1:]:
+            parameters += '&typeid={}'.format(typeid)
+    parameters += '&usesystem={}'.format(jita)
+    request_url = endpoint + parameters
+    try:
+        xml = parse(urllib.request.urlopen(request_url))
+    except IOError:
+        xml = None
+    return xml
+
 typeid_filename = 'market_only_typeids.csv'
 typeid_dict = typeids_from_csv(typeid_filename)  # { type_name : type_id }

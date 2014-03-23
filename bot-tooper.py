@@ -7,9 +7,9 @@ import time
 import jita
 
 
-def command(cmd):
+def command(a_cmd):
     """Encodes a string for transport over the socket and sends it as a command to the IRC server."""
-    irc.send(cmd.encode('utf-8'))
+    irc.send(a_cmd.encode('utf-8'))
 
 
 def join(a_channel):
@@ -37,9 +37,9 @@ def privmsg(a_message):
     command(cmd)
 
 
-def chanmsg(channel, message):
+def chanmsg(a_channel, a_message):
     """Like privmsg(), but takes a channel as an argument."""
-    cmd = 'PRIVMSG {} :{}\r\n'.format(channel, message)
+    cmd = 'PRIVMSG {} :{}\r\n'.format(a_channel, a_message)
     command(cmd)
 
 
@@ -122,4 +122,4 @@ while True:
 
             for message in messages:
                 chanmsg(bot_channel, message)
-                time.sleep(1)
+                time.sleep(.5)
