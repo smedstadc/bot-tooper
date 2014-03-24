@@ -55,7 +55,7 @@ def get_price_messages(args):
                             '{}, sell: {:,.2f}, buy: {:,.2f}'.format(names[index], float(sell_min_prices[index]),
                                                                      float(buy_max_prices[index])))
                 else:
-                    messages.append('Problem with API results.')
+                    messages.append('No results for {}.'.format(arg))
                 time.sleep(.5)
             except KeyError:
                 messages.append('Could not find type_id for {}.'.format(name))
@@ -64,18 +64,21 @@ def get_price_messages(args):
 
 def get_marketstat_xml(typeids):
     """Returns the XML element tree result of an eve-central marketstat api request. Returns None if request fails."""
-    jita = '30000142'
-    endpoint = 'http://api.eve-central.com/api/marketstat'
-    parameters = '?typeid={}'.format(str(typeids[0]))
-    if len(typeids) > 1:
-        for typeid in typeids[1:]:
-            parameters += '&typeid={}'.format(typeid)
-    parameters += '&usesystem={}'.format(jita)
-    request_url = endpoint + parameters
-    print('generated api request: {}'.format(request_url))
-    try:
-        xml = parse(urllib.request.urlopen(request_url))
-    except IOError:
+    if len(typeids) > 0:
+        jita = '30000142'
+        endpoint = 'http://api.eve-central.com/api/marketstat'
+        parameters = '?typeid={}'.format(str(typeids[0]))
+        if len(typeids) > 1:
+            for typeid in typeids[1:]:
+                parameters += '&typeid={}'.format(typeid)
+        parameters += '&usesystem={}'.format(jita)
+        request_url = endpoint + parameters
+        print('generated api request: {}'.format(request_url))
+        try:
+            xml = parse(urllib.request.urlopen(request_url))
+        except IOError:
+            xml = None
+    else:
         xml = None
     return xml
 
