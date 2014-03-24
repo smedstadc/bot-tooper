@@ -11,7 +11,7 @@ def typeids_from_csv(filename):
     try:
         with open(filename, 'r', encoding='utf-8') as file:
             for line in file:
-                pairs.append(line.lower().strip('\r\n').split(',', 1))
+                pairs.append(line.strip('\r\n').split(',', 1))
         return {type_name: type_id for type_id, type_name in pairs}
     except IOError:
         return {}
@@ -21,7 +21,7 @@ def partial_key_matches(partial):
     """Returns a list of keys that a partial string matches."""
     keys = []
     for key in typeid_dict.keys():
-        if key.startswith(partial):
+        if key.lower().startswith(partial.lower()):
             if key.find('edition') != -1:
                 print('skipping key for paint job hull until supported by evec_api...')
             else:

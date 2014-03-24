@@ -64,7 +64,7 @@ username = 'bottooper'
 hostname = 'nosperg'
 servername = 'tnosperg'
 realname = 'tskbot'
-bot_channel = '#test'
+bot_channel = '#tsk'
 
 # connect / do the dance
 irc = socket(AF_INET, SOCK_STREAM)
