@@ -7,6 +7,7 @@ import time
 import jita
 from url import get_url_titles
 import re
+from datetime import datetime
 
 
 # TODO: Factor IRC stuff out of bot module.
@@ -139,5 +140,11 @@ while True:
             for message in link_messages:
                 chanmsg(bot_channel, message)
                 time.sleep(.5)
+
+        # TRIGGER ".time"
+        time_trigger = '.time'
+        if message_line.find(time_trigger) != -1:
+            time_message = 'UTC: {}'.format(datetime.utcnow().strftime("%A, %d. %B %Y %H:%M%p"))
+            chanmsg(bot_channel, time_message)
 
 irc.close()
