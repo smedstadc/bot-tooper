@@ -12,9 +12,10 @@ def get_url_titles(urls):
         count += 1
         site = requests.get(url)
         try:
-            site.raise_for_status()
-            soup = BeautifulSoup(site.content)
-            page_titles.append('{}: {}'.format(count, soup.title.string))
+            if site.headers['Content-Type'].startswith('text/html'):
+                site.raise_for_status()
+                soup = BeautifulSoup(site.content)
+                page_titles.append('{}: {}'.format(count, soup.title.string))
         except requests.exceptions.HTTPError:
             page_titles.append('{}: 404\'d!'.format(count))
     return page_titles

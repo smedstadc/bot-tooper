@@ -8,8 +8,8 @@ import jita
 from url import get_url_titles
 import re
 
-# TODO: Factor IRC stuff out of bot module.
 
+# TODO: Factor IRC stuff out of bot module.
 def command(a_cmd):
     """Encodes a string for transport over the socket and sends it as a command to the IRC server."""
     irc.send(a_cmd.encode('utf-8'))
@@ -87,7 +87,7 @@ if DEBUG:
     print('waiting for PING before sending JOIN...')
 
 # TODO: Alter message processing to use a queue.
-# TODO: Refactor elements of the loop into functions so it will be easier to read & edit.
+# TODO: Factor elements of the loop out into functions.
 while True:
     # Read next 8kb from socket
     data_received = irc.recv(8192).decode('utf-8')
