@@ -5,7 +5,10 @@ from socket import *
 #from collections import deque
 import time
 import jita
+from url import get_url_titles
+import re
 
+# TODO: Factor IRC stuff out of bot module.
 
 def command(a_cmd):
     """Encodes a string for transport over the socket and sends it as a command to the IRC server."""
@@ -62,7 +65,7 @@ ADDR = (HOST, PORT)
 nickname = 'bottooper'
 username = 'bottooper'
 hostname = 'nosperg'
-servername = 'tnosperg'
+servername = 'nosperg'
 realname = 'tskbot'
 bot_channel = '#tsk'
 
@@ -79,7 +82,7 @@ time.sleep(1)
 if DEBUG:
     print('sending USER...')
 user(username, hostname, servername, realname)
-time.sleep(3)
+time.sleep(1)
 if DEBUG:
     print('waiting for PING before sending JOIN...')
 
@@ -109,7 +112,6 @@ while True:
                 print('Greeting received. Joining channels.')
             join(bot_channel)
 
-        # TODO add 30day argument to .jita
         # TRIGGER ".jita"
         jita_trigger = '.jita'
         if message_line.find(jita_trigger) != -1:
@@ -118,8 +120,24 @@ while True:
             jita_args = message_line[message_line.find(jita_trigger) + len(jita_trigger) + 1:].strip('\r\n').split('; ')
             if DEBUG:
                 print(jita_args)
-            messages = jita.get_price_messages(jita_args)
+            price_messages = jita.get_price_messages(jita_args)
 
-            for message in messages:
+            for message in price_messages:
                 chanmsg(bot_channel, message)
                 time.sleep(.5)
+
+        # TRIGGER "http:"
+        link_trigger = 'http'
+        if message_line.find(link_trigger) != -1:
+            if DEBUG:
+                print('link detected, processing trigger...')
+            url_args = re.findall(r'(https?://\S+)', message_line)
+            if DEBUG:
+                print(url_args)
+            if len(url_args) > 0:
+                link_messages = get_url_titles(url_args)
+            for message in link_messages:
+                chanmsg(bot_channel, message)
+                time.sleep(.5)
+
+irc.close()

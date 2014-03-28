@@ -1,5 +1,7 @@
 __author__ = 'Corey'
 
+# TODO Alter get_marketstat_xml to use requests
+
 from xml.etree.ElementTree import parse
 import urllib.request
 import time
