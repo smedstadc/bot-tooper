@@ -1,4 +1,8 @@
-__author__ = 'Corey'
+#!/usr/bin/env python3
+""" url.py
+    Returns a list of page titles for a given list of urls.
+
+"""
 
 from bs4 import BeautifulSoup
 import requests

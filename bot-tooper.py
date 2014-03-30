@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-__author__ = 'Corey'
+""" bot-tooper.py
+    IRC Bot geared towards eve-corporations.
+    Written by Bud Tooper of The Suicide Kings
+
+"""
 
 from socket import *
 #from collections import deque
@@ -8,6 +12,7 @@ import jita
 from url import get_url_titles
 import re
 from datetime import datetime
+import eventcountdown
 
 
 # TODO: Factor IRC stuff out of bot module.
@@ -89,36 +94,37 @@ if DEBUG:
 
 # TODO: Alter message processing to use a queue.
 # TODO: Factor elements of the loop out into functions.
+# TODO: Create .addevent trigger (validate dates with regex)
 while True:
     # Read next 8kb from socket
     data_received = irc.recv(8192).decode('utf-8')
 
     # Process one chat line at a time.
-    for message_line in data_received.split('\n'):
-        if len(message_line.strip()) > 0:
-            print(message_line)
+    for chat_line in data_received.split('\n'):
+        if len(chat_line.strip()) > 0:
+            print(chat_line)
 
         # Respond to pings from the server
-        if message_line.find('PING') != -1:
+        if chat_line.find('PING') != -1:
             if DEBUG:
                 print('PING received, sending pong...')
-            msg = 'PONG ' + message_line.split(':')[1] + '\r\n'
+            msg = 'PONG ' + chat_line.split(':')[1] + '\r\n'
             if DEBUG:
                 print(msg)
             irc.send(msg.encode('utf-8'))
 
         # Join channels after registered with server.
-        if message_line.find('NOTICE Auth :Welcome') != -1:
+        if chat_line.find('NOTICE Auth :Welcome') != -1:
             if DEBUG:
                 print('Greeting received. Joining channels.')
             join(bot_channel)
 
         # TRIGGER ".jita"
         jita_trigger = '.jita'
-        if message_line.find(jita_trigger) != -1:
+        if chat_line.find(jita_trigger) != -1:
             if DEBUG:
                 print('.jita command received, processing trigger...')
-            jita_args = message_line[message_line.find(jita_trigger) + len(jita_trigger) + 1:].strip('\r\n').split('; ')
+            jita_args = chat_line[chat_line.find(jita_trigger) + len(jita_trigger) + 1:].strip('\r\n').split('; ')
             if DEBUG:
                 print(jita_args)
             price_messages = jita.get_price_messages(jita_args)
@@ -129,22 +135,51 @@ while True:
 
         # TRIGGER "http:"
         link_trigger = 'http'
-        if message_line.find(link_trigger) != -1:
+        if chat_line.find(link_trigger) != -1:
             if DEBUG:
                 print('link detected, processing trigger...')
-            url_args = re.findall(r'(https?://\S+)', message_line)
+            url_args = re.findall(r'(https?://\S+)', chat_line)
             if DEBUG:
                 print(url_args)
             if len(url_args) > 0:
                 link_messages = get_url_titles(url_args)
-            for message in link_messages:
-                chanmsg(bot_channel, message)
-                time.sleep(.5)
+                for message in link_messages:
+                    chanmsg(bot_channel, message)
+                    time.sleep(.5)
 
         # TRIGGER ".time"
         time_trigger = '.time'
-        if message_line.find(time_trigger) != -1:
+        if chat_line.find(time_trigger) != -1:
             time_message = 'UTC: {}'.format(datetime.utcnow().strftime("%A, %d. %B %Y %H:%M%p"))
             chanmsg(bot_channel, time_message)
 
+        # Trigger ".addop"
+        addop_trigger = '.addop'
+        if chat_line.find(addop_trigger) != -1:
+            if DEBUG:
+                print('event detected, processing trigger...')
+            event_trigger_args = chat_line[chat_line.find(addop_trigger) + len(addop_trigger) + 1:]
+            # Praise the PEP8
+            event_trigger_args = event_trigger_args.strip('\r\n').split(' ', 1)
+            if DEBUG:
+                print(event_trigger_args)
+            try:
+                event_datetime = datetime.strptime(event_trigger_args[0], "%d/%m/%Y@%H:%M")
+                event_name = event_trigger_args[1]
+                eventcountdown.add_event(event_datetime, event_name)
+                chanmsg(bot_channel, 'Event added.')
+            except IndexError:
+                chanmsg(bot_channel, 'Usage: .addop <day/month/year@hour:minute> <event name>')
+                chanmsg(bot_channel, 'Example: .addop 29/5/2014@20:35 Clever Event Name')
+            except ValueError:
+                chanmsg(bot_channel, 'Usage: .addop <day/month/year@hour:minute> <event name>')
+                chanmsg(bot_channel, 'Example: .addop 29/5/2014@20:35 Clever Event Name')
+
+        # Trigger ".ops"
+        ops_trigger = '.ops'
+        if chat_line.find(ops_trigger) != -1:
+            event_messages = eventcountdown.get_countdown_messages()
+            for message in event_messages:
+                chanmsg(bot_channel, message)
+                time.sleep(.5)
 irc.close()

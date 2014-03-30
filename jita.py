@@ -1,4 +1,8 @@
-__author__ = 'Corey'
+#!/usr/bin/env python3
+""" jita.py
+    Checks the eve-central api marketdata for a given item name and returns price message strings.
+
+"""
 
 # TODO Alter get_marketstat_xml to use requests
 
