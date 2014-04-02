@@ -3,6 +3,13 @@
     IRC Bot geared towards eve-corporations.
     Written by Bud Tooper of The Suicide Kings
 
+    Bot responds to:
+    .jita   - price check for one or more eve-items, accepts partial names, multiple names separated by '; '
+    .time   - sends UTC time to chat in human-friendly format
+    .ops    - lists upcoming ops and countdown timers
+    .addop  - adds an event to the list of upcoming events
+    http:// - fetches the page title for any links pasted into chat and displays them in order
+
 """
 
 from socket import *
@@ -95,9 +102,10 @@ if DEBUG:
 # TODO: Alter message processing to use a queue.
 # TODO: Factor elements of the loop out into functions.
 # TODO: Create .addevent trigger (validate dates with regex)
+# TODO: Create .isotime for Uplad reference: https://en.wikipedia.org/wiki/ISO_8601
 while True:
     # Read next 8kb from socket
-    data_received = irc.recv(8192).decode('utf-8')
+    data_received = irc.recv(8192).decode('utf-8', 'replace')
 
     # Process one chat line at a time.
     for chat_line in data_received.split('\n'):
@@ -182,4 +190,9 @@ while True:
             for message in event_messages:
                 chanmsg(bot_channel, message)
                 time.sleep(.5)
+
+        # Trigger "trooper"
+        trooper_trigger = 'trooper'
+        if chat_line.find(trooper_trigger) != -1:
+            chanmsg(bot_channel, '^r')
 irc.close()
