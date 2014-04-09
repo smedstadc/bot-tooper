@@ -23,43 +23,58 @@ def write_timers():
 
 
 def add_event(adatetime, aname):
-    """Appends a (datetime, name) tuple to a list of events"""
+    """Appends a (datetime, name) tuple to a list of events then sorts it by datetime order"""
     global events
     event = (adatetime, aname)
     events.append(event)
+    events = sorted(events, key=lambda list_item: list_item[0])
     write_timers()
+
+
+def remove_event(event_number):
+    """Deletes an event at event_index and returns a message to the bot."""
+    global events
+    event_number = int(event_number[0])
+    try:
+        del events[event_number-1]
+        return 'Removed event #{}.'.format(event_number)
+        write_timers()
+    except IndexError:
+        return 'No event #{} to remove.'.format(event_number)
 
 
 def days_hours_minutes(adelta):
     """Returns the value of a time delta as days, hours and minutes."""
     return adelta.days, adelta.seconds // 3600, (adelta.seconds // 60) % 60
 
-
+#TODO Factor out expiration logic to re-use in remove function
 def get_countdown_messages():
     """ Returns a list of messages reporting the time remaining or elapsed relative to each event in the event list.
-        Events which have been expired for longer than 45 minutes will be removed from the list.
+        Events which have been expired for longer than 45 minutes will be removed from the list on the next .ops call.
         Calls write_timers() if the event list changes.
 
     """
     global events
-    events = sorted(events, key=lambda list_item: list_item[0])
     messages = []
     if len(events) == 0:
         messages.append("Zero upcoming events.")
     else:
+        count = 0
         for event in events:
             name = event[1]
             time_delta = event[0] - datetime.utcnow()
             if time_delta.total_seconds() > 0:
                 delta = days_hours_minutes(time_delta)
-                messages.append('{}d {}h {}m until \"{}\"'.format(delta[0], delta[1], delta[2], name))
+                count += 1
+                messages.append('{}: {}d {}h {}m until \"{}\"'.format(count, delta[0], delta[1], delta[2], name))
             else:
                 minutes_elapsed = abs(time_delta.total_seconds()) // 60
                 if minutes_elapsed > 30:
                     events = events[1:]
-                    write_timers()
                 else:
-                    messages.append('IT\'S HAPPENING: \"{}\"'.format(name))
+                    count += 1
+                    messages.append('{}: IT\'S HAPPENING: \"{}\"'.format(count, name))
+    write_timers()
     return messages
 
 
@@ -74,8 +89,8 @@ def read_timers():
                 event = (
                     datetime(int(line[0]), int(line[1]), int(line[2]), int(line[3]), int(line[4])), line[5].strip())
                 events.append(event)
+        events = sorted(events, key=lambda list_item: list_item[0])
     except IOError:
         print("Problem reading timers.txt")
-
 
 read_timers()

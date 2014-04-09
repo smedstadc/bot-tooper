@@ -8,6 +8,7 @@
     .time   - sends UTC time to chat in human-friendly format
     .ops    - lists upcoming ops and countdown timers
     .addop  - adds an event to the list of upcoming events
+    .rmop   - removes a countdowm timer by number shown by .ops
     http:// - fetches the page title for any links pasted into chat and displays them in order
 
 """
@@ -190,13 +191,24 @@ while True:
             for message in event_messages:
                 chanmsg(bot_channel, message)
                 # time.sleep(.5)
+        # Trigger ".rmop"
+        rmop_trigger = '.rmop'
+        if chat_line.find(rmop_trigger) != -1:
+            if DEBUG:
+                print('remove op command detected, procesing trigger...')
+            rmop_trigger_args = chat_line[chat_line.find(rmop_trigger) + len(rmop_trigger) + 1:]
+            rmop_trigger_args = rmop_trigger_args.strip('\r\n').split(' ', 1)
+            if DEBUG:
+                print(rmop_trigger_args)
+            chanmsg(bot_channel, eventcountdown.remove_event(rmop_trigger_args))
 
         # Trigger ".help"
         help_trigger = '.help'
         if chat_line.find(help_trigger) != -1:
             chanmsg(bot_channel, 'Available Commands:')
             chanmsg(bot_channel, '.jita   - price check for market items')
-            chanmsg(bot_channel, '.time   - display UTC time in chat')
+            chanmsg(bot_channel, '.time   - display UTC time in chat (eve time)')
             chanmsg(bot_channel, '.ops    - display upcoming timers')
-            chanmsg(bot_channel, '.addop  - adds a countdown timer')
+            chanmsg(bot_channel, '.addop  - adds a timer (elapsed timers expire automatically)')
+            chanmsg(bot_channel, '.rmop   - remove a timer by number (shown by .ops)')
 irc.close()
