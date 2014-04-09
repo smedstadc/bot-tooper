@@ -139,7 +139,7 @@ while True:
 
             for message in price_messages:
                 chanmsg(bot_channel, message)
-                time.sleep(.5)
+                # time.sleep(.5)
 
         # TRIGGER "http:"
         link_trigger = 'http'
@@ -153,7 +153,7 @@ while True:
                 link_messages = get_url_titles(url_args)
                 for message in link_messages:
                     chanmsg(bot_channel, message)
-                    time.sleep(.5)
+                    # time.sleep(.5)
 
         # TRIGGER ".time"
         time_trigger = '.time'
@@ -189,10 +189,14 @@ while True:
             event_messages = eventcountdown.get_countdown_messages()
             for message in event_messages:
                 chanmsg(bot_channel, message)
-                time.sleep(.5)
+                # time.sleep(.5)
 
-        # Trigger "trooper"
-        trooper_trigger = 'trooper'
-        if chat_line.find(trooper_trigger) != -1:
-            chanmsg(bot_channel, '^r')
+        # Trigger ".help"
+        help_trigger = '.help'
+        if chat_line.find(help_trigger) != -1:
+            chanmsg(bot_channel, 'Available Commands:')
+            chanmsg(bot_channel, '.jita   - price check for market items')
+            chanmsg(bot_channel, '.time   - display UTC time in chat')
+            chanmsg(bot_channel, '.ops    - display upcoming timers')
+            chanmsg(bot_channel, '.addop  - adds a countdown timer')
 irc.close()

@@ -27,7 +27,6 @@ def add_event(adatetime, aname):
     global events
     event = (adatetime, aname)
     events.append(event)
-    events = sorted(events, key=lambda list_item: list_item[0])
     write_timers()
 
 
@@ -43,6 +42,7 @@ def get_countdown_messages():
 
     """
     global events
+    events = sorted(events, key=lambda list_item: list_item[0])
     messages = []
     if len(events) == 0:
         messages.append("Zero upcoming events.")
