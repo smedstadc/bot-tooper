@@ -28,7 +28,7 @@ def partial_key_matches(partial):
     keys = []
     for key in typeid_dict.keys():
         if key.lower().startswith(partial.lower()):
-            if key.find('edition') != -1:
+            if key.find('Edition') != -1:
                 print('skipping key for paint job hull until supported by evec_api...')
             else:
                 keys.append(key)
