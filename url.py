@@ -14,7 +14,7 @@ def get_url_titles(urls):
     count = 0
     for url in urls:
         count += 1
-        site = requests.get(url, headers={'User-agent': 'Mozilla/5.0'}, allow_redirects=True)
+        site = requests.get(url, headers={'User-agent': 'Mozilla/5.0'}, allow_redirects=True, verify=False)
         try:
             if site.headers['Content-Type'].startswith('text/html'):
                 site.raise_for_status()
