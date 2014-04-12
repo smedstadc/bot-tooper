@@ -69,7 +69,14 @@ def get_price_messages(args):
 
 
 def get_marketstat_xml(typeids):
-    """Returns the XML element tree result of an eve-central marketstat api request. Returns None if request fails."""
+    """ Takes a list of typeids and makes a request to the eve-central
+        marketstat API. Returns an XML element tree result of an eve-central
+        marketstat api request.
+
+        Returns an element tree from the XML retrieved if the request is successful.
+
+        Returns None if request fails.
+    """
     if len(typeids) > 0:
         jita = '30000142'
         endpoint = 'http://api.eve-central.com/api/marketstat'

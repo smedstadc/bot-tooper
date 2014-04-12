@@ -12,15 +12,15 @@
     http:// - fetches the page title for any links pasted into chat and displays them in order
 
 """
-
+#library imports
 from socket import *
-#from collections import deque
-import time
-import jita
-from url import get_url_titles
-import re
+from time import sleep
+from re import findall
 from datetime import datetime
-import eventcountdown
+
+from jita import get_price_messages
+from url import get_url_titles
+from eventcountdown import get_countdown_messages, add_event, remove_event
 
 
 # TODO: Factor IRC stuff out of bot module.
@@ -88,15 +88,15 @@ irc = socket(AF_INET, SOCK_STREAM)
 if DEBUG:
     print('connecting socket...')
 irc.connect(ADDR)
-time.sleep(1)
+sleep(1)
 if DEBUG:
     print('sending NICK...')
 nick(nickname)
-time.sleep(1)
+sleep(1)
 if DEBUG:
     print('sending USER...')
 user(username, hostname, servername, realname)
-time.sleep(1)
+sleep(1)
 if DEBUG:
     print('waiting for PING before sending JOIN...')
 
@@ -136,31 +136,37 @@ while True:
             jita_args = chat_line[chat_line.find(jita_trigger) + len(jita_trigger) + 1:].strip('\r\n').split('; ')
             if DEBUG:
                 print(jita_args)
-            price_messages = jita.get_price_messages(jita_args)
+            price_messages = get_price_messages(jita_args)
 
             for message in price_messages:
                 chanmsg(bot_channel, message)
-                # time.sleep(.5)
+                # sleep(.5)
 
         # TRIGGER "http:"
         link_trigger = 'http'
         if chat_line.find(link_trigger) != -1:
             if DEBUG:
                 print('link detected, processing trigger...')
-            url_args = re.findall(r'(https?://\S+)', chat_line)
+            url_args = findall(r'(https?://\S+)', chat_line)
             if DEBUG:
                 print(url_args)
             if len(url_args) > 0:
                 link_messages = get_url_titles(url_args)
                 for message in link_messages:
                     chanmsg(bot_channel, message)
-                    # time.sleep(.5)
+                    # sleep(.5)
 
         # TRIGGER ".time"
         time_trigger = '.time'
         if chat_line.find(time_trigger) != -1:
             time_message = 'UTC: {}'.format(datetime.utcnow().strftime("%A, %d. %B %Y %H:%M%p"))
             chanmsg(bot_channel, time_message)
+
+        # TRIGGER ".upladtime"
+        upladtime_trigger = '.upladtime'
+        if chat_line.find(upladtime_trigger) != -1:
+            upladtime_message = 'UTC: {}'.format(datetime.utcnow().isoformat())
+            chanmsg(bot_channel, upladtime_message)
 
         # Trigger ".addop"
         addop_trigger = '.addop'
@@ -173,24 +179,22 @@ while True:
             if DEBUG:
                 print(event_trigger_args)
             try:
-                event_datetime = datetime.strptime(event_trigger_args[0], "%d/%m/%Y@%H:%M")
+                event_datetime = datetime.strptime(event_trigger_args[0], "%Y/%m/%d@%H:%M")
                 event_name = event_trigger_args[1]
-                eventcountdown.add_event(event_datetime, event_name)
+                add_event(event_datetime, event_name)
                 chanmsg(bot_channel, 'Event added.')
             except IndexError:
-                chanmsg(bot_channel, 'Usage: .addop <day/month/year@hour:minute> <event name>')
-                chanmsg(bot_channel, 'Example: .addop 29/5/2014@20:35 Clever Event Name')
+                chanmsg(bot_channel, 'Usage: .addop <year/month/day@hour:minute> <event name>')
             except ValueError:
-                chanmsg(bot_channel, 'Usage: .addop <day/month/year@hour:minute> <event name>')
-                chanmsg(bot_channel, 'Example: .addop 29/5/2014@20:35 Clever Event Name')
+                chanmsg(bot_channel, 'Usage: .addop <year/month/day@hour:minute> <event name>')
 
         # Trigger ".ops"
         ops_trigger = '.ops'
         if chat_line.find(ops_trigger) != -1:
-            event_messages = eventcountdown.get_countdown_messages()
+            event_messages = get_countdown_messages()
             for message in event_messages:
                 chanmsg(bot_channel, message)
-                # time.sleep(.5)
+                # sleep(.5)
         # Trigger ".rmop"
         rmop_trigger = '.rmop'
         if chat_line.find(rmop_trigger) != -1:
@@ -200,15 +204,12 @@ while True:
             rmop_trigger_args = rmop_trigger_args.strip('\r\n').split(' ', 1)
             if DEBUG:
                 print(rmop_trigger_args)
-            chanmsg(bot_channel, eventcountdown.remove_event(rmop_trigger_args))
+            chanmsg(bot_channel, remove_event(rmop_trigger_args))
 
         # Trigger ".help"
         help_trigger = '.help'
         if chat_line.find(help_trigger) != -1:
-            chanmsg(bot_channel, 'Available Commands:')
-            chanmsg(bot_channel, '.jita   - price check for market items')
-            chanmsg(bot_channel, '.time   - display UTC time in chat (eve time)')
-            chanmsg(bot_channel, '.ops    - display upcoming timers')
-            chanmsg(bot_channel, '.addop  - adds a timer (elapsed timers expire automatically)')
-            chanmsg(bot_channel, '.rmop   - remove a timer by number (shown by .ops)')
+            chanmsg(bot_channel, '.jita, .ops, .time, .upladtime')
+            chanmsg(bot_channel, '.addop <year/month/day@hour:minute> <event name>')
+            chanmsg(bot_channel, '.rmop <op number> (listed in .ops output)')
 irc.close()

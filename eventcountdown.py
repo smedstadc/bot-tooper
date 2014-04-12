@@ -34,13 +34,16 @@ def add_event(adatetime, aname):
 def remove_event(event_number):
     """Deletes an event at event_index and returns a message to the bot."""
     global events
-    event_number = int(event_number[0])
     try:
+        event_number = int(event_number[0])
+        removed_event_name = events[event_number-1][1]
         del events[event_number-1]
-        return 'Removed event #{}.'.format(event_number)
+        return 'Removed event #{}: "{}".'.format(event_number, removed_event_name)
         write_timers()
     except IndexError:
         return 'No event #{} to remove.'.format(event_number)
+    except ValueError:
+        return 'Invalid event number.'
 
 
 def days_hours_minutes(adelta):
