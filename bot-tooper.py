@@ -15,8 +15,8 @@
 #library imports
 from socket import *
 from time import sleep
-from re import findall
-from datetime import datetime
+from re import findall, compile, match, search
+from datetime import datetime, timedelta
 
 from jita import get_price_messages
 from url import get_url_titles
@@ -76,12 +76,12 @@ PORT = 6667
 ADDR = (HOST, PORT)
 
 # client info
-nickname = 'bottooper'
+nickname = 'test_tooper'
 username = 'bottooper'
 hostname = 'nosperg'
 servername = 'nosperg'
 realname = 'tskbot'
-bot_channel = '#tsk'
+bot_channel = '#test'
 
 # connect / do the dance
 irc = socket(AF_INET, SOCK_STREAM)
@@ -188,6 +188,32 @@ while True:
             except ValueError:
                 chanmsg(bot_channel, 'Usage: .addop <year/month/day@hour:minute> <event name>')
 
+        # TODO Enable adding of <#>d<#>h<#>m <name> style ref timers
+        # Trigger ".addtimer"
+        timer_pattern = compile(r'.addtimer ([0-3])[dD]([01]?[0-9]|2[0-3])[hH]([0-9]|[0-5][0-9])[mM]')
+        addref_trigger = '.addtimer'
+        if chat_line.find(addref_trigger) != -1:
+            if DEBUG:
+                print('timer detected, processing trigger...')
+            addref_match = search(timer_pattern, chat_line)
+            if DEBUG:
+                print(addref_match)
+            if addref_match is not None:
+                # found a match, add event via timedelta
+                delta_days = int(addref_match.groups()[0])
+                delta_hours = int(addref_match.groups()[1])
+                delta_minutes = int(addref_match.groups()[2])
+                timer_name = chat_line[addref_match.end():].strip()
+                timer_datetime = datetime.utcnow()+timedelta(days=delta_days, hours=delta_hours, minutes=delta_minutes)
+                try:
+                    add_event(timer_datetime, timer_name)
+                    chanmsg(bot_channel, 'Event added.')
+                except ValueError:
+                    chanmsg(bot_channel, 'Usage: .addtimer <days>d<hours>h<minutes>m <timer name>')
+            else:
+                # no match, provide a usage hint
+                chanmsg(bot_channel, 'Usage: .addtimer <days>d<hours>h<minutes>m <timer name>')
+
         # Trigger ".ops"
         ops_trigger = '.ops'
         if chat_line.find(ops_trigger) != -1:
@@ -195,6 +221,7 @@ while True:
             for message in event_messages:
                 chanmsg(bot_channel, message)
                 # sleep(.5)
+
         # Trigger ".rmop"
         rmop_trigger = '.rmop'
         if chat_line.find(rmop_trigger) != -1:

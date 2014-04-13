@@ -25,6 +25,8 @@ def write_timers():
 def add_event(adatetime, aname):
     """Appends a (datetime, name) tuple to a list of events then sorts it by datetime order"""
     global events
+    if aname == '':
+        aname = 'Nameless Mystery Timer'
     event = (adatetime, aname)
     events.append(event)
     events = sorted(events, key=lambda list_item: list_item[0])
