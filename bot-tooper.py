@@ -76,7 +76,7 @@ PORT = 6667
 ADDR = (HOST, PORT)
 
 # client info
-nickname = 'test_tooper'
+nickname = 'bottooper'
 username = 'bottooper'
 hostname = 'nosperg'
 servername = 'nosperg'
@@ -188,7 +188,7 @@ while True:
             except ValueError:
                 chanmsg(bot_channel, 'Usage: .addop <year/month/day@hour:minute> <event name>')
 
-        # TODO Enable adding of <#>d<#>h<#>m <name> style ref timers
+                
         # Trigger ".addtimer"
         timer_pattern = compile(r'.addtimer ([0-3])[dD]([01]?[0-9]|2[0-3])[hH]([0-9]|[0-5][0-9])[mM]')
         addref_trigger = '.addtimer'
@@ -238,5 +238,6 @@ while True:
         if chat_line.find(help_trigger) != -1:
             chanmsg(bot_channel, '.jita, .ops, .time, .upladtime')
             chanmsg(bot_channel, '.addop <year/month/day@hour:minute> <event name>')
+            chanmsg(bot_channel, '.addtimer <#d#h#m> <timer name>')
             chanmsg(bot_channel, '.rmop <op number> (listed in .ops output)')
 irc.close()
