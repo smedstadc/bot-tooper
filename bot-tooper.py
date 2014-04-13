@@ -12,12 +12,12 @@
     http:// - fetches the page title for any links pasted into chat and displays them in order
 
 """
-#library imports
+#standard module imports
 from socket import *
 from time import sleep
-from re import findall, compile, match, search
+from re import findall, compile, search
 from datetime import datetime, timedelta
-
+#custom module imports
 from jita import get_price_messages
 from url import get_url_titles
 from eventcountdown import get_countdown_messages, add_event, remove_event
@@ -81,7 +81,12 @@ username = 'bottooper'
 hostname = 'nosperg'
 servername = 'nosperg'
 realname = 'tskbot'
-bot_channel = '#test'
+bot_channel = '#tsk'
+
+# Replaying up to 15 lines of pre-join history spanning up to 86400 seconds
+#
+REPLAY_LINES = 15
+skiplines = None
 
 # connect / do the dance
 irc = socket(AF_INET, SOCK_STREAM)
@@ -128,116 +133,128 @@ while True:
                 print('Greeting received. Joining channels.')
             join(bot_channel)
 
-        # TRIGGER ".jita"
-        jita_trigger = '.jita'
-        if chat_line.find(jita_trigger) != -1:
-            if DEBUG:
-                print('.jita command received, processing trigger...')
-            jita_args = chat_line[chat_line.find(jita_trigger) + len(jita_trigger) + 1:].strip('\r\n').split('; ')
-            if DEBUG:
-                print(jita_args)
-            price_messages = get_price_messages(jita_args)
+        replay_match = search(r'NOTICE {} :Replaying up to ([0-9]|1[0-9]) lines'.format(bot_channel), chat_line)
+        if replay_match is not None:
+            skiplines = int(replay_match.groups()[0])
 
-            for message in price_messages:
-                chanmsg(bot_channel, message)
-                # sleep(.5)
+        if skiplines is not None:
+            if skiplines > 0:
+                skiplines -= 1
+                print('Ignoring replay line #{}.'.format(skiplines+1))
+            else:
+                skiplines = None
+        elif search(r'332 {} {}'.format(nickname, bot_channel), chat_line) is not None:
+            pass  # don't trigger off channel topics
+        else:
+            # TRIGGER ".jita"
+            jita_trigger = '.jita'
+            if chat_line.find(jita_trigger) != -1:
+                if DEBUG:
+                    print('.jita command received, processing trigger...')
+                jita_args = chat_line[chat_line.find(jita_trigger) + len(jita_trigger) + 1:].strip('\r\n').split('; ')
+                if DEBUG:
+                    print(jita_args)
+                price_messages = get_price_messages(jita_args)
 
-        # TRIGGER "http:"
-        link_trigger = 'http'
-        if chat_line.find(link_trigger) != -1:
-            if DEBUG:
-                print('link detected, processing trigger...')
-            url_args = findall(r'(https?://\S+)', chat_line)
-            if DEBUG:
-                print(url_args)
-            if len(url_args) > 0:
-                link_messages = get_url_titles(url_args)
-                for message in link_messages:
+                for message in price_messages:
                     chanmsg(bot_channel, message)
                     # sleep(.5)
 
-        # TRIGGER ".time"
-        time_trigger = '.time'
-        if chat_line.find(time_trigger) != -1:
-            time_message = 'UTC: {}'.format(datetime.utcnow().strftime("%A, %d. %B %Y %H:%M%p"))
-            chanmsg(bot_channel, time_message)
+            # TRIGGER "http:"
+            link_trigger = 'http'
+            if chat_line.find(link_trigger) != -1:
+                if DEBUG:
+                    print('link detected, processing trigger...')
+                url_args = findall(r'(https?://\S+)', chat_line)
+                if DEBUG:
+                    print(url_args)
+                if len(url_args) > 0:
+                    link_messages = get_url_titles(url_args)
+                    for message in link_messages:
+                        chanmsg(bot_channel, message)
+                        # sleep(.5)
 
-        # TRIGGER ".upladtime"
-        upladtime_trigger = '.upladtime'
-        if chat_line.find(upladtime_trigger) != -1:
-            upladtime_message = 'UTC: {}'.format(datetime.utcnow().isoformat())
-            chanmsg(bot_channel, upladtime_message)
+            # TRIGGER ".time"
+            time_trigger = '.time'
+            if chat_line.find(time_trigger) != -1:
+                time_message = 'UTC: {}'.format(datetime.utcnow().strftime("%A, %d. %B %Y %H:%M%p"))
+                chanmsg(bot_channel, time_message)
 
-        # Trigger ".addop"
-        addop_trigger = '.addop'
-        if chat_line.find(addop_trigger) != -1:
-            if DEBUG:
-                print('event detected, processing trigger...')
-            event_trigger_args = chat_line[chat_line.find(addop_trigger) + len(addop_trigger) + 1:]
-            # Praise the PEP8
-            event_trigger_args = event_trigger_args.strip('\r\n').split(' ', 1)
-            if DEBUG:
-                print(event_trigger_args)
-            try:
-                event_datetime = datetime.strptime(event_trigger_args[0], "%Y/%m/%d@%H:%M")
-                event_name = event_trigger_args[1]
-                add_event(event_datetime, event_name)
-                chanmsg(bot_channel, 'Event added.')
-            except IndexError:
-                chanmsg(bot_channel, 'Usage: .addop <year/month/day@hour:minute> <event name>')
-            except ValueError:
-                chanmsg(bot_channel, 'Usage: .addop <year/month/day@hour:minute> <event name>')
+            # TRIGGER ".upladtime"
+            upladtime_trigger = '.upladtime'
+            if chat_line.find(upladtime_trigger) != -1:
+                upladtime_message = 'UTC: {}'.format(datetime.utcnow().isoformat())
+                chanmsg(bot_channel, upladtime_message)
 
-                
-        # Trigger ".addtimer"
-        timer_pattern = compile(r'.addtimer ([0-3])[dD]([01]?[0-9]|2[0-3])[hH]([0-9]|[0-5][0-9])[mM]')
-        addref_trigger = '.addtimer'
-        if chat_line.find(addref_trigger) != -1:
-            if DEBUG:
-                print('timer detected, processing trigger...')
-            addref_match = search(timer_pattern, chat_line)
-            if DEBUG:
-                print(addref_match)
-            if addref_match is not None:
-                # found a match, add event via timedelta
-                delta_days = int(addref_match.groups()[0])
-                delta_hours = int(addref_match.groups()[1])
-                delta_minutes = int(addref_match.groups()[2])
-                timer_name = chat_line[addref_match.end():].strip()
-                timer_datetime = datetime.utcnow()+timedelta(days=delta_days, hours=delta_hours, minutes=delta_minutes)
+            # Trigger ".addop"
+            addop_trigger = '.addop'
+            if chat_line.find(addop_trigger) != -1:
+                if DEBUG:
+                    print('event detected, processing trigger...')
+                event_trigger_args = chat_line[chat_line.find(addop_trigger) + len(addop_trigger) + 1:]
+                # Praise the PEP8
+                event_trigger_args = event_trigger_args.strip('\r\n').split(' ', 1)
+                if DEBUG:
+                    print(event_trigger_args)
                 try:
-                    add_event(timer_datetime, timer_name)
+                    event_datetime = datetime.strptime(event_trigger_args[0], "%Y/%m/%d@%H:%M")
+                    event_name = event_trigger_args[1]
+                    add_event(event_datetime, event_name)
                     chanmsg(bot_channel, 'Event added.')
+                except IndexError:
+                    chanmsg(bot_channel, 'Usage: .addop <year/month/day@hour:minute> <event name>')
                 except ValueError:
+                    chanmsg(bot_channel, 'Usage: .addop <year/month/day@hour:minute> <event name>')
+
+            # Trigger ".addtimer"
+            timer_pattern = compile(r'.addtimer ([0-3])[dD]([01]?[0-9]|2[0-3])[hH]([0-9]|[0-5][0-9])[mM]')
+            addref_trigger = '.addtimer'
+            if chat_line.find(addref_trigger) != -1:
+                if DEBUG:
+                    print('timer detected, processing trigger...')
+                addref_match = search(timer_pattern, chat_line)
+                if DEBUG:
+                    print(addref_match)
+                if addref_match is not None:
+                    # found a match, add event via timedelta
+                    delta_days = int(addref_match.groups()[0])
+                    delta_hours = int(addref_match.groups()[1])
+                    delta_minutes = int(addref_match.groups()[2])
+                    timer_name = chat_line[addref_match.end():].strip()
+                    timer_datetime = datetime.utcnow()+timedelta(days=delta_days, hours=delta_hours, minutes=delta_minutes)
+                    try:
+                        add_event(timer_datetime, timer_name)
+                        chanmsg(bot_channel, 'Event added.')
+                    except ValueError:
+                        chanmsg(bot_channel, 'Usage: .addtimer <days>d<hours>h<minutes>m <timer name>')
+                else:
+                    # no match, provide a usage hint
                     chanmsg(bot_channel, 'Usage: .addtimer <days>d<hours>h<minutes>m <timer name>')
-            else:
-                # no match, provide a usage hint
-                chanmsg(bot_channel, 'Usage: .addtimer <days>d<hours>h<minutes>m <timer name>')
 
-        # Trigger ".ops"
-        ops_trigger = '.ops'
-        if chat_line.find(ops_trigger) != -1:
-            event_messages = get_countdown_messages()
-            for message in event_messages:
-                chanmsg(bot_channel, message)
-                # sleep(.5)
+            # Trigger ".ops"
+            ops_trigger = '.ops'
+            if chat_line.find(ops_trigger) != -1:
+                event_messages = get_countdown_messages()
+                for message in event_messages:
+                    chanmsg(bot_channel, message)
+                    # sleep(.5)
 
-        # Trigger ".rmop"
-        rmop_trigger = '.rmop'
-        if chat_line.find(rmop_trigger) != -1:
-            if DEBUG:
-                print('remove op command detected, procesing trigger...')
-            rmop_trigger_args = chat_line[chat_line.find(rmop_trigger) + len(rmop_trigger) + 1:]
-            rmop_trigger_args = rmop_trigger_args.strip('\r\n').split(' ', 1)
-            if DEBUG:
-                print(rmop_trigger_args)
-            chanmsg(bot_channel, remove_event(rmop_trigger_args))
+            # Trigger ".rmop"
+            rmop_trigger = '.rmop'
+            if chat_line.find(rmop_trigger) != -1:
+                if DEBUG:
+                    print('remove op command detected, procesing trigger...')
+                rmop_trigger_args = chat_line[chat_line.find(rmop_trigger) + len(rmop_trigger) + 1:]
+                rmop_trigger_args = rmop_trigger_args.strip('\r\n').split(' ', 1)
+                if DEBUG:
+                    print(rmop_trigger_args)
+                chanmsg(bot_channel, remove_event(rmop_trigger_args))
 
-        # Trigger ".help"
-        help_trigger = '.help'
-        if chat_line.find(help_trigger) != -1:
-            chanmsg(bot_channel, '.jita, .ops, .time, .upladtime')
-            chanmsg(bot_channel, '.addop <year/month/day@hour:minute> <event name>')
-            chanmsg(bot_channel, '.addtimer <#d#h#m> <timer name>')
-            chanmsg(bot_channel, '.rmop <op number> (listed in .ops output)')
+            # Trigger ".help"
+            help_trigger = '.help'
+            if chat_line.find(help_trigger) != -1:
+                chanmsg(bot_channel, '.jita, .ops, .time, .upladtime')
+                chanmsg(bot_channel, '.addop <year/month/day@hour:minute> <event name>')
+                chanmsg(bot_channel, '.addtimer <#d#h#m> <timer name>')
+                chanmsg(bot_channel, '.rmop <op number> (listed in .ops output)')
 irc.close()
