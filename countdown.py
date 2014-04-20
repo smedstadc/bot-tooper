@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" eventcountdown.py
+""" countdown.py
     Stores events and returns the time remaining until those events when asked.
 
 """
@@ -40,8 +40,8 @@ def remove_event(event_number):
         event_number = int(event_number[0])
         removed_event_name = events[event_number-1][1]
         del events[event_number-1]
-        return 'Removed event #{}: "{}".'.format(event_number, removed_event_name)
         write_timers()
+        return 'Removed event #{}: "{}".'.format(event_number, removed_event_name)
     except IndexError:
         return 'No event #{} to remove.'.format(event_number)
     except ValueError:
@@ -52,7 +52,8 @@ def days_hours_minutes(adelta):
     """Returns the value of a time delta as days, hours and minutes."""
     return adelta.days, adelta.seconds // 3600, (adelta.seconds // 60) % 60
 
-#TODO Factor out expiration logic to re-use in remove function
+
+# TODO Factor out expiration logic to re-use in remove function
 def get_countdown_messages():
     """ Returns a list of messages reporting the time remaining or elapsed relative to each event in the event list.
         Events which have been expired for longer than 45 minutes will be removed from the list on the next .ops call.
