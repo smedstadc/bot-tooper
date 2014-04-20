@@ -1,26 +1,25 @@
 bot-tooper
 ==========
 
-Bud Tooper's IRC bot for [T-S-K]
+bot-tooper.py
+an IRC Bot geared towards eve-corporations by Bud Tooper
 
-A simple IRC bot implemented in Python 3.
+Bot responds to:
+.jita      - price check for one or more eve-items, accepts 
+             partial names, multiple names separated by '; '
+.time      - sends UTC time to chat in human-friendly format
+.upladtime - sents ISO-8601 format UTC time to chat
+.ops       - lists upcoming ops and countdown timers
+.addop     - adds an event to the countdown list by datetime
+.addtimer  - adds an event to the countdown list by timedelta
+.rmop      - removes a timer from the countdown list
+http://    - fetches the page title for any links pasted into 
+             chat and displays them in order
 
-There are plenty of these already that I could 
-have re-used or extended, but I chose to implement 
-my own to see what I could learn. So far so good.
+I know there are plenty of irc and networking frameworks 
+available to python, but I thought I could learn more by 
+re-inventing the wheel. So far so good.
 
-As a bot for an Eve corp, it's functionality is
-mostly eve related.
-
-Currently the only feature is the bot will respond
-to the command ".jita <argument(s)>" by sending
-the channel the buy and sell prices for an item.
-
-More features are planned after I polish the code
-a bit. It's still a bit rough from gluing the initial
-proof of concept bits together.
-
-Current organization:
-bot-tooper.py - is responsible for connecting to 
-  irc and processing triggers.
-jita.py - implements the jita price check methods
+Basic functionality is working well, so the next job is to work
+on generalizing the IRC handling bits so that in the future the
+bot can do more than sit in one channel on one server at a time.
