@@ -38,8 +38,8 @@ def remove_event(event_number):
     global events
     try:
         event_number = int(event_number[0])
-        removed_event_name = events[event_number-1][1]
-        del events[event_number-1]
+        removed_event_name = events[event_number - 1][1]
+        del events[event_number - 1]
         write_timers()
         return 'Removed event #{}: "{}".'.format(event_number, removed_event_name)
     except IndexError:
@@ -72,7 +72,10 @@ def get_countdown_messages():
             if time_delta.total_seconds() > 0:
                 delta = days_hours_minutes(time_delta)
                 count += 1
-                messages.append('{}: {}d {}h {}m until \"{}\"'.format(count, delta[0], delta[1], delta[2], name))
+                messages.append(
+                    '{0}: {1:2}d {2:2}h {3:2}m until \"{4}\" @ {5} UTC'.format(count, delta[0], delta[1], delta[2],
+                                                                               name.upper(),
+                                                                               event[0].strftime("%Y-%m-%dT%H:%M")))
             else:
                 minutes_elapsed = abs(time_delta.total_seconds()) // 60
                 if minutes_elapsed > 30:
@@ -98,5 +101,6 @@ def read_timers():
         events = sorted(events, key=lambda list_item: list_item[0])
     except IOError:
         print("Problem reading timers.txt")
+
 
 read_timers()
