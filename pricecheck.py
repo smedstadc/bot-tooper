@@ -114,8 +114,8 @@ def get_marketstat_xml(typeids, system_id):
 
 typeid_filename = 'market_only_typeids.csv'
 typeid_dict = typeids_from_csv(typeid_filename)  # { type_name : type_id }
-solar_system_id = {'Amarr': '30002187',
-                   'Jita': '30000142',
-                   'Dodixie': '30002659',
-                   'Rens': '30002510',
-                   'Hek': '30002053'}
+solar_system_id = {'amarr': '30002187',
+                   'jita': '30000142',
+                   'dodixie': '30002659',
+                   'rens': '30002510',
+                   'hek': '30002053'}

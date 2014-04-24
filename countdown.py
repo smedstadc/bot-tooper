@@ -26,8 +26,8 @@ def add_event(adatetime, aname):
     """Appends a (datetime, name) tuple to a list of events then sorts it by datetime order"""
     global events
     if aname == '':
-        aname = 'Nameless Mystery Timer'
-    event = (adatetime, aname)
+        aname = 'MYSTERY TIMER'
+    event = (adatetime, aname.upper())
     events.append(event)
     events = sorted(events, key=lambda list_item: list_item[0])
     write_timers()
@@ -37,7 +37,7 @@ def remove_event(event_number):
     """Deletes an event at event_index and returns a message to the bot."""
     global events
     try:
-        event_number = int(event_number[0])
+        event_number = int(event_number)
         removed_event_name = events[event_number - 1][1]
         del events[event_number - 1]
         write_timers()
@@ -63,7 +63,7 @@ def get_countdown_messages():
     global events
     messages = []
     if len(events) == 0:
-        messages.append("Zero upcoming events.")
+        messages.append("No upcoming events.")
     else:
         count = 0
         for event in events:
@@ -73,8 +73,8 @@ def get_countdown_messages():
                 delta = days_hours_minutes(time_delta)
                 count += 1
                 messages.append(
-                    '{0}: {1:2}d {2:2}h {3:2}m until \"{4}\" @ {5} UTC'.format(count, delta[0], delta[1], delta[2],
-                                                                               name.upper(),
+                    '{0}: {1:2}d {2:2}h {3:2}m until {4} at {5} UTC'.format(count, delta[0], delta[1], delta[2],
+                                                                               name,
                                                                                event[0].strftime("%Y-%m-%dT%H:%M")))
             else:
                 minutes_elapsed = abs(time_delta.total_seconds()) // 60
@@ -96,7 +96,8 @@ def read_timers():
                 line = line.split(';')
                 # Is there simple a way to unpack a list of strings as ints?
                 event = (
-                    datetime(int(line[0]), int(line[1]), int(line[2]), int(line[3]), int(line[4])), line[5].strip())
+                    datetime(int(line[0]), int(line[1]), int(line[2]), int(line[3]), int(line[4])),
+                    line[5].upper().strip())
                 events.append(event)
         events = sorted(events, key=lambda list_item: list_item[0])
     except IOError:

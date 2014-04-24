@@ -2,298 +2,309 @@
 """ bot-tooper.py
     an IRC Bot geared towards eve-corporations by Bud Tooper
 
-    Bot responds to these commands sent to the channel it sits in:
-    .jita      - price check for one or more eve-items, accepts partial names, multiple names separated by '; '
+    Bot supports multiple channels and responds to the .commands listed below. Certain commands are unavailable to
+    members outside channels without permissions. The bot will automatically respond to the appropriate pm or channel.
+
+    COMMAND  - DESCRIPTION
+    .jita      - price check for one or more eve-items, multiple names separated by '; '
     .amarr     - as .jita, but for amarr
     .dodixie   - as .jita, but for dodixie
     .rens      - as .jita, but for rens
     .hek       - as .jita, but for hek
-    .time      - sends UTC time to chat in human-friendly format
-    .upladtime - sends ISO-8601 format UTC time to chat
-    .ops       - lists upcoming ops and countdown timers
-    .addop     - adds an event to the countdown list by datetime
-    .addtimer  - adds an event to the countdown list by timedelta
-    .rmop      - removes a timer from the countdown list
-    http       - fetches the page title for any links pasted into chat and displays them in order
+    .time      - UTC time in human-friendly format
+    .upladtime - UTC time in robot-friendly ISO-8601 format
+    .ops       - lists upcoming ops and countdown timers (requires permissions)
+    .addop     - add an event to the list by datetime
+    .addtimer  - add an event to the list by timedelta
+    .rmop      - removes a timer from the list, multiple numbers separated by '; '
+    http(s)    - fetches page titles for links beginning with http
 
+    Most of these will generate a usage hint or error message in response to bad commands/arguments.
 """
-#standard module imports
-import re
-from socket import *
-from datetime import datetime, timedelta
-from collections import deque
 
-#custom module imports
-import pricecheck
+# TODO DOCSTRING ALL THE THINGS
+
+from ircmanager import IrcManager
+import settings
+import re
+from datetime import datetime, timedelta
 import url
+import pricecheck
 import countdown
 
-#import settings variables
-import settings
-## BEGIN example settings.py
-# DEBUG = True
-# HOST = 'irc.domain.com'
-# PORT = 6667
-# NICKNAME = 'bot_nickname'
-# USERNAME = 'bot_username'
-# HOSTNAME = 'bot_hostname'
-# SERVERNAME = 'bot_server_name'
-# REALNAME = 'real_name'
-# CHANNEL = '#channel'
-## END example settings.py
+# parse_message patterns
+# PING :gobbeldygook
+_ping_message_pattern = re.compile(r'^PING :(.+)$')
+# :server 001 recipient :Welcome to the servername recipient!username@hostname
+_rpl_welcome_pattern = re.compile(r'^(.+) 001 (.+) :(.+)$')
+# :nick!user@host PRIVMSG recipient :content
+_message_pattern = re.compile(r'^:(.+)!.+@.+ PRIVMSG (.+) :(.+)$')
+# :nick!user@host JOIN :#channel
+_join_pattern = re.compile(r'^:(.+)!.+@.+ JOIN :(.+)$')
+# :nick!user@host PART #channel :"Leaving"
+_part_pattern = re.compile(r'^:(.+)!.+@.+ PART (.+) :".+"$')
+# :server 353 recipient = #channel :name1 name2
+_names_pattern = re.compile(r'^:.+ 353 .+ = (.+) :(.+)$')
+# :irc.nosperg.com NOTICE #test3 :Replaying up to 15 lines of pre-join history spanning up to 24 seconds
+_replay_pattern = \
+    re.compile(r'^:.+ NOTICE (#.+) :Replaying up to (\d+) lines of pre-join history spanning up to \d+ seconds')
+# :irc.nosperg.com 332 test_tooper #test3 :butts butts butts butts
+_topic_pattern = re.compile(r'^:.+ 332 .+ #.+ :.+$')
+
+# .command patterns
+_help_pattern = re.compile(r'^[.]help$')
+_time_pattern = re.compile(r'^[.]time$')
+_upladtime_pattern = re.compile(r'^[.]upladtime$')
+_url_pattern = re.compile(r'(https?://\S+)')
+_price_check_pattern = re.compile(r'^[.](jita|amarr|dodixie|rens|hek) (.+)$')
+_ops_pattern = re.compile(r'^[.]ops$')
+# .addop <year-month-day@hour:minute> <name>
+_addop_pattern = re.compile(r'^[.]addop (\d{4}-\d{2}-\d{2}@\d{2}:\d{2}) (.+)$')
+# .addtimer <days>d<hours>h<minutes>m <name>
+_addtimer_pattern = re.compile(r'^[.]addtimer ([0-3])[dD]([01]?[0-9]|2[0-3])[hH]([0-9]|[0-5][0-9])[mM] (.+)$')
+# .rmop <number>
+_rmop_pattern = re.compile(r'^[.]rmop (.+)$')
 
 
-# TODO: Factor IRC stuff out of bot module.
-def command(a_cmd):
-    """Encodes a message to be sent to the IRC server."""
-    irc.send(a_cmd.encode('utf-8'))
+def parse_message(line_received):
+    """Returns a dict of values extracted from a line sent by the sever.
+    Values not found in the line default to None."""
+
+    # return ping dict
+    m = re.match(_ping_message_pattern, line_received)
+    if m is not None:
+        group = m.groups()
+        return {'type': 'ping', 'content': group[0]}
+
+    # return message dict
+    m = re.match(_message_pattern, line_received)
+    if m is not None:
+        group = m.groups()
+        return {'type': 'message', 'nick': group[0], 'recipient': group[1], 'content': group[2]}
+
+    # return names dict
+    m = re.match(_names_pattern, line_received)
+    if m is not None:
+        group = m.groups()
+        return {'type': 'names', 'channel': group[0], 'names': group[1]}
+
+    # return welcome dict
+    m = re.match(_rpl_welcome_pattern, line_received)
+    if m is not None:
+        group = m.groups()
+        return {'type': 'welcome', 'server': group[0], 'recipient': group[1], 'content': group[2]}
+
+    # return join dict
+    m = re.match(_join_pattern, line_received)
+    if m is not None:
+        group = m.groups()
+        return {'type': 'join', 'nick': group[0], 'channel': group[1]}
+
+    # return part dict
+    m = re.match(_part_pattern, line_received)
+    if m is not None:
+        group = m.groups()
+        return {'type': 'part', 'nick': group[0], 'channel': group[1]}
+
+    # return replay notice dict
+    m = re.match(_replay_pattern, line_received)
+    if m is not None:
+        group = m.groups()
+        return {'type': 'replay', 'channel': group[0], 'skip': int(group[1])}
+
+    # return topic dict
+    m = re.match(_topic_pattern, line_received)
+    if m is not None:
+        return {'type': 'topic'}
+    # return empty dict if no pattern is matched
+    return {}
 
 
-def join(a_channel):
-    """Sends a JOIN command."""
-    cmd = 'JOIN {}\n'.format(a_channel)
-    print('Attempting to join {} '.format(a_channel))
-    command(cmd)
-
-
-def nick(a_nickname):
-    """Sends a NICK command to the connected server."""
-    cmd = 'NICK {}\n'.format(a_nickname)
-    command(cmd)
-
-
-def user(a_username, a_hostname, a_servername, a_realname):
-    """Sends a USER command. (Important for registering with the server upon connecting.)"""
-    cmd = 'USER {} {} {} :{}\n'.format(a_username, a_hostname, a_servername, a_realname)
-    command(cmd)
-
-
-def privmsg(a_message):
-    """Sends a PRIVMSG command."""
-    cmd = 'PRIVMSG {}\n'.format(a_message)
-    command(cmd)
-
-
-def chanmsg(a_channel, a_message):
-    """Like privmsg(), but takes a channel as an argument."""
-    cmd = 'PRIVMSG {} :{}\n'.format(a_channel, a_message)
-    command(cmd)
-
-
-def passw(a_password):
-    """Sends a PASS command."""
-    cmd = 'PASS {}\n'.format(a_password)
-    command(cmd)
-
-
-def price_check_helper(line, trigger, hub):
-    """Helper function that executes a price check for the different system triggers.
-
-       line: string, the chat line which triggered the price check
-
-       trigger: string, the trigger string for the price check
-
-       hub: string, used as a key to retrieve the solar system id needed to build the api request
+def opsec_enabled(reply_to, connection_name):
+    """Returns True if reply_to is a channel or user with permissions.
+       A user with permissions is present in at least one channel with permissions.
     """
-    if settings.DEBUG:
-        print('{} price check command received, processing trigger...'.format(hub))
-    args = line[line.find(trigger) + len(trigger):].strip('\r\n').split('; ')
-    if settings.DEBUG:
-        print(args)
-    price_messages = pricecheck.get_price_messages(args, '{}'.format(hub))
-    for price_message in price_messages:
-        chanmsg(settings.CHANNEL, price_message)
+    if reply_to.startswith('#'):
+        if reply_to in opsec_channels:
+            return True
+    else:
+        for channel in opsec_channels:
+            if reply_to in ircm.names[connection_name+channel]:
+                return True
+    return False
 
-# TODO implement support for multiple channels
-# TODO implement proper logging instead of if settings.DEBUG = TRUE: print() calls.
-# connect / do the dance
-try:
-    irc = socket(AF_INET, SOCK_STREAM)
-except socket.error:
-    print('failed to open socket...')
-    sys.exit(1)
-if settings.DEBUG:
-    print('connecting socket...')
-irc.connect((settings.HOST, settings.PORT))
-if settings.DEBUG:
-    print('sending NICK...')
-nick(settings.NICKNAME)
-if settings.DEBUG:
-    print('sending USER...')
-user(settings.USERNAME, settings.HOSTNAME, settings.SERVERNAME, settings.REALNAME)
-if settings.DEBUG:
-    print('waiting for PING before sending JOIN...')
 
-# TODO: Alter message processing to use a queue and support channels, pms (25% done)
-# TODO: Factor trigger elements of the loop out into functions for readability
-received_queue = deque()
-skiplines = None  # Replaying up to 15 lines of pre-join history spanning up to 86400 seconds
+def time_trigger(reply_to, message):
+    if re.match(_time_pattern, message['content']) is not None:
+        ircm.privmsg(reply_to, 'UTC {}'.format(datetime.utcnow().strftime("%A %B %d, %Y - %H:%M%p")), connection_name)
+
+
+def uplad_time_trigger(reply_to, message):
+    if re.match(_upladtime_pattern, message['content']) is not None:
+        ircm.privmsg(reply_to, 'UTC {}'.format(datetime.utcnow().isoformat()), connection_name)
+
+
+def url_trigger(reply_to, message):
+    url_args = re.findall(_url_pattern, message['content'])
+    if len(url_args) > 0:
+        for url_message in url.get_url_titles(url_args):
+            ircm.privmsg(reply_to, url_message, connection_name)
+
+
+def help_trigger(reply_to, message):
+    if re.match(_help_pattern, message['content']) is not None:
+        ircm.privmsg(reply_to, '.jita, .amarr, .dodixie, .rens, .hek, .time, .upladtime', connection_name)
+        if opsec_enabled(reply_to, connection_name):
+            ircm.privmsg(reply_to, '.ops', connection_name)
+            ircm.privmsg(reply_to, '.addop <year/month/day@hour:minute> <event name>', connection_name)
+            ircm.privmsg(reply_to, '.addtimer <#d#h#m> <timer name>', connection_name)
+            ircm.privmsg(reply_to, '.rmop <op number>', connection_name)
+
+
+def ops_trigger(reply_to, message):
+    if re.search(_ops_pattern, message['content']) is not None:
+        if opsec_enabled(reply_to, connection_name):
+            for event_message in countdown.get_countdown_messages():
+                ircm.privmsg(reply_to, event_message, connection_name)
+
+
+def addop_trigger(reply_to, message):
+    m = re.match(_addop_pattern, message['content'])
+    if m is not None:
+        if opsec_enabled(reply_to, connection_name):
+            group = m.groups()
+            try:
+                countdown.add_event(datetime.strptime(group[0], '%Y-%m-%d@%H:%M'), group[1])
+                ircm.privmsg(reply_to, 'Event added.', connection_name)
+            except IndexError:
+                ircm.privmsg(reply_to, 'Usage: .addop <year>-<month>-<day>@<hour>:<minute> <name>', connection_name)
+            except ValueError:
+                ircm.privmsg(reply_to, 'Usage: .addop <year>-<month>-<day>@<hour>:<minute> <name>', connection_name)
+
+
+def addtimer_trigger(reply_to, message):
+    m = re.match(_addtimer_pattern, message['content'])
+    if opsec_enabled(reply_to, connection_name):
+        if m is not None:
+            group = m.groups()
+            delta_days = int(group[0])
+            delta_hours = int(group[1])
+            delta_minutes = int(group[2])
+            name = group[3]
+            dt = datetime.utcnow()+timedelta(days=delta_days, hours=delta_hours, minutes=delta_minutes)
+            try:
+                countdown.add_event(dt, name)
+                ircm.privmsg(reply_to, 'Event added.', connection_name)
+            except ValueError:
+                ircm.privmsg(reply_to, 'Usage: .addtimer <days>d<hours>h<minutes>m <name>', connection_name)
+
+
+def rmop_trigger(reply_to, message):
+    m = re.match(_rmop_pattern, message['content'])
+    if m is not None:
+        if opsec_enabled(reply_to, connection_name):
+            group = m.groups()
+            try:
+                args = sorted(set([int(x) for x in group[0].split('; ')]), reverse=True)
+                if max(args) > len(countdown.events) or min(args) < 1:
+                    ircm.privmsg(reply_to, 'One or more op numbers out of bounds.', connection_name)
+                else:
+                    for arg in args:
+                        ircm.privmsg(reply_to, countdown.remove_event(arg), connection_name)
+            except ValueError:
+                ircm.privmsg(reply_to, 'Usage: .rmop <number>[; <number>]+', connection_name)
+
+
+def price_check_trigger(reply_to, message):
+    m = re.match(_price_check_pattern, message['content'])
+    if m is not None:
+        group = m.groups()
+        for price_message in pricecheck.get_price_messages(group[1].split('; '), group[0]):
+            ircm.privmsg(reply_to, price_message, connection_name)
+
+
+def handle_triggers(reply_to, message):
+    time_trigger(reply_to, message)
+    uplad_time_trigger(reply_to, message)
+    url_trigger(reply_to, message)
+    help_trigger(reply_to, message)
+    price_check_trigger(reply_to, message)
+    ops_trigger(reply_to, message)
+    addop_trigger(reply_to, message)
+    addtimer_trigger(reply_to, message)
+    rmop_trigger(reply_to, message)
+
+ircm = IrcManager()
+
+# pull settings from external module
+host = settings.HOST
+port = settings.PORT
+channels = settings.CHANNELS
+opsec_channels = settings.OPSEC
+nick_name = settings.NICKNAME
+user_name = settings.USERNAME
+host_name = settings.HOSTNAME
+server_name = settings.SERVERNAME
+real_name = settings.REALNAME
+
+# connect to server
+ircm.connect(host, port, 'nosperg')
+for connection_name in ircm.connections.keys():
+    ircm.nick(nick_name, connection_name)
+    ircm.user(user_name, host_name, server_name, real_name, connection_name)
+
+# main bot loop
+skiplines = {}
 while True:
-    # Read up to 8kb from socket into the queue
-    print('Update received queue...')
-    for message in irc.recv(8192).decode('utf-8', 'ignore').split('\n'):
-        if len(message) > 0:
-            received_queue.append(message)
-    # get the next chat line
-    while len(received_queue) > 0:
-        chat_line = received_queue.popleft()
-        if settings.DEBUG:
-            print(chat_line)
-        # Respond to pings from the server
-        if chat_line.find('PING') != -1:
-            msg = 'PONG ' + chat_line.split(':')[1] + '\n'
-            if settings.DEBUG:
-                print(msg)
-            irc.send(msg.encode('utf-8'))
+    for connection_name in ircm.connections.keys():
+        for line_received in ircm.connections[connection_name].recv(8192).decode('utf-8', 'ignore').split('\r\n'):
+            # don't print empty strings
+            if len(line_received) > 0:
+                print(line_received)
 
-        # Join channels after registered with server.
-        if re.search(r'NOTICE Auth :Welcome', chat_line) is not None:
-            if settings.DEBUG:
-                print('Registered... Joining channels...')
-            join(settings.CHANNEL)
+            # get message dict
+            message = parse_message(line_received)
 
-        replay_match = re.search(r'NOTICE {} :Replaying up to ([0-9]|1[0-9]) lines'.format(settings.CHANNEL), chat_line)
-        if replay_match is not None:
-            skiplines = int(replay_match.groups()[0])
+            # respond to PING with PONG
+            if message.get('type', None) == 'ping':
+                ircm.pong(message['content'], connection_name)
 
-        if skiplines is not None:
-            if skiplines > 0:
-                skiplines -= 1
-                print('Ignoring replay line #{}.'.format(skiplines+1))
-            else:
-                skiplines = None
-        elif re.search(r'332 {} {}'.format(settings.NICKNAME, settings.CHANNEL), chat_line) is not None:
-            pass  # don't trigger off channel topics
-        else:
-            # TRIGGER ".jita"
-            jita_trigger = '.jita '
-            if chat_line.find(jita_trigger) != -1:
-                price_check_helper(chat_line, jita_trigger, 'Jita')
+            # join channels after RPL_WELCOME
+            if message.get('type', None) == 'welcome':
+                for channel in channels:
+                    ircm.join(channel, connection_name)
+                    skiplines[connection_name+channel] = None
 
-            # TRIGGER ".amarr"
-            amarr_trigger = '.amarr '
-            if chat_line.find(amarr_trigger) != -1:
-                price_check_helper(chat_line, amarr_trigger, 'Amarr')
+            # set names upon joining channel
+            if message.get('type', None) == 'names':
+                ircm.set_names(connection_name, message['channel'], message['names'])
 
-            # TRIGGER ".dodixie"
-            dodixie_trigger = '.dodixie '
-            if chat_line.find(dodixie_trigger) != -1:
-                price_check_helper(chat_line, dodixie_trigger, 'Dodixie')
+            # add/remove names upon observing join/part
+            if message.get('type', None) == 'join':
+                ircm.join_name(connection_name, message['channel'], message['nick'])
+            if message.get('type', None) == 'part':
+                ircm.part_name(connection_name, message['channel'], message['nick'])
 
-            # TRIGGER ".rens"
-            rens_trigger = '.rens '
-            if chat_line.find(rens_trigger) != -1:
-                price_check_helper(chat_line, rens_trigger, 'Rens')
+            # skip topic lines
+            if message.get('type', None) == 'topic':
+                print('Ignoring topic message.')
 
-            # TRIGGER ".hek"
-            hek_trigger = '.hek '
-            if chat_line.find(hek_trigger) != -1:
-                price_check_helper(chat_line, hek_trigger, 'Hek')
+            if message.get('type', None) == 'replay':
+                print('got replay dict')
+                print(connection_name+message['channel'])
+                print(message['skip'])
+                skiplines[connection_name+message['channel']] = message['skip']
 
-            # TRIGGER "http:"
-            url_pattern = re.compile(r'(https?://\S+)')
-            url_args = re.findall(r'(https?://\S+)', chat_line)
-            if len(url_args) > 0:
-                if settings.DEBUG:
-                    print('link detected, processing trigger...')
-                    print(url_args)
-                link_messages = url.get_url_titles(url_args)
-                for message in link_messages:
-                    chanmsg(settings.CHANNEL, message)
-
-            # TRIGGER ".time"
-            time_pattern = re.compile(r'{} :[.]time\s\Z'.format(settings.CHANNEL))
-            if re.search(time_pattern, chat_line) is not None:
-                time_message = 'UTC: {}'.format(datetime.utcnow().strftime("%A, %d. %B %Y %H:%M%p"))
-                chanmsg(settings.CHANNEL, time_message)
-
-            # TRIGGER ".upladtime"
-            upladtime_pattern = re.compile(r'{} :[.]upladtime\s\Z'.format(settings.CHANNEL))
-            if re.search(upladtime_pattern, chat_line) is not None:
-                upladtime_message = 'UTC: {}'.format(datetime.utcnow().isoformat())
-                chanmsg(settings.CHANNEL, upladtime_message)
-
-            # TODO convert .addop to regex
-            # Trigger ".addop"
-            addop_trigger = '.addop '
-            if chat_line.find(addop_trigger) != -1:
-                if settings.DEBUG:
-                    print('event detected, processing trigger...')
-                event_trigger_args = chat_line[chat_line.find(addop_trigger) + len(addop_trigger):]
-                # Praise the PEP8
-                event_trigger_args = event_trigger_args.strip('\r\n').split(' ', 1)
-                if settings.DEBUG:
-                    print(event_trigger_args)
-                try:
-                    event_datetime = datetime.strptime(event_trigger_args[0], "%Y/%m/%d@%H:%M")
-                    event_name = event_trigger_args[1]
-                    countdown.add_event(event_datetime, event_name)
-                    chanmsg(settings.CHANNEL, 'Event added.')
-                except IndexError:
-                    chanmsg(settings.CHANNEL, 'Usage: .addop <year/month/day@hour:minute> <event name>')
-                except ValueError:
-                    chanmsg(settings.CHANNEL, 'Usage: .addop <year/month/day@hour:minute> <event name>')
-
-            # Trigger ".addtimer"
-            addtimer_trigger_pattern = re.compile(r'.addtimer')
-            if re.search(addtimer_trigger_pattern, chat_line) is not None:
-                if settings.DEBUG:
-                    print('timer detected, processing trigger...')
-                addtimer_pattern = re.compile(
-                    r'{} :[.]addtimer ([0-3])[dD]([01]?[0-9]|2[0-3])[hH]([0-9]|[0-5][0-9])[mM]'.format(
-                        settings.CHANNEL))
-
-                addref_match = re.search(addtimer_pattern, chat_line)
-                if settings.DEBUG:
-                    print(addref_match)
-                if addref_match is not None:
-                    # found a match, add event via timedelta
-                    delta_days = int(addref_match.groups()[0])
-                    delta_hours = int(addref_match.groups()[1])
-                    delta_minutes = int(addref_match.groups()[2])
-                    timer_name = chat_line[addref_match.end():].strip()
-                    timer_datetime = datetime.utcnow()+timedelta(days=delta_days,
-                                                                 hours=delta_hours,
-                                                                 minutes=delta_minutes)
-
-                    try:
-                        countdown.add_event(timer_datetime, timer_name)
-                        chanmsg(settings.CHANNEL, 'Event added.')
-                    except ValueError:
-                        chanmsg(settings.CHANNEL, 'Usage: .addtimer <days>d<hours>h<minutes>m <timer name>')
+            # respond commands in chat or pm
+            if message.get('type', None) == 'message':
+                if message['recipient'] == nick_name:
+                    handle_triggers(message['nick'], message)
                 else:
-                    # no match, provide a usage hint
-                    chanmsg(settings.CHANNEL, 'Usage: .addtimer <days>d<hours>h<minutes>m <timer name>')
-
-            # Trigger ".ops"
-            ops_pattern = re.compile(r'{} :[.]ops\s\Z'.format(settings.CHANNEL))
-            if re.search(ops_pattern, chat_line) is not None:
-                event_messages = countdown.get_countdown_messages()
-                for message in event_messages:
-                    chanmsg(settings.CHANNEL, message)
-                    # sleep(.5)
-
-            # Trigger ".rmop"
-            rmop_trigger_pattern = re.compile(r'.rmop')
-            if re.search(rmop_trigger_pattern, chat_line) is not None:
-                if settings.DEBUG:
-                    print('remove op command detected, procesing trigger...')
-                rmop_pattern = re.compile(r'{} :[.]rmop (\d+)'.format(settings.CHANNEL))
-                rmop_match = re.search(rmop_pattern, chat_line)
-                if rmop_match is not None:
-                    rmop_arg = rmop_match.groups()[0]
-                    if settings.DEBUG:
-                        print(rmop_arg)
-                    chanmsg(settings.CHANNEL, countdown.remove_event(rmop_arg))
-                else:
-                    chanmsg(settings.CHANNEL, 'Usage: .rmop <op number>')
-
-            # Trigger ".help"
-            help_pattern = re.compile(r'{} :[.]help\s\Z'.format(settings.CHANNEL))
-            if re.search(help_pattern, chat_line) is not None:
-                chanmsg(settings.CHANNEL, '.jita, .amarr, .dodixie, .rens, .hek')
-                chanmsg(settings.CHANNEL, '.ops, .time, .upladtime')
-                chanmsg(settings.CHANNEL, '.addop <year/month/day@hour:minute> <event name>')
-                chanmsg(settings.CHANNEL, '.addtimer <#d#h#m> <timer name>')
-                chanmsg(settings.CHANNEL, '.rmop <op number> (listed in .ops output)')
-irc.close()
+                    if skiplines[connection_name+message['recipient']] is not None:
+                        if skiplines[connection_name+message['recipient']] > 0:
+                            skiplines[connection_name+message['recipient']] -= 1
+                            print('Ignoring replay line #{}.'.format(skiplines[connection_name+message['recipient']]+1))
+                        else:
+                            skiplines[connection_name+message['recipient']] = None
+                    else:
+                        handle_triggers(message['recipient'], message)

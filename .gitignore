@@ -221,3 +221,5 @@ pip-log.txt
 .idea/
 timers.txt
 settings.py
+echo.py
+bot-tooper-old.py
