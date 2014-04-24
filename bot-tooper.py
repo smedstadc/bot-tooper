@@ -44,7 +44,7 @@ _join_pattern = re.compile(r'^:(.+)!.+@.+ JOIN :(.+)$')
 # :nick!user@host PART #channel :"Leaving"
 _part_pattern = re.compile(r'^:(.+)!.+@.+ PART (.+) :".+"$')
 # :server 353 recipient = #channel :name1 name2
-_names_pattern = re.compile(r'^:.+ 353 .+ = (.+) :(.+)$')
+_names_pattern = re.compile(r'^:.+ 353 .+ [=*@] (.+) :(.+)$')
 # :irc.nosperg.com NOTICE #test3 :Replaying up to 15 lines of pre-join history spanning up to 24 seconds
 _replay_pattern = \
     re.compile(r'^:.+ NOTICE (#.+) :Replaying up to (\d+) lines of pre-join history spanning up to \d+ seconds')
@@ -290,9 +290,6 @@ while True:
                 print('Ignoring topic message.')
 
             if message.get('type', None) == 'replay':
-                print('got replay dict')
-                print(connection_name+message['channel'])
-                print(message['skip'])
                 skiplines[connection_name+message['channel']] = message['skip']
 
             # respond commands in chat or pm

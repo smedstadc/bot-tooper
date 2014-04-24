@@ -73,7 +73,7 @@ class IrcManager():
         """Update the set of names for a channel upon receiving a /NAMES list from the server."""
         temp_names = []
         for name in names.strip().split():
-            temp_names.append(name.strip('@'))
+            temp_names.append(name.strip('@').strip('~'))
         self.names[connection_name + channel] = set(temp_names)
 
     #def get_sockets(self):
