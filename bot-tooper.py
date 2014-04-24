@@ -254,7 +254,7 @@ for connection_name in ircm.connections.keys():
     ircm.user(user_name, host_name, server_name, real_name, connection_name)
 
 # main bot loop
-skiplines = {}
+#skiplines = {}
 while True:
     for connection_name in ircm.connections.keys():
         for line_received in ircm.connections[connection_name].recv(8192).decode('utf-8', 'ignore').split('\r\n'):
@@ -273,7 +273,7 @@ while True:
             if message.get('type', None) == 'welcome':
                 for channel in channels:
                     ircm.join(channel, connection_name)
-                    skiplines[connection_name+channel] = None
+                    #skiplines[connection_name+channel] = None
 
             # set names upon joining channel
             if message.get('type', None) == 'names':
@@ -289,19 +289,12 @@ while True:
             if message.get('type', None) == 'topic':
                 print('Ignoring topic message.')
 
-            if message.get('type', None) == 'replay':
-                skiplines[connection_name+message['channel']] = message['skip']
+            #if message.get('type', None) == 'replay':
+                #skiplines[connection_name+message['channel']] = message['skip']
 
             # respond commands in chat or pm
             if message.get('type', None) == 'message':
                 if message['recipient'] == nick_name:
                     handle_triggers(message['nick'], message)
                 else:
-                    if skiplines[connection_name+message['recipient']] is not None:
-                        if skiplines[connection_name+message['recipient']] > 0:
-                            skiplines[connection_name+message['recipient']] -= 1
-                            print('Ignoring replay line #{}.'.format(skiplines[connection_name+message['recipient']]+1))
-                        else:
-                            skiplines[connection_name+message['recipient']] = None
-                    else:
-                        handle_triggers(message['recipient'], message)
+                    handle_triggers(message['recipient'], message)
