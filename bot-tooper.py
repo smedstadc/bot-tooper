@@ -6,7 +6,11 @@
     members outside channels without permissions. The bot will automatically respond to the appropriate pm or channel.
 
     COMMAND  - DESCRIPTION
-    .jita      - price check for one or more eve-items, multiple names separated by '; '
+    .jita      - price check for one or more eve-items,
+                 multiple names may be separated by '; ',
+                 checks for exact matches first then does
+                 a startswith style search that will bail
+                 out if it matches too many names.
     .amarr     - as .jita, but for amarr
     .dodixie   - as .jita, but for dodixie
     .rens      - as .jita, but for rens
@@ -151,10 +155,10 @@ def url_trigger(reply_to, message):
             ircm.privmsg(reply_to, url_message, connection_name)
 
 
-def help_trigger(reply_to, message):
+def help_trigger(reply_to, message, full_help=False):
     if re.match(_help_pattern, message['content']) is not None:
         ircm.privmsg(reply_to, '.jita, .amarr, .dodixie, .rens, .hek, .time, .upladtime', connection_name)
-        if opsec_enabled(reply_to, connection_name):
+        if full_help:
             ircm.privmsg(reply_to, '.ops', connection_name)
             ircm.privmsg(reply_to, '.addop <year/month/day@hour:minute> <event name>', connection_name)
             ircm.privmsg(reply_to, '.addtimer <#d#h#m> <timer name>', connection_name)
@@ -163,56 +167,52 @@ def help_trigger(reply_to, message):
 
 def ops_trigger(reply_to, message):
     if re.search(_ops_pattern, message['content']) is not None:
-        if opsec_enabled(reply_to, connection_name):
-            for event_message in countdown.get_countdown_messages():
-                ircm.privmsg(reply_to, event_message, connection_name)
+        for event_message in countdown.get_countdown_messages():
+            ircm.privmsg(reply_to, event_message, connection_name)
 
 
 def addop_trigger(reply_to, message):
     m = re.match(_addop_pattern, message['content'])
     if m is not None:
-        if opsec_enabled(reply_to, connection_name):
-            group = m.groups()
-            try:
-                countdown.add_event(datetime.strptime(group[0], '%Y-%m-%d@%H:%M'), group[1])
-                ircm.privmsg(reply_to, 'Event added.', connection_name)
-            except IndexError:
-                ircm.privmsg(reply_to, 'Usage: .addop <year>-<month>-<day>@<hour>:<minute> <name>', connection_name)
-            except ValueError:
-                ircm.privmsg(reply_to, 'Usage: .addop <year>-<month>-<day>@<hour>:<minute> <name>', connection_name)
+        group = m.groups()
+        try:
+            countdown.add_event(datetime.strptime(group[0], '%Y-%m-%d@%H:%M'), group[1])
+            ircm.privmsg(reply_to, 'Event added.', connection_name)
+        except IndexError:
+            ircm.privmsg(reply_to, 'Usage: .addop <year>-<month>-<day>@<hour>:<minute> <name>', connection_name)
+        except ValueError:
+            ircm.privmsg(reply_to, 'Usage: .addop <year>-<month>-<day>@<hour>:<minute> <name>', connection_name)
 
 
 def addtimer_trigger(reply_to, message):
     m = re.match(_addtimer_pattern, message['content'])
-    if opsec_enabled(reply_to, connection_name):
-        if m is not None:
-            group = m.groups()
-            delta_days = int(group[0])
-            delta_hours = int(group[1])
-            delta_minutes = int(group[2])
-            name = group[3]
-            dt = datetime.utcnow()+timedelta(days=delta_days, hours=delta_hours, minutes=delta_minutes)
-            try:
-                countdown.add_event(dt, name)
-                ircm.privmsg(reply_to, 'Event added.', connection_name)
-            except ValueError:
-                ircm.privmsg(reply_to, 'Usage: .addtimer <days>d<hours>h<minutes>m <name>', connection_name)
+    if m is not None:
+        group = m.groups()
+        delta_days = int(group[0])
+        delta_hours = int(group[1])
+        delta_minutes = int(group[2])
+        name = group[3]
+        dt = datetime.utcnow()+timedelta(days=delta_days, hours=delta_hours, minutes=delta_minutes)
+        try:
+            countdown.add_event(dt, name)
+            ircm.privmsg(reply_to, 'Event added.', connection_name)
+        except ValueError:
+            ircm.privmsg(reply_to, 'Usage: .addtimer <days>d<hours>h<minutes>m <name>', connection_name)
 
 
 def rmop_trigger(reply_to, message):
     m = re.match(_rmop_pattern, message['content'])
     if m is not None:
-        if opsec_enabled(reply_to, connection_name):
-            group = m.groups()
-            try:
-                args = sorted(set([int(x) for x in group[0].split('; ')]), reverse=True)
-                if max(args) > len(countdown.events) or min(args) < 1:
-                    ircm.privmsg(reply_to, 'One or more op numbers out of bounds.', connection_name)
-                else:
-                    for arg in args:
-                        ircm.privmsg(reply_to, countdown.remove_event(arg), connection_name)
-            except ValueError:
-                ircm.privmsg(reply_to, 'Usage: .rmop <number>[; <number>]+', connection_name)
+        group = m.groups()
+        try:
+            args = sorted(set([int(x) for x in group[0].split('; ')]), reverse=True)
+            if max(args) > len(countdown.events) or min(args) < 1:
+                ircm.privmsg(reply_to, 'One or more op numbers out of bounds.', connection_name)
+            else:
+                for arg in args:
+                    ircm.privmsg(reply_to, countdown.remove_event(arg), connection_name)
+        except ValueError:
+            ircm.privmsg(reply_to, 'Usage: .rmop <number>[; <number>]+', connection_name)
 
 
 def price_check_trigger(reply_to, message):
@@ -227,12 +227,15 @@ def handle_triggers(reply_to, message):
     time_trigger(reply_to, message)
     uplad_time_trigger(reply_to, message)
     url_trigger(reply_to, message)
-    help_trigger(reply_to, message)
     price_check_trigger(reply_to, message)
-    ops_trigger(reply_to, message)
-    addop_trigger(reply_to, message)
-    addtimer_trigger(reply_to, message)
-    rmop_trigger(reply_to, message)
+    if opsec_enabled(reply_to, connection_name):
+        help_trigger(reply_to, message, full_help=True)
+        ops_trigger(reply_to, message)
+        addop_trigger(reply_to, message)
+        addtimer_trigger(reply_to, message)
+        rmop_trigger(reply_to, message)
+    else:
+        help_trigger(reply_to, message)
 
 ircm = IrcManager()
 
@@ -253,6 +256,7 @@ for connection_name in ircm.connections.keys():
     ircm.nick(nick_name, connection_name)
     ircm.user(user_name, host_name, server_name, real_name, connection_name)
 
+# TODO fix line skipping
 # main bot loop
 #skiplines = {}
 while True:
