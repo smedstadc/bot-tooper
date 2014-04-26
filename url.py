@@ -21,7 +21,9 @@ def get_url_titles(urls):
                 soup = BeautifulSoup(site.content)
                 page_titles.append('{}: {}'.format(count, soup.title.string.strip()))
         except requests.exceptions.HTTPError:
-            page_titles.append('{}: 404\'d!'.format(count))
+            print('HttpError while getting title of {}'.format(url))
         except AttributeError:
-            page_titles.append('{}: 404\'d!'.format(count))
+            print('AttributeError while getting title of {}'.format(url))
+        except requests.exceptions.ConnectionError:
+            print('ConnectionError while getting title of {}'.format(url))
     return page_titles
