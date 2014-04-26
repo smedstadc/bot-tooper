@@ -14,16 +14,12 @@ def get_url_titles(urls):
     count = 0
     for url in urls:
         count += 1
-        site = requests.get(url, headers={'User-agent': 'Mozilla/5.0'}, allow_redirects=True, verify=False)
         try:
+            site = requests.get(url, headers={'User-agent': 'Mozilla/5.0'}, allow_redirects=True, verify=False)
             if site.headers['Content-Type'].startswith('text/html'):
                 site.raise_for_status()
                 soup = BeautifulSoup(site.content)
                 page_titles.append('{}: {}'.format(count, soup.title.string.strip()))
-        except requests.exceptions.HTTPError:
-            print('HttpError while getting title of {}'.format(url))
-        except AttributeError:
-            print('AttributeError while getting title of {}'.format(url))
-        except requests.exceptions.ConnectionError:
-            print('ConnectionError while getting title of {}'.format(url))
+        except Exception:
+            print('Could not get title for {}'.format(url))
     return page_titles
