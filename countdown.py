@@ -82,7 +82,7 @@ def get_countdown_messages():
                     events = events[1:]
                 else:
                     count += 1
-                    messages.append('{}: IT\'S HAPPENING: \"{}\"'.format(count, name))
+                    messages.append('{}:  IT\'S HAPPENING:  \"{}\"'.format(count, name))
     write_timers()
     return messages
 

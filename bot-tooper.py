@@ -49,9 +49,6 @@ _join_pattern = re.compile(r'^:(.+)!.+@.+ JOIN :(.+)$')
 _part_pattern = re.compile(r'^:(.+)!.+@.+ PART (.+) :".+"$')
 # :server 353 recipient = #channel :name1 name2
 _names_pattern = re.compile(r'^:.+ 353 .+ [=*@] (.+) :(.+)$')
-# :irc.nosperg.com NOTICE #test3 :Replaying up to 15 lines of pre-join history spanning up to 24 seconds
-_replay_pattern = \
-    re.compile(r'^:.+ NOTICE (#.+) :Replaying up to (\d+) lines of pre-join history spanning up to \d+ seconds')
 # :irc.nosperg.com 332 test_tooper #test3 :butts butts butts butts
 _topic_pattern = re.compile(r'^:.+ 332 .+ #.+ :.+$')
 
@@ -110,12 +107,6 @@ def parse_message(line_received):
         group = m.groups()
         return {'type': 'part', 'nick': group[0], 'channel': group[1]}
 
-    # return replay notice dict
-    m = re.match(_replay_pattern, line_received)
-    if m is not None:
-        group = m.groups()
-        return {'type': 'replay', 'channel': group[0], 'skip': int(group[1])}
-
     # return topic dict
     m = re.match(_topic_pattern, line_received)
     if m is not None:
@@ -172,47 +163,60 @@ def ops_trigger(reply_to, message):
 
 
 def addop_trigger(reply_to, message):
-    m = re.match(_addop_pattern, message['content'])
-    if m is not None:
-        group = m.groups()
-        try:
-            countdown.add_event(datetime.strptime(group[0], '%Y-%m-%d@%H:%M'), group[1])
-            ircm.privmsg(reply_to, 'Event added.', connection_name)
-        except IndexError:
-            ircm.privmsg(reply_to, 'Usage: .addop <year>-<month>-<day>@<hour>:<minute> <name>', connection_name)
-        except ValueError:
-            ircm.privmsg(reply_to, 'Usage: .addop <year>-<month>-<day>@<hour>:<minute> <name>', connection_name)
+    usage_hint = 'Usage: .addop <year>-<month>-<day>@<hour>:<minute> <name>'
+    if re.match(r'^[.]addop(.+)?$', message['content']) is not None:
+        m = re.match(_addop_pattern, message['content'])
+        if m is not None:
+            group = m.groups()
+            try:
+                countdown.add_event(datetime.strptime(group[0], '%Y-%m-%d@%H:%M'), group[1])
+                ircm.privmsg(reply_to, 'Event added.', connection_name)
+            # IndexError might not be possible in this implementation. Betterto be safe than sorry until I make sure.
+            except IndexError:
+                ircm.privmsg(reply_to, usage_hint, connection_name)
+            except ValueError:
+                ircm.privmsg(reply_to, usage_hint, connection_name)
+        else:
+            ircm.privmsg(reply_to, usage_hint, connection_name)
 
 
 def addtimer_trigger(reply_to, message):
-    m = re.match(_addtimer_pattern, message['content'])
-    if m is not None:
-        group = m.groups()
-        delta_days = int(group[0])
-        delta_hours = int(group[1])
-        delta_minutes = int(group[2])
-        name = group[3]
-        dt = datetime.utcnow()+timedelta(days=delta_days, hours=delta_hours, minutes=delta_minutes)
-        try:
-            countdown.add_event(dt, name)
-            ircm.privmsg(reply_to, 'Event added.', connection_name)
-        except ValueError:
-            ircm.privmsg(reply_to, 'Usage: .addtimer <days>d<hours>h<minutes>m <name>', connection_name)
+    usage_hint = 'Usage: .addtimer <days>d<hours>h<minutes>m <name>'
+    if re.match(r'^[.]addtimer(.+)?$', message['content']) is not None:
+        m = re.match(_addtimer_pattern, message['content'])
+        if m is not None:
+            group = m.groups()
+            delta_days = int(group[0])
+            delta_hours = int(group[1])
+            delta_minutes = int(group[2])
+            name = group[3]
+            dt = datetime.utcnow()+timedelta(days=delta_days, hours=delta_hours, minutes=delta_minutes)
+            try:
+                countdown.add_event(dt, name)
+                ircm.privmsg(reply_to, 'Event added.', connection_name)
+            except ValueError:
+                ircm.privmsg(reply_to, usage_hint, connection_name)
+        else:
+            ircm.privmsg(reply_to, usage_hint, connection_name)
 
 
 def rmop_trigger(reply_to, message):
-    m = re.match(_rmop_pattern, message['content'])
-    if m is not None:
-        group = m.groups()
-        try:
-            args = sorted(set([int(x) for x in group[0].split('; ')]), reverse=True)
-            if max(args) > len(countdown.events) or min(args) < 1:
-                ircm.privmsg(reply_to, 'One or more op numbers out of bounds.', connection_name)
-            else:
-                for arg in args:
-                    ircm.privmsg(reply_to, countdown.remove_event(arg), connection_name)
-        except ValueError:
-            ircm.privmsg(reply_to, 'Usage: .rmop <number>[; <number>]+', connection_name)
+    usage_hint = 'Usage: .rmop <op>[; <op>; <op>...]+'
+    if re.match(r'^[.]rmop(.+)?', message['content']) is not None:
+        m = re.match(_rmop_pattern, message['content'])
+        if m is not None:
+            group = m.groups()
+            try:
+                args = sorted(set([int(x) for x in group[0].split('; ')]), reverse=True)
+                if max(args) > len(countdown.events) or min(args) < 1:
+                    ircm.privmsg(reply_to, 'One or more op numbers out of bounds.', connection_name)
+                else:
+                    for arg in args:
+                        ircm.privmsg(reply_to, countdown.remove_event(arg), connection_name)
+            except ValueError:
+                ircm.privmsg(reply_to, usage_hint, connection_name)
+        else:
+            ircm.privmsg(reply_to, usage_hint, connection_name)
 
 
 def price_check_trigger(reply_to, message):
@@ -258,7 +262,6 @@ for connection_name in ircm.connections.keys():
 
 # TODO fix line skipping
 # main bot loop
-#skiplines = {}
 while True:
     for connection_name in ircm.connections.keys():
         for line_received in ircm.connections[connection_name].recv(8192).decode('utf-8', 'ignore').split('\r\n'):
@@ -292,9 +295,6 @@ while True:
             # skip topic lines
             if message.get('type', None) == 'topic':
                 print('Ignoring topic message.')
-
-            #if message.get('type', None) == 'replay':
-                #skiplines[connection_name+message['channel']] = message['skip']
 
             # respond commands in chat or pm
             if message.get('type', None) == 'message':

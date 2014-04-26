@@ -5,6 +5,9 @@
     in a {name: socket} dict and
 """
 
+# TODO implement IrcSocket class that manages it's own names and channels.
+# Keying off (connection_name#channel) is a messy and is prone to unexpected index/key errors.
+
 from socket import *
 
 
