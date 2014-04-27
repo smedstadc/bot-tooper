@@ -70,14 +70,12 @@ def get_price_messages(args, system_id):
                 sell_min_prices = []
                 if xml is not None:
                     xml = xml.getroot()
-                    # find better way to do this
-                    for child in xml[0]:
-                        sell_min_prices.append(child[1][3].text)  # SELL MIN
-                        buy_max_prices.append(child[0][2].text)  # BUY MAX
-                    for index in range(len(names)):
-                        messages.append('{}, sell: {:,.2f}, buy: {:,.2f}'.format(names[index],
-                                                                                 float(sell_min_prices[index]),
-                                                                                 float(buy_max_prices[index])))
+                    for item in xml.findall('marketstat/type'):
+                        sell_min_prices.append(float(item.find('sell/min').text))
+                        buy_max_prices.append(float(item.find('buy/max').text))
+
+                    for name, sell, buy in zip(names, sell_min_prices, buy_max_prices):
+                        messages.append('{}, sell: {:,.2f}, buy: {:,.2f}'.format(name, sell, buy))
                 else:
                     messages.append('No results for {}.'.format(arg))
             except KeyError:
