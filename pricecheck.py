@@ -11,6 +11,7 @@ import urllib.request
 import re
 
 
+
 def typeids_from_csv(filename):
     """Returns a dict of {type_name : type_id} from a csv file ordered as type_id, type_name."""
     pairs = []
@@ -29,7 +30,7 @@ def get_matching_keys(partial):
     for key in typeid_dict.keys():
         if exact_match(key, partial):
             return [key]
-        if re.match(partial, key, flags=re.IGNORECASE) is not None:
+        if re.search(partial, key, flags=re.IGNORECASE) is not None:
             if re.search('edition', key, flags=re.IGNORECASE) is not None:
                 print('skipping key for painted hull not supported by evec_api...')
             else:
@@ -53,13 +54,14 @@ def exact_match(string, word):
     return bool(res)
 
 
-def get_price_messages(args, system_id):
+def get_price_messages(args, system_id, max_results=10):
     """Returns a list of message strings that will be sent by an IRC bot in response to a price check trigger."""
     messages = []
     for arg in args:
+        arg = re.escape(arg)
         names = get_matching_keys(arg)
-        if len(names) > 15:
-            messages.append('Too many partial matches for \'{}\'. Try to be more specific.'.format(arg))
+        if len(names) > max_results:
+            messages.append('Too many results for \'{}\' ({}). You can ignore this limit in a PM.'.format(arg, len(names)))
         else:
             typeids = []
             for name in names:

@@ -223,8 +223,12 @@ def price_check_trigger(reply_to, message):
     m = re.match(_price_check_pattern, message['content'])
     if m is not None:
         group = m.groups()
-        for price_message in pricecheck.get_price_messages(group[1].split('; '), group[0]):
-            ircm.privmsg(reply_to, price_message, connection_name)
+        if reply_to.startswith('#'):
+            for price_message in pricecheck.get_price_messages(group[1].split('; '), group[0]):
+                ircm.privmsg(reply_to, price_message, connection_name)
+        else:
+            for price_message in pricecheck.get_price_messages(group[1].split('; '), group[0], 50):
+                ircm.privmsg(reply_to, price_message, connection_name)
 
 
 def handle_triggers(reply_to, message):
