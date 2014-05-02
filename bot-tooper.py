@@ -9,8 +9,9 @@
     .jita      - price check for one or more eve-items,
                  multiple names may be separated by '; ',
                  checks for exact matches first then does
-                 a startswith style search that will bail
-                 out if it matches too many names.
+                 a regex search that will bail out if it
+                 matches too many names. Searches sent to
+                 the bot via PM have a higher limit.
     .amarr     - as .jita, but for amarr
     .dodixie   - as .jita, but for dodixie
     .rens      - as .jita, but for rens
@@ -47,6 +48,8 @@ _message_pattern = re.compile(r'^:(.+)!.+@.+ PRIVMSG (.+) :(.+)$')
 _join_pattern = re.compile(r'^:(.+)!.+@.+ JOIN :(.+)$')
 # :nick!user@host PART #channel :"Leaving"
 _part_pattern = re.compile(r'^:(.+)!.+@.+ PART (.+) :".+"$')
+#:budtooper!budtooper@nosperg-keedpp.ma.comcast.net NICK bud
+_nick_pattern = re.compile(r'^:(.+)!.+@.+ NICK (.+)$')
 # :server 353 recipient = #channel :name1 name2
 _names_pattern = re.compile(r'^:.+ 353 .+ [=*@] (.+) :(.+)$')
 # :irc.nosperg.com 332 test_tooper #test3 :butts butts butts butts
@@ -107,6 +110,12 @@ def parse_message(line_received):
     if m is not None:
         group = m.groups()
         return {'type': 'part', 'nick': group[0], 'channel': group[1]}
+
+    # return nick dict
+    m = re.match(_nick_pattern, line_received)
+    if m is not None:
+        group = m.groups()
+        return {'type': 'nick', 'old': group[0], 'new': group[1]}
 
     # return topic dict
     m = re.match(_topic_pattern, line_received)
@@ -294,12 +303,16 @@ while True:
         if message.get('type', None) == 'names':
             irc.set_names(message['channel'], message['names'])
 
-        # add/remove names upon observing join/part
+        # add/remove names upon observing join/part/nick
         if message.get('type', None) == 'join':
             irc.name_joined(message['channel'], message['nick'])
 
         if message.get('type', None) == 'part':
             irc.name_parted(message['channel'], message['nick'])
+
+        if message.get('type', None) == 'nick':
+            print('Observed user:{} change nick to:{}'.format(message['old'], message['new']))
+            irc.nick_changed(message['old'], message['new'])
 
         # skip topic lines
         if message.get('type', None) == 'topic':
