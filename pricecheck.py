@@ -60,7 +60,7 @@ def get_price_messages(args, system_id, max_results=10):
     for arg in args:
         names = get_matching_keys(re.escape(arg))
         if len(names) > max_results:
-            messages.append('Too many results for \'{}\'. You can ignore this limit in a PM.'.format(arg))
+            messages.append('Too many results for \'{}\'. This limit is ignored in PMs.'.format(arg))
         else:
             typeids = []
             for name in names:

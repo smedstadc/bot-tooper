@@ -27,14 +27,14 @@
 """
 
 # TODO DOCSTRING ALL THE THINGS
-
-from ircmanager import IrcManager
+from ircsocket import IrcSocket
 import settings
 import re
 from datetime import datetime, timedelta
 import url
 import pricecheck
 import countdown
+import time
 
 # parse_message patterns
 # PING :gobbeldygook
@@ -67,7 +67,7 @@ _addtimer_pattern = re.compile(r'^[.]addtimer ([0-3])[dD]([01]?[0-9]|2[0-3])[hH]
 _rmop_pattern = re.compile(r'^[.]rmop (.+)$')
 
 
-# TODO alter to return a named tuple, rather than a dict
+# TODO return named tuples instead of dicts
 def parse_message(line_received):
     """Returns a dict of values extracted from a line sent by the sever.
     Values not found in the line default to None."""
@@ -116,7 +116,7 @@ def parse_message(line_received):
     return {}
 
 
-def opsec_enabled(reply_to, connection_name):
+def opsec_enabled(reply_to):
     """Returns True if reply_to is a channel or user with permissions.
        A user with permissions is present in at least one channel with permissions.
     """
@@ -125,42 +125,42 @@ def opsec_enabled(reply_to, connection_name):
             return True
     else:
         for channel in opsec_channels:
-            if reply_to in ircm.names[connection_name+channel]:
+            if reply_to in irc.names[channel]:
                 return True
     return False
 
 
 def time_trigger(reply_to, message):
     if re.match(_time_pattern, message['content']) is not None:
-        ircm.privmsg(reply_to, 'UTC {}'.format(datetime.utcnow().strftime("%A %B %d, %Y - %H:%M%p")), connection_name)
+        irc.privmsg(reply_to, 'UTC {}'.format(datetime.utcnow().strftime("%A %B %d, %Y - %H:%M%p")))
 
 
 def uplad_time_trigger(reply_to, message):
     if re.match(_upladtime_pattern, message['content']) is not None:
-        ircm.privmsg(reply_to, 'UTC {}'.format(datetime.utcnow().isoformat()), connection_name)
+        irc.privmsg(reply_to, 'UTC {}'.format(datetime.utcnow().isoformat()))
 
 
 def url_trigger(reply_to, message):
     url_args = re.findall(_url_pattern, message['content'])
     if len(url_args) > 0:
         for url_message in url.get_url_titles(url_args):
-            ircm.privmsg(reply_to, url_message, connection_name)
+            irc.privmsg(reply_to, url_message)
 
 
 def help_trigger(reply_to, message, full_help=False):
     if re.match(_help_pattern, message['content']) is not None:
-        ircm.privmsg(reply_to, '.jita, .amarr, .dodixie, .rens, .hek, .time, .upladtime', connection_name)
+        irc.privmsg(reply_to, '.jita, .amarr, .dodixie, .rens, .hek, .time, .upladtime')
         if full_help:
-            ircm.privmsg(reply_to, '.ops', connection_name)
-            ircm.privmsg(reply_to, '.addop <year/month/day@hour:minute> <event name>', connection_name)
-            ircm.privmsg(reply_to, '.addtimer <#d#h#m> <timer name>', connection_name)
-            ircm.privmsg(reply_to, '.rmop <op number>', connection_name)
+            irc.privmsg(reply_to, '.ops')
+            irc.privmsg(reply_to, '.addop <year/month/day@hour:minute> <event name>')
+            irc.privmsg(reply_to, '.addtimer <#d#h#m> <timer name>')
+            irc.privmsg(reply_to, '.rmop <op number>')
 
 
 def ops_trigger(reply_to, message):
     if re.search(_ops_pattern, message['content']) is not None:
         for event_message in countdown.get_countdown_messages():
-            ircm.privmsg(reply_to, event_message, connection_name)
+            irc.privmsg(reply_to, event_message)
 
 
 def addop_trigger(reply_to, message):
@@ -171,14 +171,14 @@ def addop_trigger(reply_to, message):
             group = m.groups()
             try:
                 countdown.add_event(datetime.strptime(group[0], '%Y-%m-%d@%H:%M'), group[1])
-                ircm.privmsg(reply_to, 'Event added.', connection_name)
+                irc.privmsg(reply_to, 'Event added.')
             # IndexError might not be possible in this implementation. Betterto be safe than sorry until I make sure.
             except IndexError:
-                ircm.privmsg(reply_to, usage_hint, connection_name)
+                irc.privmsg(reply_to, usage_hint)
             except ValueError:
-                ircm.privmsg(reply_to, usage_hint, connection_name)
+                irc.privmsg(reply_to, usage_hint)
         else:
-            ircm.privmsg(reply_to, usage_hint, connection_name)
+            irc.privmsg(reply_to, usage_hint)
 
 
 def addtimer_trigger(reply_to, message):
@@ -194,11 +194,11 @@ def addtimer_trigger(reply_to, message):
             dt = datetime.utcnow()+timedelta(days=delta_days, hours=delta_hours, minutes=delta_minutes)
             try:
                 countdown.add_event(dt, name)
-                ircm.privmsg(reply_to, 'Event added.', connection_name)
+                irc.privmsg(reply_to, 'Event added.')
             except ValueError:
-                ircm.privmsg(reply_to, usage_hint, connection_name)
+                irc.privmsg(reply_to, usage_hint)
         else:
-            ircm.privmsg(reply_to, usage_hint, connection_name)
+            irc.privmsg(reply_to, usage_hint)
 
 
 def rmop_trigger(reply_to, message):
@@ -210,14 +210,14 @@ def rmop_trigger(reply_to, message):
             try:
                 args = sorted(set([int(x) for x in group[0].split('; ')]), reverse=True)
                 if max(args) > len(countdown.events) or min(args) < 1:
-                    ircm.privmsg(reply_to, 'One or more op numbers out of bounds.', connection_name)
+                    irc.privmsg(reply_to, 'One or more op numbers out of bounds.')
                 else:
                     for arg in args:
-                        ircm.privmsg(reply_to, countdown.remove_event(arg), connection_name)
+                        irc.privmsg(reply_to, countdown.remove_event(arg))
             except ValueError:
-                ircm.privmsg(reply_to, usage_hint, connection_name)
+                irc.privmsg(reply_to, usage_hint)
         else:
-            ircm.privmsg(reply_to, usage_hint, connection_name)
+            irc.privmsg(reply_to, usage_hint)
 
 
 def price_check_trigger(reply_to, message):
@@ -226,10 +226,10 @@ def price_check_trigger(reply_to, message):
         group = m.groups()
         if reply_to.startswith('#'):
             for price_message in pricecheck.get_price_messages(group[1].split('; '), group[0]):
-                ircm.privmsg(reply_to, price_message, connection_name)
+                irc.privmsg(reply_to, price_message)
         else:
             for price_message in pricecheck.get_price_messages(group[1].split('; '), group[0], 50):
-                ircm.privmsg(reply_to, price_message, connection_name)
+                irc.privmsg(reply_to, price_message)
 
 
 def handle_triggers(reply_to, message):
@@ -237,7 +237,7 @@ def handle_triggers(reply_to, message):
     uplad_time_trigger(reply_to, message)
     url_trigger(reply_to, message)
     price_check_trigger(reply_to, message)
-    if opsec_enabled(reply_to, connection_name):
+    if opsec_enabled(reply_to):
         help_trigger(reply_to, message, full_help=True)
         ops_trigger(reply_to, message)
         addop_trigger(reply_to, message)
@@ -246,7 +246,6 @@ def handle_triggers(reply_to, message):
     else:
         help_trigger(reply_to, message)
 
-ircm = IrcManager()
 
 # pull settings from external module
 host = settings.HOST
@@ -258,54 +257,57 @@ user_name = settings.USERNAME
 host_name = settings.HOSTNAME
 server_name = settings.SERVERNAME
 real_name = settings.REALNAME
+op_user = settings.OPERUSER
+op_pass = settings.OPERPASS
 
 # connect to server
-ircm.connect(host, port, 'nosperg')
-for connection_name in ircm.connections.keys():
-    ircm.nick(nick_name, connection_name)
-    ircm.user(user_name, host_name, server_name, real_name, connection_name)
+irc = IrcSocket()
+irc.connect((host, port))
+time.sleep(3)
+irc.user(user_name, host_name, server_name, real_name)
+irc.nick(nick_name)
 
-# TODO fix line skipping
 # main bot loop
 while True:
-    for connection_name in ircm.connections.keys():
-        for line_received in ircm.connections[connection_name].recv(8192).decode('utf-8', 'ignore').split('\r\n'):
-            # don't print empty strings
-            if len(line_received) > 0:
-                print(line_received)
+    for line_received in irc.sock.recv(8192).decode('utf-8', 'ignore').split('\r\n'):
+        # don't print empty strings
+        if len(line_received) > 0:
+            print(line_received)
 
-            # get message dict
-            message = parse_message(line_received)
+        # get message dict
+        message = parse_message(line_received)
 
-            # respond to PING with PONG
-            if message.get('type', None) == 'ping':
-                ircm.pong(message['content'], connection_name)
+        # respond to PING with PONG
+        if message.get('type', None) == 'ping':
+            irc.pong(message['content'])
 
-            # join channels after RPL_WELCOME
-            if message.get('type', None) == 'welcome':
-                for channel in channels:
-                    ircm.join(channel, connection_name)
-                # if operator user/pass is set try to /OPER
-                if settings.OPERUSER is not None and settings.OPERPASS is not None:
-                    ircm.oper(settings.OPERUSER, settings.OPERPASS, connection_name)
+        # join channels after RPL_WELCOME
+        if message.get('type', None) == 'welcome':
+            for channel in channels:
+                irc.join(channel)
 
-            # set names upon joining channel
-            if message.get('type', None) == 'names':
-                ircm.set_names(connection_name, message['channel'], message['names'])
+            # if operator user/pass is set try to /OPER
+            if settings.OPERUSER is not None and settings.OPERPASS is not None:
+                irc.oper(op_user, op_pass)
 
-            # add/remove names upon observing join/part
-            if message.get('type', None) == 'join':
-                ircm.join_name(connection_name, message['channel'], message['nick'])
-            if message.get('type', None) == 'part':
-                ircm.part_name(connection_name, message['channel'], message['nick'])
+        # set names upon joining channel
+        if message.get('type', None) == 'names':
+            irc.set_names(message['channel'], message['names'])
 
-            # skip topic lines
-            if message.get('type', None) == 'topic':
-                print('Ignoring topic message.')
+        # add/remove names upon observing join/part
+        if message.get('type', None) == 'join':
+            irc.name_joined(message['channel'], message['nick'])
 
-            # respond commands in chat or pm
-            if message.get('type', None) == 'message':
-                if message['recipient'] == nick_name:
-                    handle_triggers(message['nick'], message)
-                else:
-                    handle_triggers(message['recipient'], message)
+        if message.get('type', None) == 'part':
+            irc.name_parted(message['channel'], message['nick'])
+
+        # skip topic lines
+        if message.get('type', None) == 'topic':
+            print('Ignoring topic message.')
+
+        # respond commands in chat or pm
+        if message.get('type', None) == 'message':
+            if message['recipient'] == nick_name:
+                handle_triggers(message['nick'], message)
+            else:
+                handle_triggers(message['recipient'], message)
