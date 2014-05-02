@@ -284,7 +284,9 @@ while True:
             if message.get('type', None) == 'welcome':
                 for channel in channels:
                     ircm.join(channel, connection_name)
-                    #skiplines[connection_name+channel] = None
+                # if operator user/pass is set try to /OPER
+                if settings.OPERUSER is not None and settings.OPERPASS is not None:
+                    ircm.oper(settings.OPERUSER, settings.OPERPASS, connection_name)
 
             # set names upon joining channel
             if message.get('type', None) == 'names':

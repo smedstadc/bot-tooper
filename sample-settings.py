@@ -18,6 +18,8 @@ SERVERNAME = 'servername'
 REALNAME = 'realname'
 #PASSWORD SUPPORT NOT YET IMPLEMENTED
 #PASSWORD = ''
+OPERUSER = None
+OPERPASS = None
 
 # list of channels for the bot to join
 # ex CHANNELS = ['#chan1', '#chan2', 'chan3']

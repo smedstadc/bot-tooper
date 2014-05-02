@@ -52,6 +52,10 @@ class IrcManager():
         command_string = 'PASS {}'.format(password)
         self._command(command_string, connection_name)
 
+    def oper(self, user, password, connection_name):
+        command_string = 'OPER {} {}'.format(user, password)
+        self._command(command_string, connection_name)
+
     def pong(self, ping_content, connection_name):
         """Sends a PONG response."""
         command_string = 'PONG {}'.format(ping_content)
