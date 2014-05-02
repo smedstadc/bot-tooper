@@ -67,6 +67,7 @@ _addtimer_pattern = re.compile(r'^[.]addtimer ([0-3])[dD]([01]?[0-9]|2[0-3])[hH]
 _rmop_pattern = re.compile(r'^[.]rmop (.+)$')
 
 
+# TODO alter to return a named tuple, rather than a dict
 def parse_message(line_received):
     """Returns a dict of values extracted from a line sent by the sever.
     Values not found in the line default to None."""

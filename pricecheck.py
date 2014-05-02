@@ -58,10 +58,9 @@ def get_price_messages(args, system_id, max_results=10):
     """Returns a list of message strings that will be sent by an IRC bot in response to a price check trigger."""
     messages = []
     for arg in args:
-        arg = re.escape(arg)
-        names = get_matching_keys(arg)
+        names = get_matching_keys(re.escape(arg))
         if len(names) > max_results:
-            messages.append('Too many results for \'{}\' ({}). You can ignore this limit in a PM.'.format(arg, len(names)))
+            messages.append('Too many results for \'{}\'. You can ignore this limit in a PM.'.format(arg))
         else:
             typeids = []
             for name in names:
@@ -81,7 +80,7 @@ def get_price_messages(args, system_id, max_results=10):
                 else:
                     messages.append('No results for {}.'.format(arg))
             except KeyError:
-                messages.append('Could not find type_id for {}.'.format(name))
+                messages.append('Could not find type_id for {}.'.format(arg))
     return messages
 
 
