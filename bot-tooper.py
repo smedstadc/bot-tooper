@@ -35,94 +35,87 @@ from datetime import datetime, timedelta
 import url
 import pricecheck
 import countdown
-import time
 
 # parse_message patterns
 # PING :gobbeldygook
-_ping_message_pattern = re.compile(r'^PING :(.+)$')
+ping_message_pattern = re.compile(r'^PING :(?P<content>.+)$')
 # :server 001 recipient :Welcome to the servername recipient!username@hostname
-_rpl_welcome_pattern = re.compile(r'^(.+) 001 (.+) :(.+)$')
+rpl_welcome_pattern = re.compile(r'^.+ 001 .+ :.+$')
 # :nick!user@host PRIVMSG recipient :content
-_message_pattern = re.compile(r'^:(.+)!.+@.+ PRIVMSG (.+) :(.+)$')
+message_pattern = re.compile(r'^:(?P<nick>.+)!.+@.+ PRIVMSG (?P<recipient>.+) :(?P<content>.+)$')
 # :nick!user@host JOIN :#channel
-_join_pattern = re.compile(r'^:(.+)!.+@.+ JOIN :(.+)$')
+join_pattern = re.compile(r'^:(?P<nick>.+)!.+@.+ JOIN :(?P<channel>.+)$')
 # :nick!user@host PART #channel :"Leaving"
-_part_pattern = re.compile(r'^:(.+)!.+@.+ PART (.+) :".+"$')
-#:budtooper!budtooper@nosperg-keedpp.ma.comcast.net NICK bud
-_nick_pattern = re.compile(r'^:(.+)!.+@.+ NICK (.+)$')
+part_pattern = re.compile(r'^:(?P<nick>.+)!.+@.+ PART (?P<channel>.+) :".+"$')
+# :oldnick!user@host NICK newnick
+nick_pattern = re.compile(r'^:(?P<oldnick>.+)!.+@.+ NICK (?P<newnick>.+)$')
 # :server 353 recipient = #channel :name1 name2
-_names_pattern = re.compile(r'^:.+ 353 .+ [=*@] (.+) :(.+)$')
-# :irc.nosperg.com 332 test_tooper #test3 :butts butts butts butts
-_topic_pattern = re.compile(r'^:.+ 332 .+ #.+ :.+$')
+rpl_names_pattern = re.compile(r'^:.+ 353 .+ [=*@] (?P<channel>.+) :(?P<names>.+)$')
+# :server 332 recipient #channel :butts butts butts butts
+rpl_topic_pattern = re.compile(r'^:.+ 332 .+ #.+ :.+$')
 
 # .command patterns
-_help_pattern = re.compile(r'^[.]help$')
-_time_pattern = re.compile(r'^[.]time$')
-_upladtime_pattern = re.compile(r'^[.]upladtime$')
-_url_pattern = re.compile(r'(https?://\S+)')
-_price_check_pattern = re.compile(r'^[.](jita|amarr|dodixie|rens|hek) (.+)$')
-_ops_pattern = re.compile(r'^[.]ops$')
+help_pattern = re.compile(r'^[.]help$')
+time_pattern = re.compile(r'^[.]time$')
+upladtime_pattern = re.compile(r'^[.]upladtime$')
+url_pattern = re.compile(r'(https?://\S+)')
+price_check_pattern = re.compile(r'^[.](jita|amarr|dodixie|rens|hek) (.+)$')
+ops_pattern = re.compile(r'^[.]ops$')
 # .addop <year-month-day@hour:minute> <name>
-_addop_pattern = re.compile(r'^[.]addop (\d{4}-\d{2}-\d{2}@\d{2}:\d{2}) (.+)$')
+addop_pattern = re.compile(r'^[.]addop (\d{4}-\d{2}-\d{2}@\d{2}:\d{2}) (.+)$')
 # .addtimer <days>d<hours>h<minutes>m <name>
-_addtimer_pattern = re.compile(r'^[.]addtimer ([0-3])[dD]([01]?[0-9]|2[0-3])[hH]([0-9]|[0-5][0-9])[mM] (.+)$')
+addtimer_pattern = re.compile(r'^[.]addtimer ([0-3])[dD]([01]?[0-9]|2[0-3])[hH]([0-9]|[0-5][0-9])[mM] (.+)$')
 # .rmop <number>
-_rmop_pattern = re.compile(r'^[.]rmop (.+)$')
+rmop_pattern = re.compile(r'^[.]rmop (.+)$')
 
 
-# TODO return named tuples instead of dicts
 def parse_message(line_received):
     """Returns a dict of values extracted from a line sent by the sever.
     Values not found in the line default to None."""
 
     # return ping dict
-    m = re.match(_ping_message_pattern, line_received)
+    m = ping_message_pattern.match(line_received)
     if m is not None:
-        group = m.groups()
-        return {'type': 'ping', 'content': group[0]}
+        return {'type': 'ping', 'content': m.group('content')}
 
     # return message dict
-    m = re.match(_message_pattern, line_received)
+    m = message_pattern.match(line_received)
     if m is not None:
-        group = m.groups()
-        return {'type': 'message', 'nick': group[0], 'recipient': group[1], 'content': group[2]}
+        return {'type': 'message', 'nick': m.group('nick'), 'recipient': m.group('recipient'),
+                'content': m.group('content')}
 
     # return names dict
-    m = re.match(_names_pattern, line_received)
+    m = rpl_names_pattern.match(line_received)
     if m is not None:
-        group = m.groups()
-        return {'type': 'names', 'channel': group[0], 'names': group[1]}
+        return {'type': 'names', 'channel': m.group('channel'), 'names': m.group('names')}
 
     # return welcome dict
-    m = re.match(_rpl_welcome_pattern, line_received)
+    m = rpl_welcome_pattern.match(line_received)
     if m is not None:
-        group = m.groups()
-        return {'type': 'welcome', 'server': group[0], 'recipient': group[1], 'content': group[2]}
+        return {'type': 'welcome'}
 
     # return join dict
-    m = re.match(_join_pattern, line_received)
+    m = join_pattern.match(line_received)
     if m is not None:
-        group = m.groups()
-        return {'type': 'join', 'nick': group[0], 'channel': group[1]}
+        return {'type': 'join', 'nick': m.group('nick'), 'channel': m.group('channel')}
 
     # return part dict
-    m = re.match(_part_pattern, line_received)
+    m = part_pattern.match(line_received)
     if m is not None:
-        group = m.groups()
-        return {'type': 'part', 'nick': group[0], 'channel': group[1]}
+        return {'type': 'part', 'nick': m.group('nick'), 'channel': m.group('channel')}
 
     # return nick dict
-    m = re.match(_nick_pattern, line_received)
+    m = nick_pattern.match(line_received)
     if m is not None:
-        group = m.groups()
-        return {'type': 'nick', 'old': group[0], 'new': group[1]}
+        return {'type': 'nick', 'old': m.group('oldnick'), 'new': m.group('newnick')}
 
     # return topic dict
-    m = re.match(_topic_pattern, line_received)
+    m = rpl_topic_pattern.match(line_received)
     if m is not None:
         return {'type': 'topic'}
+
     # return empty dict if no pattern is matched
-    return {}
+    return {'type': None}
 
 
 def opsec_enabled(reply_to):
@@ -140,34 +133,34 @@ def opsec_enabled(reply_to):
 
 
 def time_trigger(reply_to, message):
-    if re.match(_time_pattern, message['content']) is not None:
+    if re.match(time_pattern, message['content']) is not None:
         irc.privmsg(reply_to, 'UTC {}'.format(datetime.utcnow().strftime("%A %B %d, %Y - %H:%M%p")))
 
 
 def uplad_time_trigger(reply_to, message):
-    if re.match(_upladtime_pattern, message['content']) is not None:
+    if re.match(upladtime_pattern, message['content']) is not None:
         irc.privmsg(reply_to, 'UTC {}'.format(datetime.utcnow().isoformat()))
 
 
 def url_trigger(reply_to, message):
-    url_args = re.findall(_url_pattern, message['content'])
+    url_args = re.findall(url_pattern, message['content'])
     if len(url_args) > 0:
         for url_message in url.get_url_titles(url_args):
             irc.privmsg(reply_to, url_message)
 
 
 def help_trigger(reply_to, message, full_help=False):
-    if re.match(_help_pattern, message['content']) is not None:
+    if re.match(help_pattern, message['content']) is not None:
         irc.privmsg(reply_to, '.jita, .amarr, .dodixie, .rens, .hek, .time, .upladtime')
         if full_help:
             irc.privmsg(reply_to, '.ops')
-            irc.privmsg(reply_to, '.addop <year/month/day@hour:minute> <event name>')
-            irc.privmsg(reply_to, '.addtimer <#d#h#m> <timer name>')
+            irc.privmsg(reply_to, '.addop <year>-<month>-<day>@<hour>:<minute> <event name>')
+            irc.privmsg(reply_to, '.addtimer <days>d<hours>h<minutes>m <timer name>')
             irc.privmsg(reply_to, '.rmop <op number>')
 
 
 def ops_trigger(reply_to, message):
-    if re.search(_ops_pattern, message['content']) is not None:
+    if re.search(ops_pattern, message['content']) is not None:
         for event_message in countdown.get_countdown_messages():
             irc.privmsg(reply_to, event_message)
 
@@ -175,7 +168,7 @@ def ops_trigger(reply_to, message):
 def addop_trigger(reply_to, message):
     usage_hint = 'Usage: .addop <year>-<month>-<day>@<hour>:<minute> <name>'
     if re.match(r'^[.]addop(.+)?$', message['content']) is not None:
-        m = re.match(_addop_pattern, message['content'])
+        m = re.match(addop_pattern, message['content'])
         if m is not None:
             group = m.groups()
             try:
@@ -193,14 +186,14 @@ def addop_trigger(reply_to, message):
 def addtimer_trigger(reply_to, message):
     usage_hint = 'Usage: .addtimer <days>d<hours>h<minutes>m <name>'
     if re.match(r'^[.]addtimer(.+)?$', message['content']) is not None:
-        m = re.match(_addtimer_pattern, message['content'])
+        m = re.match(addtimer_pattern, message['content'])
         if m is not None:
             group = m.groups()
             delta_days = int(group[0])
             delta_hours = int(group[1])
             delta_minutes = int(group[2])
             name = group[3]
-            dt = datetime.utcnow()+timedelta(days=delta_days, hours=delta_hours, minutes=delta_minutes)
+            dt = datetime.utcnow() + timedelta(days=delta_days, hours=delta_hours, minutes=delta_minutes)
             try:
                 countdown.add_event(dt, name)
                 irc.privmsg(reply_to, 'Event added.')
@@ -211,9 +204,9 @@ def addtimer_trigger(reply_to, message):
 
 
 def rmop_trigger(reply_to, message):
-    usage_hint = 'Usage: .rmop <op>[; <op>; <op>...]+'
+    usage_hint = 'Usage: .rmop <op number>'
     if re.match(r'^[.]rmop(.+)?', message['content']) is not None:
-        m = re.match(_rmop_pattern, message['content'])
+        m = re.match(rmop_pattern, message['content'])
         if m is not None:
             group = m.groups()
             try:
@@ -230,7 +223,7 @@ def rmop_trigger(reply_to, message):
 
 
 def price_check_trigger(reply_to, message):
-    m = re.match(_price_check_pattern, message['content'])
+    m = re.match(price_check_pattern, message['content'])
     if m is not None:
         group = m.groups()
         if reply_to.startswith('#'):
@@ -272,7 +265,6 @@ op_pass = settings.OPERPASS
 # connect to server
 irc = IrcSocket()
 irc.connect((host, port))
-time.sleep(3)
 irc.user(user_name, host_name, server_name, real_name)
 irc.nick(nick_name)
 
@@ -287,39 +279,39 @@ while True:
         message = parse_message(line_received)
 
         # respond to PING with PONG
-        if message.get('type', None) == 'ping':
+        if message['type'] == 'ping':
             irc.pong(message['content'])
 
         # join channels after RPL_WELCOME
-        if message.get('type', None) == 'welcome':
+        if message['type'] == 'welcome':
             for channel in channels:
                 irc.join(channel)
 
             # if operator user/pass is set try to /OPER
-            if settings.OPERUSER is not None and settings.OPERPASS is not None:
+            if op_user is not None and op_pass is not None:
                 irc.oper(op_user, op_pass)
 
         # set names upon joining channel
-        if message.get('type', None) == 'names':
+        if message['type'] == 'names':
             irc.set_names(message['channel'], message['names'])
 
         # add/remove names upon observing join/part/nick
-        if message.get('type', None) == 'join':
+        if message['type'] == 'join':
             irc.name_joined(message['channel'], message['nick'])
 
-        if message.get('type', None) == 'part':
+        if message['type'] == 'part':
             irc.name_parted(message['channel'], message['nick'])
 
-        if message.get('type', None) == 'nick':
-            print('Observed user:{} change nick to:{}'.format(message['old'], message['new']))
+        if message['type'] == 'nick':
             irc.nick_changed(message['old'], message['new'])
 
         # skip topic lines
-        if message.get('type', None) == 'topic':
-            print('Ignoring topic message.')
+        if message['type'] == 'topic':
+            # do nothing with topics
+            pass
 
         # respond commands in chat or pm
-        if message.get('type', None) == 'message':
+        if message['type'] == 'message':
             if message['recipient'] == nick_name:
                 handle_triggers(message['nick'], message)
             else:

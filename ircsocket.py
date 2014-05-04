@@ -84,10 +84,7 @@ class IrcSocket():
     def nick_changed(self, old, new):
         """Update names if a user is observed changing their nick in one of the bot's channels."""
         # In IRC names have channels, rather than the opposite. This works for now, but should be updated at some point.
-        print('nick_changed invoked with old={} and new={}'.format(old, new))
         for key in self.names.keys():
-            print('{} has {}'.format(key, self.names[key]))
             if old in self.names[key]:
                 self.names[key].remove(old)
                 self.names[key].add(new)
-                print('Updated {} to new {} in {}'.format(old, new, key))
