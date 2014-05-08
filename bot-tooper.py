@@ -35,6 +35,7 @@ from datetime import datetime, timedelta
 import url
 import pricecheck
 import countdown
+import sys
 
 # parse_message patterns
 # PING :gobbeldygook
@@ -53,6 +54,10 @@ nick_pattern = re.compile(r'^:(?P<oldnick>.+)!.+@.+ NICK (?P<newnick>.+)$')
 rpl_names_pattern = re.compile(r'^:.+ 353 .+ [=*@] (?P<channel>.+) :(?P<names>.+)$')
 # :server 332 recipient #channel :butts butts butts butts
 rpl_topic_pattern = re.compile(r'^:.+ 332 .+ #.+ :.+$')
+# :server 433 * nick :Nickname is already in use.
+rpl_nick_conflict_pattern = re.compile(r'^:.+ 433 .+ .+ :Nickname is already in use.$')
+# ERROR :Closing link: (test_tooper@c-76-24-157-37.hsd1.ma.comcast.net) [Registration timeout]
+error_pattern = re.compile(r'^ERROR :(?P<content>.+)$')
 
 # .command patterns
 help_pattern = re.compile(r'^[.]help$')
@@ -113,6 +118,15 @@ def parse_message(line_received):
     m = rpl_topic_pattern.match(line_received)
     if m is not None:
         return {'type': 'topic'}
+
+    # return nick conflict dict
+    if rpl_nick_conflict_pattern.match(line_received) is not None:
+        return {'type': 'conflict'}
+
+    # return ERROR dict
+    m = error_pattern.match(line_received)
+    if m is not None:
+        return {'type': 'error', 'content': m.group('content')}
 
     # return empty dict if no pattern is matched
     return {'type': None}
@@ -304,6 +318,14 @@ while True:
 
         if message['type'] == 'nick':
             irc.nick_changed(message['old'], message['new'])
+
+        if message['type'] == 'conflict':
+            irc.disconnect()
+            sys.exit(0)
+
+        if message['type'] == 'error':
+            irc.disconnect()
+            sys.exit(1)
 
         # skip topic lines
         if message['type'] == 'topic':

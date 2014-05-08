@@ -19,6 +19,9 @@ class IrcSocket():
     def connect(self, address):
         self.sock.connect(address)
 
+    def disconnect(self):
+        self.sock.close()
+
     def _command(self, command_string):
         """Encodes a message to be sent to the IRC server."""
         print(command_string)
