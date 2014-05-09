@@ -18,8 +18,10 @@ def write_timers():
                 dt = event[0]
                 name = event[1]
                 file.write('{};{};{};{};{};{}\n'.format(dt.year, dt.month, dt.day, dt.hour, dt.minute, name))
+        print('INFO: Wrote timers.txt')
     except IOError:
-        print('Problem writing timers.txt')
+        print('PROB: ' + 'Problem writing timers.txt')
+        file.close()
 
 
 def add_event(adatetime, aname):
@@ -73,7 +75,7 @@ def get_countdown_messages():
                 delta = days_hours_minutes(time_delta)
                 count += 1
                 messages.append(
-                    '{0}: {1:2}d {2:2}h {3:2}m until {4} at {5} UTC'.format(count, delta[0], delta[1], delta[2],
+                    '{0}: {1:3}d {2:2}h {3:2}m until {4} at {5} UTC'.format(count, delta[0], delta[1], delta[2],
                                                                                name,
                                                                                event[0].strftime("%Y-%m-%dT%H:%M")))
             else:
@@ -100,8 +102,10 @@ def read_timers():
                     line[5].upper().strip())
                 events.append(event)
         events = sorted(events, key=lambda list_item: list_item[0])
+        print('INFO: Read timers.txt')
     except IOError:
-        print("Problem reading timers.txt")
+        print('PROB: ' + 'Problem reading timers.txt')
+        file.close()
 
 
 read_timers()

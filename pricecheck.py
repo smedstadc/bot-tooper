@@ -32,7 +32,7 @@ def get_matching_keys(partial):
             return [key]
         if re.search(partial, key, flags=re.IGNORECASE) is not None:
             if re.search('edition', key, flags=re.IGNORECASE) is not None:
-                print('skipping key for painted hull not supported by evec_api...')
+                print('INFO: ' + 'skipping key for painted hull not supported by evec_api...')
             else:
                 keys.append(key)
     return keys
@@ -101,7 +101,7 @@ def get_marketstat_xml(typeids, system_id):
                 parameters += '&typeid={}'.format(typeid)
         parameters += '&usesystem={}'.format(system_id)
         request_url = endpoint + parameters
-        print('generated api request: {}'.format(request_url))
+        print('INFO: ' + 'generated api request: {}'.format(request_url))
         try:
             xml = parse(urllib.request.urlopen(request_url))
         except IOError:

@@ -74,6 +74,24 @@ addtimer_pattern = re.compile(r'^[.]addtimer ([0-3])[dD]([01]?[0-9]|2[0-3])[hH](
 rmop_pattern = re.compile(r'^[.]rmop (.+)$')
 
 
+def lines_from_socket(socket):
+    # buffer mechanism prevents bot from attempting processing incomplete lines
+    buffer = socket.recv(4096).decode('utf-8', 'ignore')
+    done = False
+    while not done:
+        if '\r\n' in buffer:
+            line, buffer = buffer.split('\r\n', 1)
+            yield line
+        else:
+            more = socket.recv(4096).decode('utf-8', 'ignore')
+            if not more:
+                done = True
+            else:
+                buffer = buffer + more
+    if buffer:
+        yield buffer
+
+
 def parse_message(line_received):
     """Returns a dict of values extracted from a line sent by the sever.
     Values not found in the line default to None."""
@@ -284,12 +302,9 @@ irc.nick(nick_name)
 
 # main bot loop
 while True:
-    for line_received in irc.sock.recv(8192).decode('utf-8', 'ignore').split('\r\n'):
-        # don't print empty strings
-        if len(line_received) > 0:
-            print(line_received)
-
+    for line_received in lines_from_socket(irc.sock):
         # get message dict
+        print('RECV: ' + repr(line_received))
         message = parse_message(line_received)
 
         # respond to PING with PONG

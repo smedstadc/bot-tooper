@@ -1,12 +1,7 @@
-""" ircmanager.py
-    a simple manager for multiple irc connections
+""" ircsocket.py
 
-    an IrcManager instance holds multiple named sockets
-    in a {name: socket} dict and
+    A simple container for a socket and a few helpful functions for talking to an IRC server
 """
-
-# TODO implement IrcSocket class that manages it's own names and channels.
-# Keying off (connection_name#channel) is a messy and is prone to unexpected index/key errors.
 
 from socket import *
 
@@ -24,7 +19,7 @@ class IrcSocket():
 
     def _command(self, command_string):
         """Encodes a message to be sent to the IRC server."""
-        print(command_string)
+        print('SENT: ' + repr(command_string))
         command_string += '\r\n'
         self.sock.send(command_string.encode('utf-8'))
 
@@ -75,7 +70,7 @@ class IrcSocket():
         try:
             self.names[channel].remove(nick)
         except KeyError:
-            print('Attempted to remove {}: {}, but it didn\'t exist.'.format(channel, nick))
+            print('WARN: ' + 'Attempted to remove {}: {}, but it didn\'t exist.'.format(channel, nick))
 
     def set_names(self, channel, names):
         """Update the set of names for a channel upon receiving a /NAMES list from the server."""

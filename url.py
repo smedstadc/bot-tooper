@@ -18,6 +18,6 @@ def get_url_titles(urls):
                 soup = BeautifulSoup(site.content)
                 page_titles.append(soup.title.string.strip())
         except Exception as e:
-            print('Failed attempting to get title for {}'.format(url))
-            print('ERROR: {}'.format(e))
+            print('INFO: Could not get title for {}'.format(url))
+            print('PROB: {}'.format(e))
     return page_titles
