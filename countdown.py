@@ -4,16 +4,19 @@
 
 """
 
+import os
 from datetime import datetime
+from settings import TIMERSFILENAME
 
 events = []
+timers_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), TIMERSFILENAME)
 
 
 def write_timers():
     """Writes currently tracked timers to text file. Called by add_event after each timer is added."""
     try:
         global events
-        with open('timers.txt', 'w') as file:
+        with open(timers_path, 'w') as file:
             for event in events:
                 dt = event[0]
                 name = event[1]
@@ -91,9 +94,9 @@ def get_countdown_messages():
 
 def read_timers():
     """Reads saved timers into timers list from text file."""
+    global events
     try:
-        global events
-        with open('timers.txt', 'r') as file:
+        with open(timers_path, 'r') as file:
             for line in file:
                 line = line.split(';')
                 # Is there simple a way to unpack a list of strings as ints?

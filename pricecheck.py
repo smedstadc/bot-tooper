@@ -6,10 +6,11 @@
 
 # TODO Alter get_marketstat_xml to use requests
 
+from settings import TYPEIDSFILENAME
 from xml.etree.ElementTree import parse
 import urllib.request
 import re
-
+import os
 
 
 def typeids_from_csv(filename):
@@ -111,8 +112,8 @@ def get_marketstat_xml(typeids, system_id):
     return xml
 
 
-typeid_filename = 'market_only_typeids.csv'
-typeid_dict = typeids_from_csv(typeid_filename)  # { type_name : type_id }
+typeids_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), TYPEIDSFILENAME)
+typeid_dict = typeids_from_csv(typeids_path)  # { type_name : type_id }
 solar_system_id = {'amarr': '30002187',
                    'jita': '30000142',
                    'dodixie': '30002659',

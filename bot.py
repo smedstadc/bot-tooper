@@ -270,15 +270,10 @@ def price_check_trigger(reply_to, message):
 
 
 def pidgin_notice_trigger(reply_to, message):
-    print('INFO: pidgin_notice_trigger invoked with reply_to = {} and message = {}'.format(reply_to, message))
     m = pidgin_notice_pattern.match(message['content'])
     if m is not None:
-        print('INFO: (notice) detected.')
         if message['recipient'].startswith('#'):
-            print('INFO: recipient = #channel, parroting')
             irc.notice(reply_to, m.group('content'))
-        else:
-            print('INFO: recipient = name, ignoring')
 
 
 def handle_triggers(reply_to, message):
