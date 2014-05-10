@@ -1,7 +1,7 @@
 # Setup:
-# 1. Create a copy of this file with the name 'settings.py' in the same directory as bot-tooper.py
+# 1. Create a copy of this file with the name 'settings.py' in the same directory as bot.py
 # 2. Edit each value to match your desired settings.
-# 3. Run the bot (ex: python3 bot-tooper.py)
+# 3. Run the bot (ex: python3 bot.py)
 
 # server info
 HOST = 'irc.server.com'

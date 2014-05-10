@@ -43,6 +43,11 @@ class IrcSocket():
         command_string = 'PRIVMSG {} :{}'.format(recipient, message)
         self._command(command_string)
 
+    def notice(self, channel, message):
+        """Sends a NOTICE to a channel."""
+        command_string = 'NOTICE {} :{}'.format(channel, message)
+        self._command(command_string)
+
     def passw(self, password):
         """Sends a PASS command."""
         command_string = 'PASS {}'.format(password)

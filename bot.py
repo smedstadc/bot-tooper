@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" bot-tooper.py
+""" bot.py
     an IRC Bot geared towards eve-corporations by Bud Tooper
 
     Bot supports multiple channels and responds to the .commands listed below. Certain commands are unavailable to
@@ -59,7 +59,9 @@ rpl_nick_conflict_pattern = re.compile(r'^:.+ 433 .+ .+ :Nickname is already in 
 # ERROR :Closing link: (test_tooper@c-76-24-157-37.hsd1.ma.comcast.net) [Registration timeout]
 error_pattern = re.compile(r'^ERROR :(?P<content>.+)$')
 
+
 # .command patterns
+# TODO addop and addtimer need named groups
 help_pattern = re.compile(r'^[.]help$')
 time_pattern = re.compile(r'^[.]time$')
 upladtime_pattern = re.compile(r'^[.]upladtime$')
@@ -72,6 +74,7 @@ addop_pattern = re.compile(r'^[.]addop (\d{4}-\d{2}-\d{2}@\d{2}:\d{2}) (.+)$')
 addtimer_pattern = re.compile(r'^[.]addtimer ([0-3])[dD]([01]?[0-9]|2[0-3])[hH]([0-9]|[0-5][0-9])[mM] (.+)$')
 # .rmop <number>
 rmop_pattern = re.compile(r'^[.]rmop (.+)$')
+pidgin_notice_pattern = re.compile(r'^ ?[(]notice[)] (?P<content>.+)$')
 
 
 def lines_from_socket(socket):
@@ -255,7 +258,7 @@ def rmop_trigger(reply_to, message):
 
 
 def price_check_trigger(reply_to, message):
-    m = re.match(price_check_pattern, message['content'])
+    m = price_check_pattern.match(message['content'])
     if m is not None:
         group = m.groups()
         if reply_to.startswith('#'):
@@ -266,11 +269,24 @@ def price_check_trigger(reply_to, message):
                 irc.privmsg(reply_to, price_message)
 
 
+def pidgin_notice_trigger(reply_to, message):
+    print('INFO: pidgin_notice_trigger invoked with reply_to = {} and message = {}'.format(reply_to, message))
+    m = pidgin_notice_pattern.match(message['content'])
+    if m is not None:
+        print('INFO: (notice) detected.')
+        if message['recipient'].startswith('#'):
+            print('INFO: recipient = #channel, parroting')
+            irc.notice(reply_to, m.group('content'))
+        else:
+            print('INFO: recipient = name, ignoring')
+
+
 def handle_triggers(reply_to, message):
     time_trigger(reply_to, message)
     uplad_time_trigger(reply_to, message)
     url_trigger(reply_to, message)
     price_check_trigger(reply_to, message)
+    pidgin_notice_trigger(reply_to, message)
     if opsec_enabled(reply_to):
         help_trigger(reply_to, message, full_help=True)
         ops_trigger(reply_to, message)
@@ -334,6 +350,7 @@ while True:
         if message['type'] == 'nick':
             irc.nick_changed(message['old'], message['new'])
 
+        # disconnect and exit if nick is taken or server sends an ERROR message
         if message['type'] == 'conflict':
             irc.disconnect()
             sys.exit(0)
@@ -344,7 +361,7 @@ while True:
 
         # skip topic lines
         if message['type'] == 'topic':
-            # do nothing with topics
+            # do nothing with topics for now
             pass
 
         # respond commands in chat or pm
