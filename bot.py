@@ -61,7 +61,6 @@ error_pattern = re.compile(r'^ERROR :(?P<content>.+)$')
 
 
 # .command patterns
-# TODO addop and addtimer need named groups
 help_pattern = re.compile(r'^[.]help$')
 time_pattern = re.compile(r'^[.]time$')
 upladtime_pattern = re.compile(r'^[.]upladtime$')
@@ -69,15 +68,18 @@ url_pattern = re.compile(r'(https?://\S+)')
 price_check_pattern = re.compile(r'^[.](jita|amarr|dodixie|rens|hek) (.+)$')
 ops_pattern = re.compile(r'^[.]ops$')
 # .addop <year-month-day@hour:minute> <name>
-addop_pattern = re.compile(r'^[.]addop (\d{4}-\d{2}-\d{2}@\d{2}:\d{2}) (.+)$')
+addop_pattern = re.compile(
+    r'^[.]addop (?P<year>\d{4})-(?P<month>\d{1,2})-(?P<day>\d{1,2})[@Tt](?P<hour>\d{1,2}):(?P<minute>\d{1,2}) (?P<name>.+)$')
 # .addtimer <days>d<hours>h<minutes>m <name>
-addtimer_pattern = re.compile(r'^[.]addtimer ([0-3])[dD]([01]?[0-9]|2[0-3])[hH]([0-9]|[0-5][0-9])[mM] (.+)$')
+addtimer_pattern = re.compile(
+    r'^[.]addop (?P<days>\d{1,3})[dD](?P<hours>\d{1,2})[hH](?P<minutes>\d{1,2})[mM] (?P<name>.+)$')
 # .rmop <number>
 rmop_pattern = re.compile(r'^[.]rmop (.+)$')
 pidgin_notice_pattern = re.compile(r'^ ?[(]notice[)] (?P<content>.+)$')
 
 
 def lines_from_socket(socket):
+    """Generator that yields one complete message (ending with \r\n) from the socket at a time, buffers the rest."""
     # buffer mechanism prevents bot from attempting processing incomplete lines
     buffer = socket.recv(4096).decode('utf-8', 'ignore')
     done = False
@@ -168,16 +170,19 @@ def opsec_enabled(reply_to):
 
 
 def time_trigger(reply_to, message):
+    """Responds to .time with human friendly UTC date/time."""
     if re.match(time_pattern, message['content']) is not None:
         irc.privmsg(reply_to, 'UTC {}'.format(datetime.utcnow().strftime("%A %B %d, %Y - %H:%M%p")))
 
 
 def uplad_time_trigger(reply_to, message):
+    """Responds to .upladtime with ISO-8601 format UTC time."""
     if re.match(upladtime_pattern, message['content']) is not None:
         irc.privmsg(reply_to, 'UTC {}'.format(datetime.utcnow().isoformat()))
 
 
 def url_trigger(reply_to, message):
+    """Responds to urls pasted into chat by announcing the title of the page they link to."""
     url_args = re.findall(url_pattern, message['content'])
     if len(url_args) > 0:
         for url_message in url.get_url_titles(url_args):
@@ -185,60 +190,52 @@ def url_trigger(reply_to, message):
 
 
 def help_trigger(reply_to, message, full_help=False):
+    """Handles the .help command.
+    """
     if re.match(help_pattern, message['content']) is not None:
         irc.privmsg(reply_to, '.jita, .amarr, .dodixie, .rens, .hek, .time, .upladtime')
         if full_help:
-            irc.privmsg(reply_to, '.ops')
-            irc.privmsg(reply_to, '.addop <year>-<month>-<day>@<hour>:<minute> <event name>')
-            irc.privmsg(reply_to, '.addtimer <days>d<hours>h<minutes>m <timer name>')
-            irc.privmsg(reply_to, '.rmop <op number>')
+            irc.privmsg(reply_to, '.ops, .addop, .rmop')
 
 
 def ops_trigger(reply_to, message):
+    """Handles the .ops command. Responds with a list of times remaining until events."""
     if re.search(ops_pattern, message['content']) is not None:
         for event_message in countdown.get_countdown_messages():
             irc.privmsg(reply_to, event_message)
 
 
 def addop_trigger(reply_to, message):
-    usage_hint = 'Usage: .addop <year>-<month>-<day>@<hour>:<minute> <name>'
+    """Adds an event to the event list given a datetime, name or timer, name pair."""
+    usage_hint = 'Usage: .addop <year>-<month>-<day>@<hour>:<minute> <name> | <days>d<hours>h<minutes>m <name>'
     if re.match(r'^[.]addop(.+)?$', message['content']) is not None:
+        # datetime format arg
         m = re.match(addop_pattern, message['content'])
         if m is not None:
-            group = m.groups()
             try:
-                countdown.add_event(datetime.strptime(group[0], '%Y-%m-%d@%H:%M'), group[1])
-                irc.privmsg(reply_to, 'Event added.')
-            # IndexError might not be possible in this implementation. Betterto be safe than sorry until I make sure.
-            except IndexError:
-                irc.privmsg(reply_to, usage_hint)
-            except ValueError:
-                irc.privmsg(reply_to, usage_hint)
-        else:
-            irc.privmsg(reply_to, usage_hint)
-
-
-def addtimer_trigger(reply_to, message):
-    usage_hint = 'Usage: .addtimer <days>d<hours>h<minutes>m <name>'
-    if re.match(r'^[.]addtimer(.+)?$', message['content']) is not None:
-        m = re.match(addtimer_pattern, message['content'])
-        if m is not None:
-            group = m.groups()
-            delta_days = int(group[0])
-            delta_hours = int(group[1])
-            delta_minutes = int(group[2])
-            name = group[3]
-            dt = datetime.utcnow() + timedelta(days=delta_days, hours=delta_hours, minutes=delta_minutes)
-            try:
-                countdown.add_event(dt, name)
+                countdown.add_event(datetime(int(m.group('year')), int(m.group('month')), int(m.group('day')),
+                                             int(m.group('hour')), int(m.group('minute'))), m.group('name'))
                 irc.privmsg(reply_to, 'Event added.')
             except ValueError:
                 irc.privmsg(reply_to, usage_hint)
         else:
-            irc.privmsg(reply_to, usage_hint)
+            # ref timer format arg
+            m = re.match(addtimer_pattern, message['content'])
+            if m is not None:
+                dt = datetime.utcnow() + timedelta(days=int(m.group('days')),
+                                                   hours=int(m.group('hours')),
+                                                   minutes=int(m.group('minutes')))
+                try:
+                    countdown.add_event(dt, m.group('name'))
+                    irc.privmsg(reply_to, 'Event added.')
+                except ValueError:
+                    irc.privmsg(reply_to, usage_hint)
+            else:
+                irc.privmsg(reply_to, usage_hint)
 
 
 def rmop_trigger(reply_to, message):
+    """Handles the .rmop command. Executes in reversed sorted order to protect users from themselves."""
     usage_hint = 'Usage: .rmop <op number>'
     if re.match(r'^[.]rmop(.+)?', message['content']) is not None:
         m = re.match(rmop_pattern, message['content'])
@@ -258,6 +255,7 @@ def rmop_trigger(reply_to, message):
 
 
 def price_check_trigger(reply_to, message):
+    """Responds to .jita, .amarr, etc with a price check against the eve_c api."""
     m = price_check_pattern.match(message['content'])
     if m is not None:
         group = m.groups()
@@ -270,6 +268,7 @@ def price_check_trigger(reply_to, message):
 
 
 def pidgin_notice_trigger(reply_to, message):
+    """Responds to channel notices sent by pidgin's IRC plugin with a proper channel notice."""
     m = pidgin_notice_pattern.match(message['content'])
     if m is not None:
         if message['recipient'].startswith('#'):
@@ -277,6 +276,7 @@ def pidgin_notice_trigger(reply_to, message):
 
 
 def handle_triggers(reply_to, message):
+    """Checks a message against all possible triggers, respects channel permissions with opsec_enabled."""
     time_trigger(reply_to, message)
     uplad_time_trigger(reply_to, message)
     url_trigger(reply_to, message)
@@ -286,7 +286,6 @@ def handle_triggers(reply_to, message):
         help_trigger(reply_to, message, full_help=True)
         ops_trigger(reply_to, message)
         addop_trigger(reply_to, message)
-        addtimer_trigger(reply_to, message)
         rmop_trigger(reply_to, message)
     else:
         help_trigger(reply_to, message)
