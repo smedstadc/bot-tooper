@@ -33,3 +33,7 @@ CHANNELS = ['#test1', '#test2', '#test3']
 # IF NO CHANNELS SHOULD HAVE PERMISSIONS USE
 # OPSEC = ['']
 OPSEC = ['']
+
+# change these if you rename the timers or typeids files
+TIMERSFILENAME = 'timers.txt'
+TYPEIDSFILENAME = 'market_only_typeids.csv'
