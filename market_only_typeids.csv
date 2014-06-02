@@ -1,4 +1,4 @@
-﻿18,Plagioclase
+18,Plagioclase
 19,Spodumain
 20,Kernite
 21,Hedbergite
@@ -920,7 +920,7 @@
 3434,Weapon Disruption
 3435,Propulsion Jamming
 3436,Drones
-3437,Scout Drone Operation
+3437,Drone Avionics
 3438,Mining Drone Operation
 3439,Repair Drone Operation
 3440,Salvage Drone Operation
@@ -1141,8 +1141,8 @@
 4063,Women's 'Sterling' Dress Blouse (dust)
 4064,Women's 'Sterling' Dress Blouse (olive)
 4065,Women's 'Sterling' Dress Blouse (platinum)
-4066,Women's 'Quafe' T-shirt
-4067,Men's 'Quafe' T-shirt
+4066,Women's 'Quafe' T-shirt YC 113
+4067,Men's 'Quafe' T-shirt YC 113
 4068,Men's 'Sterling' Dress Shirt (Ishukone Special Edition)
 4069,Women's 'Impress' Skirt (marine)
 4070,Women's 'Impress' Skirt (matte black)
@@ -1344,8 +1344,8 @@
 4349,Pithum C-Type Adaptive Invulnerability Field
 4358,Exotic Dancers, Male
 4363,Miasmos Quafe Ultra Edition
-4365,Men's 'Quafe' T-shirt YC114
-4366,Women's 'Quafe' T-shirt YC114
+4365,Men's 'Quafe' T-shirt YC 114
+4366,Women's 'Quafe' T-shirt YC 114
 4367,Men's 'Sterling' Dress Shirt (white)
 4368,Women's 'Sterling' Dress Blouse (white)
 4383,Large Micro Jump Drive
@@ -4603,22 +4603,22 @@
 19463,Autrech Voucher
 19470,Intensive Refining Array
 19500,Zor's Custom Navigation Link
-19534,Talisman Alpha
-19535,Talisman Beta
-19536,Talisman Gamma
-19537,Talisman Delta
-19538,Talisman Epsilon
-19539,Talisman Omega
-19540,Snake Alpha
+19534,High-grade Talisman Alpha
+19535,High-grade Talisman Beta
+19536,High-grade Talisman Gamma
+19537,High-grade Talisman Delta
+19538,High-grade Talisman Epsilon
+19539,High-grade Talisman Omega
+19540,High-grade Snake Alpha
 19547,Inherent Implants 'Noble' Repair Systems RS-605
 19548,Inherent Implants 'Noble' Remote Armor Repair Systems RA-705
 19549,Inherent Implants 'Noble' Mechanic MC-805
 19550,Inherent Implants 'Noble' Hull Upgrades HG-1005
-19551,Snake Beta
-19553,Snake Gamma
-19554,Snake Delta
-19555,Snake Epsilon
-19556,Snake Omega
+19551,High-grade Snake Beta
+19553,High-grade Snake Gamma
+19554,High-grade Snake Delta
+19555,High-grade Snake Epsilon
+19556,High-grade Snake Omega
 19658,Melted Snowball CVII
 19660,Festival Launcher
 19663,Jarkon Puman's Tag
@@ -4732,15 +4732,15 @@
 20069,Armored Warfare Link - Damage Control I
 20070,Skirmish Warfare Link - Evasive Maneuvers I
 20110,Sleeper Foundation Block
-20121,Crystal Alpha
+20121,High-grade Crystal Alpha
 20124,Siege Warfare Link - Active Shielding I
 20125,Curse
 20138,Heavy Assault Missile Launcher I
-20157,Crystal Beta
-20158,Crystal Gamma
-20159,Crystal Delta
-20160,Crystal Epsilon
-20161,Crystal Omega
+20157,High-grade Crystal Beta
+20158,High-grade Crystal Gamma
+20159,High-grade Crystal Delta
+20160,High-grade Crystal Epsilon
+20161,High-grade Crystal Omega
 20171,Datacore - Hydromagnetic Physics
 20172,Datacore - Minmatar Starship Engineering
 20175,Simple Reactor Array
@@ -4827,18 +4827,18 @@
 20454,Quad 3500mm Siege Artillery I
 20494,Armored Warfare
 20495,Information Warfare
-20498,Halo Alpha
-20499,Slave Alpha
-20500,Halo Beta
-20501,Slave Beta
-20502,Halo Delta
-20503,Slave Delta
-20504,Halo Epsilon
-20505,Slave Epsilon
-20506,Halo Gamma
-20507,Slave Gamma
-20508,Halo Omega
-20509,Slave Omega
+20498,High-grade Halo Alpha
+20499,High-grade Slave Alpha
+20500,High-grade Halo Beta
+20501,High-grade Slave Beta
+20502,High-grade Halo Delta
+20503,High-grade Slave Delta
+20504,High-grade Halo Epsilon
+20505,High-grade Slave Epsilon
+20506,High-grade Halo Gamma
+20507,High-grade Slave Gamma
+20508,High-grade Halo Omega
+20509,High-grade Slave Omega
 20514,Siege Warfare Link - Shield Harmonizing I
 20524,Amarr Freighter
 20525,Amarr Dreadnought
@@ -5318,36 +5318,36 @@
 21967,Station Office Center
 21969,Station Mission Network
 22043,Tactical Weapon Reconfiguration
-22107,Low-grade Crystal Alpha
-22108,Low-grade Crystal Beta
-22109,Low-grade Crystal Delta
-22110,Low-grade Crystal Epsilon
-22111,Low-grade Crystal Gamma
-22112,Low-grade Crystal Omega
-22113,Low-grade Halo Alpha
-22114,Low-grade Halo Beta
-22115,Low-grade Halo Delta
-22116,Low-grade Halo Epsilon
-22117,Low-grade Halo Gamma
-22118,Low-grade Halo Omega
-22119,Low-grade Slave Alpha
-22120,Low-grade Slave Beta
-22121,Low-grade Slave Delta
-22122,Low-grade Slave Epsilon
-22123,Low-grade Slave Gamma
-22124,Low-grade Slave Omega
-22125,Low-grade Snake Alpha
-22126,Low-grade Snake Beta
-22127,Low-grade Snake Delta
-22128,Low-grade Snake Epsilon
-22129,Low-grade Snake Gamma
-22130,Low-grade Snake Omega
-22131,Low-grade Talisman Alpha
-22133,Low-grade Talisman Beta
-22134,Low-grade Talisman Delta
-22135,Low-grade Talisman Epsilon
-22136,Low-grade Talisman Gamma
-22137,Low-grade Talisman Omega
+22107,Mid-grade Crystal Alpha
+22108,Mid-grade Crystal Beta
+22109,Mid-grade Crystal Delta
+22110,Mid-grade Crystal Epsilon
+22111,Mid-grade Crystal Gamma
+22112,Mid-grade Crystal Omega
+22113,Mid-grade Halo Alpha
+22114,Mid-grade Halo Beta
+22115,Mid-grade Halo Delta
+22116,Mid-grade Halo Epsilon
+22117,Mid-grade Halo Gamma
+22118,Mid-grade Halo Omega
+22119,Mid-grade Slave Alpha
+22120,Mid-grade Slave Beta
+22121,Mid-grade Slave Delta
+22122,Mid-grade Slave Epsilon
+22123,Mid-grade Slave Gamma
+22124,Mid-grade Slave Omega
+22125,Mid-grade Snake Alpha
+22126,Mid-grade Snake Beta
+22127,Mid-grade Snake Delta
+22128,Mid-grade Snake Epsilon
+22129,Mid-grade Snake Gamma
+22130,Mid-grade Snake Omega
+22131,Mid-grade Talisman Alpha
+22133,Mid-grade Talisman Beta
+22134,Mid-grade Talisman Delta
+22135,Mid-grade Talisman Epsilon
+22136,Mid-grade Talisman Gamma
+22137,Mid-grade Talisman Omega
 22175,Data Analyzer I
 22177,Relic Analyzer I
 22227,Armored Warfare Link - Rapid Repair I
@@ -5577,7 +5577,7 @@
 23559,Warden I
 23561,Garde I
 23563,Bouncer I
-23566,Electronic Warfare Drone Interfacing
+23566,Advanced Drone Avionics
 23594,Sentry Drone Interfacing
 23606,Drone Sharpshooting
 23618,Drone Durability
@@ -5650,7 +5650,7 @@
 23919,Aeon
 23950,Command Ships
 23953,Jump Portal Generator I
-24241,Combat Drone Operation
+24241,Light Drone Operation
 24242,Infomorph Psychology
 24268,Supply Chain Management
 24270,Scientific Networking
@@ -6740,36 +6740,36 @@
 28784,Syndicate 400mm Reinforced Steel Plates
 28786,Syndicate 800mm Reinforced Steel Plates
 28788,Syndicate Gas Cloud Harvester
-28790,Low-grade Centurion Alpha
-28791,Low-grade Centurion Beta
-28792,Low-grade Centurion Delta
-28793,Low-grade Centurion Epsilon
-28794,Low-grade Centurion Gamma
-28795,Low-grade Centurion Omega
-28796,Low-grade Nomad Alpha
-28797,Low-grade Nomad Beta
-28798,Low-grade Nomad Delta
-28799,Low-grade Nomad Epsilon
-28800,Low-grade Nomad Gamma
-28801,Low-grade Nomad Omega
-28802,Low-grade Harvest Alpha
-28803,Low-grade Harvest Beta
-28804,Low-grade Harvest Delta
-28805,Low-grade Harvest Epsilon
-28806,Low-grade Harvest Gamma
-28807,Low-grade Harvest Omega
-28808,Low-grade Virtue Alpha
-28809,Low-grade Virtue Beta
-28810,Low-grade Virtue Delta
-28811,Low-grade Virtue Epsilon
-28812,Low-grade Virtue Gamma
-28813,Low-grade Virtue Omega
-28814,Low-grade Edge Alpha
-28815,Low-grade Edge Beta
-28816,Low-grade Edge Delta
-28817,Low-grade Edge Epsilon
-28818,Low-grade Edge Gamma
-28819,Low-grade Edge Omega
+28790,Mid-grade Centurion Alpha
+28791,Mid-grade Centurion Beta
+28792,Mid-grade Centurion Delta
+28793,Mid-grade Centurion Epsilon
+28794,Mid-grade Centurion Gamma
+28795,Mid-grade Centurion Omega
+28796,Mid-grade Nomad Alpha
+28797,Mid-grade Nomad Beta
+28798,Mid-grade Nomad Delta
+28799,Mid-grade Nomad Epsilon
+28800,Mid-grade Nomad Gamma
+28801,Mid-grade Nomad Omega
+28802,Mid-grade Harvest Alpha
+28803,Mid-grade Harvest Beta
+28804,Mid-grade Harvest Delta
+28805,Mid-grade Harvest Epsilon
+28806,Mid-grade Harvest Gamma
+28807,Mid-grade Harvest Omega
+28808,Mid-grade Virtue Alpha
+28809,Mid-grade Virtue Beta
+28810,Mid-grade Virtue Delta
+28811,Mid-grade Virtue Epsilon
+28812,Mid-grade Virtue Gamma
+28813,Mid-grade Virtue Omega
+28814,Mid-grade Edge Alpha
+28815,Mid-grade Edge Beta
+28816,Mid-grade Edge Delta
+28817,Mid-grade Edge Epsilon
+28818,Mid-grade Edge Gamma
+28819,Mid-grade Edge Omega
 28840,Magic Crystal Ball
 28844,Rhea
 28846,Nomad
@@ -7488,30 +7488,30 @@
 31948,Imperial Navy Medium Remote Capacitor Transmitter
 31950,Imperial Navy Small Remote Capacitor Transmitter
 31952,Caldari Navy Power Diagnostic System
-31954,Grail Alpha
-31955,Grail Beta
-31956,Grail Delta
-31957,Grail Epsilon
-31958,Grail Gamma
-31959,Grail Omega
-31962,Talon Alpha
-31963,Talon Beta
-31964,Talon Delta
-31965,Talon Epsilon
-31966,Talon Gamma
-31967,Talon Omega
-31968,Spur Alpha
-31969,Spur Beta
-31970,Spur Delta
-31971,Spur Epsilon
-31972,Spur Gamma
-31973,Spur Omega
-31974,Jackal Alpha
-31975,Jackal Beta
-31976,Jackal Delta
-31977,Jackal Epsilon
-31978,Jackal Gamma
-31979,Jackal Omega
+31954,High-grade Grail Alpha
+31955,High-grade Grail Beta
+31956,High-grade Grail Delta
+31957,High-grade Grail Epsilon
+31958,High-grade Grail Gamma
+31959,High-grade Grail Omega
+31962,High-grade Talon Alpha
+31963,High-grade Talon Beta
+31964,High-grade Talon Delta
+31965,High-grade Talon Epsilon
+31966,High-grade Talon Gamma
+31967,High-grade Talon Omega
+31968,High-grade Spur Alpha
+31969,High-grade Spur Beta
+31970,High-grade Spur Delta
+31971,High-grade Spur Epsilon
+31972,High-grade Spur Gamma
+31973,High-grade Spur Omega
+31974,High-grade Jackal Alpha
+31975,High-grade Jackal Beta
+31976,High-grade Jackal Delta
+31977,High-grade Jackal Epsilon
+31978,High-grade Jackal Gamma
+31979,High-grade Jackal Omega
 31982,Navy Cap Booster 100
 31990,Navy Cap Booster 150
 31998,Navy Cap Booster 200
@@ -7743,8 +7743,8 @@
 33099,Nefantar Thrasher
 33101,Medium Ancillary Armor Repairer
 33103,Large Ancillary Armor Repairer
-33107,Men's 'Quafe' T-shirt YC115
-33109,Women's 'Quafe' T-shirt YC115
+33107,Men's 'Quafe' T-shirt YC 115
+33109,Women's 'Quafe' T-shirt YC 115
 33138,Clone Soldier Trainer Tag
 33139,Clone Soldier Recruiter Tag
 33140,Clone Soldier Transporter Tag
@@ -7889,25 +7889,25 @@
 33487,Women's 'Luxury' T-shirt
 33488,Men's 'Luxury' T-shirt
 33513,Leopard
-33516,Ascendancy Alpha
+33516,High-grade Ascendancy Alpha
 33520,'Wetu' Mobile Depot
 33522,'Yurt' Mobile Depot
-33525,Ascendancy Beta
-33526,Ascendancy Delta
-33527,Ascendancy Epsilon
-33528,Ascendancy Gamma
-33529,Ascendancy Omega
+33525,High-grade Ascendancy Beta
+33526,High-grade Ascendancy Delta
+33527,High-grade Ascendancy Epsilon
+33528,High-grade Ascendancy Gamma
+33529,High-grade Ascendancy Omega
 33539,Shattered Villard Wheel
 33549,Women's 'Phanca' Cybernetic Arm (left)
 33550,Women's 'Phanca' Cybernetic Arm (right)
 33551,Men's 'Phanca' Cybernetic Arm (left)
 33552,Men's 'Phanca' Cybernetic Arm (right)
-33555,Low-grade Ascendancy Alpha
-33557,Low-grade Ascendancy Beta
-33559,Low-grade Ascendancy Delta
-33561,Low-grade Ascendancy Epsilon
-33563,Low-grade Ascendancy Gamma
-33565,Low-grade Ascendancy Omega
+33555,Mid-grade Ascendancy Alpha
+33557,Mid-grade Ascendancy Beta
+33559,Mid-grade Ascendancy Delta
+33561,Mid-grade Ascendancy Epsilon
+33563,Mid-grade Ascendancy Gamma
+33565,Mid-grade Ascendancy Omega
 33575,Hull Tanking, Elite
 33577,Covert Research Tools
 33578,Men's 'Humanitarian' T-shirt YC 115
@@ -7935,16 +7935,42 @@
 33618,Rogue Drone 46-X Nexus Chip
 33619,Rogue Drone 43-X Nexus Chip
 33620,Rogue Drone 42-X Nexus Chip
+33623,Abaddon Tash-Murkon Edition
 33625,Abaddon Kador Edition
 33627,Rokh Nugoeihuvi Edition
+33629,Rokh Wiyrkomi Edition
+33631,Maelstrom Nefantar Edition
 33633,Maelstrom Krusual Edition
 33635,Hyperion Aliastra Edition
+33637,Hyperion Innerzone Shipping Edition
+33639,Omen Kador Edition
+33641,Omen Tash-Murkon Edition
+33643,Caracal Nugoeihuvi Edition
+33645,Caracal Wiyrkomi Edition
+33647,Stabber Nefantar Edition
+33649,Stabber Krusual Edition
+33651,Thorax Aliastra Edition
+33653,Thorax Innerzone Shipping Edition
 33655,Punisher Kador Edition
+33657,Punisher Tash-Murkon Edition
 33659,Merlin Nugoeihuvi Edition
+33661,Merlin Wiyrkomi Edition
+33663,Rifter Nefantar Edition
 33665,Rifter Krusual Edition
 33667,Incursus Aliastra Edition
+33669,Incursus Innerzone Shipping Edition
 33671,Heavy Hull Maintenance Bot I
 33677,Police Pursuit Comet
+33681,Gecko
+33683,Mackinaw ORE Development Edition
+33685,Orca ORE Development Edition
+33687,Rorqual ORE Development Edition
+33689,Iteron Inner Zone Shipping Edition
+33691,Tayra Wiyrkomi Edition
+33693,Mammoth Nefantar Edition
+33695,Bestower Tash-Murkon Edition
+33697,Prospect
+33699,Medium Drone Operation
 33700,'Packrat' Mobile Tractor Unit
 33702,'Magpie' Mobile Tractor Unit
 33704,Medium Hull Maintenance Bot I
@@ -7952,15 +7978,195 @@
 33708,Heavy Hull Maintenance Bot II
 33710,Medium Hull Maintenance Bot II
 33712,Light Hull Maintenance Bot II
+33714,Women's 'Mitral' Boots (black)
+33715,Women's 'Sanctity' Dress (cream/gold)
+33716,Women's 'Mitral' Boots (bronze)
+33717,Women's 'Mitral' Boots (cream)
+33718,Women's 'Mitral' Boots (dark blue)
+33719,Women's 'Mitral' Boots (dark red)
+33720,Women's 'Corsair' Heels (black)
+33721,Women's 'Corsair' Heels (blue)
+33722,Women's 'Corsair' Heels (brown)
+33723,Women's 'Corsair' Heels (beige)
+33724,Women's 'Corsair' Heels (beige)
+33725,Women's 'Corsair' Heels (red)
+33726,Women's 'Sanctity' Dress (black/gold)
+33727,Women's 'Sanctity' Dress (brown/gold)
+33728,Women's 'Sanctity' Dress (blue/silver)
+33729,Women's 'Sanctity' Dress (dark green/gold)
+33730,Women's 'Sanctity' Dress (dark red/gold)
+33731,Women's 'Sanctity' Dress (green/gold)
+33732,Women's 'Sanctity' Dress (red/silver)
+33733,Women's 'Rocket' Dress (glossy black)
+33734,Women's 'Rocket' Dress (black)
+33735,Women's 'Rocket' Dress (blue)
+33736,Women's 'Rocket' Dress (copper)
+33737,Women's 'Rocket' Dress (dark grey)
+33738,Women's 'Rocket' Dress (metal) 
+33739,Women's 'Rocket' Dress (green)
+33740,Women's 'Rocket' Dress (purple)
+33741,Women's 'Rocket' Dress (red)
+33742,Women's 'Rocket' Dress (white)
+33743,Women's 'Rocket' Dress (dark teal)
+33744,Women's 'Poise' Pants (glossy black)
+33745,Women's 'Poise' Pants (black)
+33746,Women's 'Poise' Pants (beige swirl)
+33747,Women's 'Poise' Pants (cream)
+33748,Women's 'Poise' Pants (dark green)
+33749,Women's 'Poise' Pants (dark swirl)
+33750,Women's 'Poise' Pants (glossy bronze)
+33751,Women's 'Poise' Pants (blue)
+33752,Women's 'Poise' Pants (red)
+33753,Women's 'Poise' Pants (glossy red)
+33754,Women's 'Strut' Pants (black)
+33755,Women's 'Strut' Pants (blue)
+33756,Women's 'Strut' Pants (camo)
+33757,Women's 'Strut' Pants (matte gray)
+33758,Women's 'Strut' Pants (orange)
+33759,Women's 'Strut' Pants (red)
+33760,Women's 'Strut' Pants (red gloss)
+33761,Women's 'Strut' Pants (yellow gloss)
 33767,Women's 'New Eden Open I' T-shirt YC114
 33768,Women's 'New Eden Open II' T-shirt YC116
 33769,Men's 'New Eden Open I' T-shirt YC114
 33770,Men's 'New Eden Open II' T-shirt YC116
+33771,Men's 'March' Boots (White)
+33772,Men's 'March' Boots (Graphite)
+33773,Men's 'March' Boots (Brown)
+33774,Men's 'March' Boots (Blue)
+33775,Men's 'March' Boots (Black)
+33776,Men's 'Ascend' Boots (white/gold)
+33777,Men's 'Ascend' Boots (royal)
+33778,Men's 'Ascend' Boots (grey/silver)
+33779,Men's 'Ascend' Boots (maroon/black)
+33780,Men's 'Ascend' Boots (brown/gold)
+33781,Men's 'Strider' Pants (monochrome)
+33782,Men's 'Strider' Pants (green camo)
+33783,Men's 'Strider' Pants (graphite)
+33784,Men's 'Strider' Pants (dark red)
+33785,Men's 'Strider' Pants (black)
+33786,Men's 'Rider' Pants (white gold)
+33787,Men's 'Rider' Pants (royal gold)
+33788,Men's 'Rider' Pants (red gold)
+33789,Men's 'Rider' Pants (reflective blue)
+33790,Men's 'Rider' Pants (black silver)
+33791,Men's 'Impact' Jacket (monochrome)
+33792,Men's 'Impact' Jacket (green camo)
+33793,Men's 'Impact' Jacket (graphite)
+33794,Men's 'Impact' Jacket (dark red)
+33795,Men's 'Impact' Jacket (reflective blue)
+33796,Men's 'Curate' Coat (white gold)
+33797,Men's 'Curate' Coat (royal gold)
+33798,Men's 'Curate' Coat (red/gold)
+33799,Men's 'Curate' Coat (dark bronze)
+33800,Men's 'Curate' Coat (black/silver)
 33803,Men's 'Source' Coat (black)
 33804,Women's 'Source' Coat (silver)
 33807,Cybernetic 'Source' Subprocessor
 33808,Neural 'Source' Boost
 33809,New Eden Source
+33812,Men's 'Quafe' T-shirt YC 116
+33813,Women's 'Quafe' T-shirt YC 116
+33816,Garmur
+33818,Orthrus
+33820,Barghest
+33822,Omnidirectional Tracking Enhancer I
+33824,Omnidirectional Tracking Enhancer II
+33826,Sentient Omnidirectional Tracking Link
+33828,Sentient Omnidirectional Tracking Enhancer
+33830,Dread Guristas Omnidirectional Tracking Enhancer
+33832,Imperial Navy Omnidirectional Tracking Enhancer
+33834,Unit D-34343's Modified Omnidirectional Tracking Enhancer
+33836,Unit F-435454's Modified Omnidirectional Tracking Enhancer
+33838,Unit P-343554's Modified Omnidirectional Tracking Enhancer
+33840,Unit W-634's Modified Omnidirectional Tracking Enhancer
+33842,Federation Navy Drone Damage Amplifier
+33844,Imperial Navy Drone Damage Amplifier
+33846,Dread Guristas Drone Damage Amplifier
+33848,Sentient Drone Damage Amplifier
+33850,Federation Navy Drone Navigation Computer
+33852,Sentient Drone Navigation Computer
+33856,Expedition Frigates
+33869,Brutix Serpentis Edition
+33871,Cyclone Thukker Tribe Edition
+33873,Ferox Guristas Edition
+33875,Prophecy Blood Raiders Edition
+33877,Catalyst Serpentis Edition
+33879,Coercer Blood Raiders Edition
+33881,Cormorant Guristas Edition
+33883,Thrasher Thukker Tribe Edition
+33890,Small Transverse Bulkhead I
+33892,Small Transverse Bulkhead II
+33894,Medium Transverse Bulkhead I
+33896,Medium Transverse Bulkhead II
+33898,Large Transverse Bulkhead I
+33900,Large Transverse Bulkhead II
+33902,Capital Transverse Bulkhead I
+33904,Capital Transverse Bulkhead II
+33915,Medium Micro Jump Drive
+33917,Low-grade Centurion Alpha
+33918,Low-grade Centurion Beta
+33919,Low-grade Centurion Delta
+33920,Low-grade Centurion Epsilon
+33921,Low-grade Centurion Gamma
+33922,Low-grade Centurion Omega
+33923,Low-grade Crystal Alpha
+33924,Low-grade Crystal Beta
+33925,Low-grade Crystal Delta
+33926,Low-grade Crystal Epsilon
+33927,Low-grade Crystal Gamma
+33928,Low-grade Crystal Omega
+33929,Low-grade Edge Alpha
+33930,Low-grade Edge Beta
+33931,Low-grade Edge Delta
+33932,Low-grade Edge Epsilon
+33933,Low-grade Edge Gamma
+33934,Low-grade Edge Omega
+33935,Low-grade Halo Alpha
+33936,Low-grade Halo Beta
+33937,Low-grade Halo Delta
+33938,Low-grade Halo Epsilon
+33939,Low-grade Halo Gamma
+33940,Low-grade Halo Omega
+33941,Low-grade Harvest Alpha
+33942,Low-grade Harvest Beta
+33943,Low-grade Harvest Delta
+33944,Low-grade Harvest Epsilon
+33945,Low-grade Harvest Gamma
+33946,Low-grade Harvest Omega
+33947,Low-grade Nomad Alpha
+33948,Low-grade Nomad Beta
+33949,Low-grade Nomad Delta
+33950,Low-grade Nomad Epsilon
+33951,Low-grade Nomad Gamma
+33952,Low-grade Nomad Omega
+33953,Low-grade Slave Alpha
+33954,Low-grade Slave Beta
+33955,Low-grade Slave Delta
+33956,Low-grade Slave Epsilon
+33957,Low-grade Slave Gamma
+33958,Low-grade Slave Omega
+33959,Low-grade Snake Alpha
+33960,Low-grade Snake Beta
+33961,Low-grade Snake Delta
+33962,Low-grade Snake Epsilon
+33963,Low-grade Snake Gamma
+33964,Low-grade Snake Omega
+33965,Low-grade Talisman Alpha
+33966,Low-grade Talisman Beta
+33967,Low-grade Talisman Delta
+33968,Low-grade Talisman Epsilon
+33969,Low-grade Talisman Gamma
+33970,Low-grade Talisman Omega
+33971,Low-grade Virtue Alpha
+33972,Low-grade Virtue Beta
+33973,Low-grade Virtue Delta
+33974,Low-grade Virtue Epsilon
+33975,Low-grade Virtue Gamma
+33976,Low-grade Virtue Omega
+33981,Limited Hyperspatial Accelerator
+33983,Experimental Hyperspatial Accelerator
+33985,Prototype Hyperspatial Accelerator
 350916,Plasma Cannon
 351063,Heavy Machine Gun
 351071,Assault C-I
@@ -8151,9 +8357,9 @@
 353248,R-9 Drop Uplink
 353249,N-11/A Flux Drop Uplink
 353250,P-13 Quantum Drop Uplink
-353251,Allotek Drop Uplink
-353252,Ishukone Gauged Drop Uplink
-353253,Allotek Stable Drop Uplink
+353251,Viziam Drop Uplink
+353252,Viziam Gauged Drop Uplink
+353253,Viziam Stable Drop Uplink
 353254,'Proxy' Viziam Drop Uplink
 353255,'Abyss' Carthum Drop Uplink
 353256,'Fractal' A/7 Repair Tool
@@ -8374,7 +8580,7 @@
 355264,'Cyclone' EXO-5 Mass Driver
 355265,'Avalanche' Freedom Mass Driver
 355266,'Maelstrom' R11-4 Flux Nanohive
-355267,'Void' Allotek Drop Uplink
+355267,'Void' Viziam Drop Uplink
 355268,KIN-012 Nanite Injector
 355269,Wiyrkomi Nanite Injector
 355270,'Necromancer' KIN-012 Nanite Injector
@@ -8686,6 +8892,9 @@
 363411,'Cannibal' Nanite Injector
 363412,'Terminus' Drop Uplink
 363491,Combat Rifle
+363551,Magsec SMG
+363578,Ion Pistol
+363592,Bolt Pistol
 363604,Rail Rifle
 363780,Core Flaylock Pistol
 363781,GN-13 Flaylock Pistol
@@ -8708,24 +8917,39 @@
 363934,Assault A-I
 363935,Assault G-I
 363936,Assault M-I
+363955,Scout C-I
+363956,Scout A-I
 363957,Scout M-I
 363982,Logistics C-I
 363983,Logistics G-I
 363984,Logistics A-I
+364009,Sentinel C-I
+364010,Sentinel G-I
+364011,Sentinel M-I
 364018,Assault M/1-Series
 364019,Assault G/1-Series
 364020,Assault A/1-Series
 364021,Assault mk.0
 364022,Assault ak.0
 364023,Assault gk.0
+364024,Scout C/1-Series
+364025,Scout A/1-Series
 364026,Scout M/1-Series
+364027,Scout ck.0
 364028,Scout mk.0
+364029,Scout ak.0
 364030,Logistics C/1-Series
 364031,Logistics G/1-Series
 364032,Logistics A/1-Series
 364033,Logistics ck.0
 364034,Logistics gk.0
 364035,Logistics ak.0
+364036,Sentinel M/1-Series
+364037,Sentinel C/1-Series
+364038,Sentinel G/1-Series
+364039,Sentinel mk.0
+364040,Sentinel ck.0
+364041,Sentinel gk.0
 364094,Active Omega-Booster (7-Day)
 364095,'Raider' Scout G-I
 364096,'CQC' Scout G-I
@@ -8784,12 +9008,25 @@
 364565,'Templar' Assault A-I
 364566,'Templar' Logistics A-I
 364567,'Templar' Sentinel A-I
+364570,Amarr Light Dropsuits
 364571,Amarr Medium Dropsuits
+364573,Caldari Light Dropsuits
+364575,Caldari Heavy Dropsuits
 364576,Minmatar Light Dropsuits
+364578,Minmatar Heavy Dropsuits
 364580,Gallente Medium Dropsuits
+364581,Gallente Heavy Dropsuits
+364594,Amarr Scout Dropsuits
+364597,Caldari Scout Dropsuits
 364599,Minmatar Scout Dropsuits
 364601,Amarr Sentinel Dropsuits
 364602,Amarr Commando Dropsuits
+364603,Caldari Commando Dropsuits
+364604,Caldari Sentinel Dropsuits
+364605,Gallente Sentinel Dropsuits
+364606,Gallente Commando Dropsuits
+364607,Minmatar Sentinel Dropsuits
+364608,Minmatar Commando Dropsuits
 364609,Amarr Assault Dropsuits
 364610,Amarr Logistics Dropsuits
 364611,Caldari Assault Dropsuits
@@ -8852,14 +9089,16 @@
 364781,Ishukone Nanohive
 364782,BDR-8 Triage Repair Tool
 364783,Core Focused Repair Tool
-364784,Allotek Flux Drop Uplink
-364785,Allotek Quantum Drop Uplink
+364784,Viziam Flux Drop Uplink
+364785,Viziam Quantum Drop Uplink
 364786,'Scorchtalon' Nova Knives
 364787,'Blackprey' ZN-28 Nova Knives
 364788,'Fleshriver' Ishukone Nova Knives
 364789,'Hateshard' Remote Explosive
 364790,'Scrapflake' F/45 Remote Explosive
 364791,'Skinjuice' Boundless Remote Explosive
+364810,Amarr Light Frame A-I
+364811,Caldari Light Frame C-I
 364812,Gallente Light Frame G-I
 364813,Minmatar Light Frame M-I
 364814,Amarr Medium Frame A-I
@@ -8867,6 +9106,9 @@
 364816,Gallente Medium Frame G-I
 364817,Minmatar Medium Frame M-I
 364818,Amarr Heavy Frame A-I
+364819,Caldari Heavy Frame C-I
+364820,Gallente Heavy Frame G-I
+364821,Minmatar Heavy Frame M-I
 364863,Minmatar Light Frame M/1-Series
 364872,Minmatar Light Frame mk.0
 364873,Gallente Light Frame G/1-Series
@@ -8946,6 +9188,11 @@
 365397,Combat Rifle Proficiency
 365399,Combat Rifle Fitting Optimization
 365400,Combat Rifle Rapid Reload
+365401,Magsec SMG Operation
+365405,Magsec SMG Ammo Capacity
+365406,Magsec SMG Proficiency
+365407,Magsec SMG Fitting Optimization
+365408,Magsec SMG Rapid Reload
 365420,'LC-225' Saga-II
 365421,'Harbinger' Amarr Medium Frame A-I
 365424,Reactive Deflection Field I
@@ -8957,7 +9204,6 @@
 365442,Boundless Combat Rifle
 365443,BK-42 Assault Combat Rifle
 365444,Six Kin Assault Combat Rifle
-365446,Passive Booster (15-minute) [QA]
 365447,SB-39 Rail Rifle
 365448,Kaalakiota Rail Rifle
 365449,Ishukone Assault Rail Rifle
@@ -8972,6 +9218,21 @@
 365458,'Bleakanchor' SL-4 Assault Rail Rifle
 365459,'Zerofrost' Kaalakiota Rail Rifle
 365460,'Crawtide' Ishukone Assault Rail Rifle
+365566,N7-A Magsec SMG
+365567,Kaalakiota Magsec SMG
+365568,'Gravepin' N7-A Magsec SMG
+365569,'Chokegrin' Kaalakiota Magsec SMG
+365570,'Skyglitch' Magsec SMG
+365572,T-12 Ion Pistol
+365573,CreoDron Ion Pistol
+365574,'Wildlight' Ion Pistol
+365575,'Scattershin' T-12 Ion Pistol
+365576,'Vaporlaw' CreoDron Ion Pistol
+365577,SR-25 Bolt Pistol
+365578,Kaalakiota Bolt Pistol
+365579,'Guardwire' Bolt Pistol
+365580,'Shiftrisk' SR-25 Bolt Pistol
+365581,'Nodeasylum' Kaalakiota Bolt Pistol
 365623,'Construct' Duvolle Assault Rifle
 365624,'Construct' Six Kin Submachine Gun
 365625,'Construct' Kaalakiota Forge Gun
@@ -9135,8 +9396,15 @@
 365945,'Greyscale' Saga
 365952,Complex Afterburner
 365956,Militia Fuel Injector
+365971,'Neo' Scout A-I
+365972,'Neo' Scout A/1-Series
+365973,'Neo' Scout ak.0
+365974,'Neo' Scout C-I
+365975,'Neo' Scout C/1-Series
+365976,'Neo' Scout ck.0
 365993,'Origin' Assault C-I
 365994,'Origin' Logistics M-I
+366004,Cloak Field
 366022,Faction Booster Amarr (1-Day)
 366023,Faction Booster Caldari (1-Day)
 366024,Faction Booster Gallente (1-Day)
@@ -9307,7 +9575,7 @@
 366439,Imperial Enhanced Heavy Damage Modifier
 366440,Imperial Complex Heavy Damage Modifier
 366441,Imperial R-9 Drop Uplink
-366442,Imperial Allotek Drop Uplink
+366442,Imperial Viziam Drop Uplink
 366443,Republic Assault M-I
 366444,Republic Assault M/1-Series
 366445,Republic Assault mk.0
@@ -9396,3 +9664,62 @@
 366528,State KIN-012 Nanite Injector
 366529,State Ishukone Nanohive
 366530,State Wiyrkomi Nanite Injector
+366532,ARN-18 Cloak Field
+366534,Ishukone Cloak Field
+366587,Bolt Pistol Fitting Optimization
+366589,Bolt Pistol Ammo Capacity
+366590,Bolt Pistol Proficiency
+366591,Bolt Pistol Rapid Reload
+366592,Bolt Pistol Operation
+366595,Ion Pistol Fitting Optimization
+366596,Ion Pistol Sharpshooter
+366597,Ion Pistol Ammo Capacity
+366598,Ion Pistol Proficiency
+366599,Ion Pistol Rapid Reload
+366600,Ion Pistol Operation
+366677,'Neo' Sentinel M-I
+366678,'Neo' Sentinel M/1-Series
+366679,'Neo' Sentinel mk.0
+366680,'Neo' Sentinel G-I
+366681,'Neo' Sentinel G/1-Series
+366682,'Neo' Sentinel gk.0
+366683,'Neo' Sentinel C-I
+366684,'Neo' Sentinel C/1-Series
+366685,'Neo' Sentinel ck.0
+366686,Gallente Heavy Frame G/1-Series
+366687,Gallente Heavy Frame gk.0
+366688,Minmatar Heavy Frame M/1-Series
+366689,Minmatar Heavy Frame mk.0
+366690,Caldari Heavy Frame C/1-Series
+366691,Caldari Heavy Frame ck.0
+366695,Militia Caldari Heavy Frame
+366696,Militia Gallente Heavy Frame
+366697,Militia Minmatar Heavy Frame
+366698,Commando C-I
+366699,Commando G-I
+366700,Commando M-I
+366710,Commando C/1-Series
+366711,Commando ck.0
+366712,Commando G/1-Series
+366713,Commando gk.0
+366714,Commando M/1-Series
+366715,Commando mk.0
+366716,'Neo' Commando C-I
+366717,'Neo' Commando C/1-Series
+366718,'Neo' Commando ck.0
+366719,'Neo' Commando G-I
+366720,'Neo' Commando G/1-Series
+366721,'Neo' Commando gk.0
+366722,'Neo' Commando M-I
+366723,'Neo' Commando M/1-Series
+366724,'Neo' Commando mk.0
+366732,Amarr Light Frame A/1-Series
+366733,Amarr Light Frame ak.0
+366734,Caldari Light Frame C/1-Series
+366735,Caldari Light Frame ck.0
+366736,Militia Caldari Light Frame
+366737,Militia Amarr Light Frame
+366749,'Apparition' Cloak Field
+366750,'Phantasm' ARN-18 Cloak Field
+366751,'Poltergeist' Ishukone Cloak Field
+366760,Cloak Field  Operation

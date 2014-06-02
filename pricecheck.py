@@ -26,16 +26,15 @@ def typeids_from_csv(filename):
 
 
 def get_matching_keys(partial):
-    """Returns a list of keys that a partial string matches."""
+    """Returns a list of keys that a partial string matches.
+    :rtype : list
+    """
     keys = []
     for key in typeid_dict.keys():
         if exact_match(key, partial):
             return [key]
         if re.search(partial, key, flags=re.IGNORECASE) is not None:
-            if re.search('edition', key, flags=re.IGNORECASE) is not None:
-                print('INFO: ' + 'skipping key for painted hull not supported by evec_api...')
-            else:
-                keys.append(key)
+            keys.append(key)
     return keys
 
 
