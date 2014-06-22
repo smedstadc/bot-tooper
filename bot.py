@@ -81,10 +81,10 @@ pidgin_notice_pattern = re.compile(r'^ ?[(]notice[)] (?P<content>.+)$')
 def lines_from_socket(socket):
     """Generator that yields one complete message (ending with \r\n) from the socket at a time, buffers the rest."""
     # buffer mechanism prevents bot processing incomplete lines
-    buffer = socket.recv(4096).decode('utf-8', 'ignore')
     done = False
-    while not done:
-        try:
+    try:
+        buffer = socket.recv(4096).decode('utf-8', 'ignore')
+        while not done:
             if '\r\n' in buffer:
                 line, buffer = buffer.split('\r\n', 1)
                 yield line
@@ -94,20 +94,23 @@ def lines_from_socket(socket):
                     done = True
                 else:
                     buffer = buffer + more
-        except timeout:
-            print("INFO: It's quiet. Too quiet. Server, are you there?")
+        if buffer:
+            yield buffer
+    except timeout:
+        print("INFO: It's quiet. Too quiet. Server, are you there?")
+        try:
             irc._command('PING ' + host)
-            r = socket.recv(4096).decode('utf-8', 'ignore').strip('\r\n')
-            print("RECV: '{}'".format(r))
-            if re.match(r':{} PONG {} :{}'.format(host, host, host), r) is not None:
-                print("INFO: PONG received. Connection is alive.")
-            else:
-                print("INFO: Ping timeout.")
-                print("INFO: Quitting.")
-                sys.exit()
-
-    if buffer:
-        yield buffer
+            # calling socket.recv() here to check for a PONG could screw with the buffer
+            # and if the socket is closed on the server side attempting to send a PING would
+            # raise a timeout or ConnectionReset exception anyway.
+        except timeout as e:
+            print("INFO: Ping timeout. {}".format(e))
+            print("INFO: Quitting.")
+            sys.exit(1)
+        except OSError as e:
+            print("INFO: OSError. {}".format(e))
+            print("INFO: Quitting.")
+            sys.exit(1)
 
 
 def parse_message(line_received):
