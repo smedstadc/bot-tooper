@@ -10,6 +10,7 @@ class IrcSocket():
     def __init__(self):
         self.names = {}
         self.sock = socket(AF_INET, SOCK_STREAM)
+        self.sock.settimeout(120.0)
 
     def connect(self, address):
         self.sock.connect(address)

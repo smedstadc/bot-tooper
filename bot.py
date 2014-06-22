@@ -36,7 +36,7 @@ import url
 import pricecheck
 import countdown
 import sys
-
+from socket import timeout
 # parse_message patterns
 # PING :gobbeldygook
 ping_message_pattern = re.compile(r'^PING :(?P<content>.+)$')
@@ -80,19 +80,32 @@ pidgin_notice_pattern = re.compile(r'^ ?[(]notice[)] (?P<content>.+)$')
 
 def lines_from_socket(socket):
     """Generator that yields one complete message (ending with \r\n) from the socket at a time, buffers the rest."""
-    # buffer mechanism prevents bot from attempting processing incomplete lines
+    # buffer mechanism prevents bot processing incomplete lines
     buffer = socket.recv(4096).decode('utf-8', 'ignore')
     done = False
     while not done:
-        if '\r\n' in buffer:
-            line, buffer = buffer.split('\r\n', 1)
-            yield line
-        else:
-            more = socket.recv(4096).decode('utf-8', 'ignore')
-            if not more:
-                done = True
+        try:
+            if '\r\n' in buffer:
+                line, buffer = buffer.split('\r\n', 1)
+                yield line
             else:
-                buffer = buffer + more
+                more = socket.recv(4096).decode('utf-8', 'ignore')
+                if not more:
+                    done = True
+                else:
+                    buffer = buffer + more
+        except timeout:
+            print("INFO: It's quiet. Too quiet. Server, are you there?.")
+            irc._command('PING ' + host)
+            r = socket.recv(4096).decode('utf-8', 'ignore').strip('\r\n')
+            print("RECV: '{}'".format(r))
+            if re.match(r':{} PONG {} :{}'.format(host, host, host), r) is not None:
+                print("INFO: PONG received. Connection is alive.")
+            else:
+                print("INFO: Ping timeout.")
+                print("INFO: Quitting.")
+                sys.exit()
+
     if buffer:
         yield buffer
 
