@@ -100,10 +100,8 @@ def read_timers():
         with open(timers_path, 'r') as file:
             for line in file:
                 line = line.split(';')
-                # Is there simple a way to unpack a list of strings as ints?
-                event = (
-                    datetime(int(line[0]), int(line[1]), int(line[2]), int(line[3]), int(line[4])),
-                    upper_preserving_urls(line[5]).strip())
+                timestamp, name = [int(x) for x in line[:-1]], upper_preserving_urls(line[-1].strip())
+                event = (datetime(*timestamp), name)
                 events.append(event)
         events = sorted(events, key=lambda list_item: list_item[0])
         print('INFO: Read timers.txt')
