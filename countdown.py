@@ -7,6 +7,7 @@
 import os
 from datetime import datetime
 from settings import TIMERSFILENAME
+import re
 
 events = []
 timers_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), TIMERSFILENAME)
@@ -32,7 +33,7 @@ def add_event(adatetime, aname):
     global events
     if aname == '':
         aname = 'MYSTERY TIMER'
-    event = (adatetime, aname.upper())
+    event = (adatetime, upper_preserving_urls(aname))
     events.append(event)
     events = sorted(events, key=lambda list_item: list_item[0])
     write_timers()
@@ -102,7 +103,7 @@ def read_timers():
                 # Is there simple a way to unpack a list of strings as ints?
                 event = (
                     datetime(int(line[0]), int(line[1]), int(line[2]), int(line[3]), int(line[4])),
-                    line[5].upper().strip())
+                    upper_preserving_urls(line[5]).strip())
                 events.append(event)
         events = sorted(events, key=lambda list_item: list_item[0])
         print('INFO: Read timers.txt')
@@ -110,5 +111,11 @@ def read_timers():
         print('PROB: ' + 'Problem reading timers.txt')
         file.close()
 
+
+def upper_preserving_urls(s):
+    """Returns an uppercase version of the given string, but preserves urls which may be case sensitive."""
+    urls = re.findall(r'(https?://\S+)', s)
+    s = re.sub(r'(https?://\S+)', '{}', s)
+    return s.upper().format(*urls)
 
 read_timers()

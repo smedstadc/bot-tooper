@@ -95,7 +95,7 @@ def lines_from_socket(socket):
                 else:
                     buffer = buffer + more
         except timeout:
-            print("INFO: It's quiet. Too quiet. Server, are you there?.")
+            print("INFO: It's quiet. Too quiet. Server, are you there?")
             irc._command('PING ' + host)
             r = socket.recv(4096).decode('utf-8', 'ignore').strip('\r\n')
             print("RECV: '{}'".format(r))
