@@ -33,7 +33,7 @@ def add_event(adatetime, aname):
     global events
     if aname == '':
         aname = 'MYSTERY TIMER'
-    event = (adatetime, upper_preserving_urls(aname))
+    event = (adatetime, upper_preserving_urls(aname).strip(';'))
     events.append(event)
     events = sorted(events, key=lambda list_item: list_item[0])
     write_timers()
