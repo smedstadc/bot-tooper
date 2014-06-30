@@ -27,7 +27,6 @@
     Most of these will generate a usage hint or error message in response to bad commands/arguments.
 """
 
-# TODO DOCSTRING ALL THE THINGS
 from ircsocket import IrcSocket
 import settings
 import re
@@ -79,7 +78,7 @@ pidgin_notice_pattern = re.compile(r'^ ?[(]notice[)] (?P<content>.+)$')
 
 
 def lines_from_socket(socket):
-    """Generator that yields one complete message (ending with \r\n) from the socket at a time, buffers the rest."""
+    """Generator that yields complete messages one at a time until the socket buffer is empty."""
     # buffer mechanism prevents bot processing incomplete lines
     done = False
     try:
@@ -99,7 +98,7 @@ def lines_from_socket(socket):
     except timeout:
         print("INFO: It's quiet. Too quiet. Server, are you there?")
         try:
-            irc._command('PING ' + host)
+            irc.command('PING ' + settings.HOST)
             # calling socket.recv() here to check for a PONG could screw with the buffer
             # and if the socket is closed on the server side attempting to send a PING would
             # raise a timeout or ConnectionReset exception anyway.
@@ -176,10 +175,10 @@ def opsec_enabled(reply_to):
        A user with permissions is present in at least one channel with permissions.
     """
     if reply_to.startswith('#'):
-        if reply_to in opsec_channels:
+        if reply_to in settings.PROTECTEDCHANNELS:
             return True
     else:
-        for channel in opsec_channels:
+        for channel in settings.PROTECTEDCHANNELS:
             if reply_to in irc.names[channel]:
                 return True
     return False
@@ -216,7 +215,7 @@ def help_trigger(reply_to, message, full_help=False):
 
 def ops_trigger(reply_to, message):
     """Handles the .ops command. Responds with a list of times remaining until events."""
-    if re.search(ops_pattern, message['content']) is not None:
+    if re.match(ops_pattern, message['content']) is not None:
         for event_message in countdown.get_countdown_messages():
             irc.privmsg(reply_to, event_message)
 
@@ -308,23 +307,11 @@ def handle_triggers(reply_to, message):
 
 
 # pull settings from external module
-host = settings.HOST
-port = settings.PORT
-channels = settings.CHANNELS
-opsec_channels = settings.OPSEC
-nick_name = settings.NICKNAME
-user_name = settings.USERNAME
-host_name = settings.HOSTNAME
-server_name = settings.SERVERNAME
-real_name = settings.REALNAME
-op_user = settings.OPERUSER
-op_pass = settings.OPERPASS
-
 # connect to server
 irc = IrcSocket()
-irc.connect((host, port))
-irc.user(user_name, host_name, server_name, real_name)
-irc.nick(nick_name)
+irc.connect((settings.HOST, settings.PORT))
+irc.user(settings.USERNAME, settings.HOSTNAME, settings.SERVERNAME, settings.REALNAME)
+irc.nick(settings.NICKNAME)
 
 # main bot loop
 while True:
@@ -339,12 +326,12 @@ while True:
 
         # join channels after RPL_WELCOME
         if message['type'] == 'welcome':
-            for channel in channels:
+            for channel in settings.CHANNELS:
                 irc.join(channel)
 
             # if operator user/pass is set try to /OPER
-            if op_user is not None and op_pass is not None:
-                irc.oper(op_user, op_pass)
+            if settings.OPERUSER is not None and settings.OPERPASS is not None:
+                irc.oper(settings.OPERUSER, settings.OPERPASS)
 
         # set names upon joining channel
         if message['type'] == 'names':
@@ -376,7 +363,7 @@ while True:
 
         # respond commands in chat or pm
         if message['type'] == 'message':
-            if message['recipient'] == nick_name:
+            if message['recipient'] == settings.NICKNAME:
                 handle_triggers(message['nick'], message)
             else:
                 handle_triggers(message['recipient'], message)

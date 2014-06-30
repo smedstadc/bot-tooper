@@ -18,7 +18,7 @@ class IrcSocket():
     def disconnect(self):
         self.sock.close()
 
-    def _command(self, command_string):
+    def command(self, command_string):
         """Encodes a message to be sent to the IRC server."""
         print('SENT: ' + repr(command_string))
         command_string += '\r\n'
@@ -27,41 +27,41 @@ class IrcSocket():
     def join(self, channel):
         """Sends a JOIN command."""
         command_string = 'JOIN {}'.format(channel)
-        self._command(command_string)
+        self.command(command_string)
 
     def nick(self, nickname):
         """Sends a NICK command to the connected server."""
         command_string = 'NICK {}'.format(nickname)
-        self._command(command_string)
+        self.command(command_string)
 
     def user(self, user_name, host_name, server_name, real_name):
         """Sends a USER command. (Important for registering with the server upon connecting.)"""
         command_string = 'USER {} {} {} :{}'.format(user_name, host_name, server_name, real_name)
-        self._command(command_string)
+        self.command(command_string)
 
     def privmsg(self, recipient, message):
         """Sends a PRIVMSG to a nick or channel."""
         command_string = 'PRIVMSG {} :{}'.format(recipient, message)
-        self._command(command_string)
+        self.command(command_string)
 
     def notice(self, channel, message):
         """Sends a NOTICE to a channel."""
         command_string = 'NOTICE {} :{}'.format(channel, message)
-        self._command(command_string)
+        self.command(command_string)
 
     def passw(self, password):
         """Sends a PASS command."""
         command_string = 'PASS {}'.format(password)
-        self._command(command_string)
+        self.command(command_string)
 
     def oper(self, user, password):
         command_string = 'OPER {} {}'.format(user, password)
-        self._command(command_string)
+        self.command(command_string)
 
     def pong(self, ping_content):
         """Sends a PONG response."""
         command_string = 'PONG {}'.format(ping_content)
-        self._command(command_string)
+        self.command(command_string)
 
     def name_joined(self, channel, nick):
         """Adds a name to the names set for a given connection and channel."""
