@@ -19,6 +19,7 @@ from datetime import datetime, timedelta
 import url
 import pricecheck
 import countdown
+import settings
 
 # Python versions before 3.0 do not use UTF-8 encoding
 # by default. To ensure that Unicode is handled properly
@@ -229,23 +230,27 @@ if __name__ == '__main__':
     # Output verbosity options.
     optp.add_option('-q', '--quiet', help='set logging to ERROR',
                     action='store_const', dest='loglevel',
-                    const=logging.ERROR, default=logging.INFO)
+                    const=logging.ERROR, default=settings.XMPP_LOG_LEVEL)
     optp.add_option('-d', '--debug', help='set logging to DEBUG',
                     action='store_const', dest='loglevel',
-                    const=logging.DEBUG, default=logging.INFO)
+                    const=logging.DEBUG, default=settings.XMPP_LOG_LEVEL)
     optp.add_option('-v', '--verbose', help='set logging to COMM',
                     action='store_const', dest='loglevel',
-                    const=5, default=logging.INFO)
+                    const=5, default=settings.XMPP_LOG_LEVEL)
 
     # JID and password options.
     optp.add_option("-j", "--jid", dest="jid",
-                    help="JID to use")
+                    help="JID to use",
+                    default=settings.XMPP_JID)
     optp.add_option("-p", "--password", dest="password",
-                    help="password to use")
+                    help="password to use",
+                    default=settings.XMPP_PASSWORD)
     optp.add_option("-r", "--room", dest="room",
-                    help="MUC room to join")
+                    help="MUC room to join",
+                    default=settings.XMPP_ROOM)
     optp.add_option("-n", "--nick", dest="nick",
-                    help="MUC nickname")
+                    help="MUC nickname",
+                    default=settings.XMPP_NICK)
 
     opts, args = optp.parse_args()
 

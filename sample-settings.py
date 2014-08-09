@@ -3,37 +3,27 @@
 # 2. Edit each value to match your desired settings.
 # 3. Run the bot (ex: python3 bot.py)
 
-# server info
-HOST = 'irc.server.com'
-# default IRC port is 6667, but your specific server may be different
-PORT = 6667
-
-# NICKNAME is important to set to something which
-# isn't already taken by another user connected to
-# the server.
-NICKNAME = 'nickname'
-USERNAME = 'username'
-HOSTNAME = 'hostname'
-SERVERNAME = 'servername'
-REALNAME = 'realname'
-#PASSWORD SUPPORT NOT YET IMPLEMENTED
-#PASSWORD = ''
-OPERUSER = None
-OPERPASS = None
-
-# list of channels for the bot to join
-# ex CHANNELS = ['#chan1', '#chan2', 'chan3']
-CHANNELS = ['#test1', '#test2', '#test3']
-
-# list of channels with permission to use trigger
-# commands gated by OPSEC_ENABLED()
-# timers with .ops .addop .addtimer and .rmop
-# IF MULTIPLE CHANNELS SHOULD BE A LIST LIKE CHANNELS
-# ex OPSEC = ['#test1', '#test2', '#test3']
-# IF NO CHANNELS SHOULD HAVE PERMISSIONS USE
-# OPSEC = ['']
-OPSEC = ['']
-
 # change these if you rename the timers or typeids files
 TIMERSFILENAME = 'timers.txt'
 TYPEIDSFILENAME = 'market_only_typeids.csv'
+
+# IRC SETTINGS
+IRC_HOST = 'irc.server.com'
+IRC_PORT = 6667  # default IRC port is 6667, but your specific server may be different
+IRC_NICKNAME = 'nickname' #  Can't be taken by someone else on the server.
+IRC_USERNAME = 'username'
+IRC_HOSTNAME = 'hostname'
+IRC_SERVERNAME = 'servername'
+IRC_REALNAME = 'realname'
+IRC_PASSWORD = ''  # IRC AUTH SUPPORT NOT YET IMPLEMENTED THIS DOES NOTHING
+IRC_OPERUSER = None  # Required if the bot has oper privs for spam/kick/ban/mode on any channels
+IRC_OPERPASS = None  # ^
+IRC_CHANNELS = ['#test1', '#test2', '#test3']  # list of channels for the bot to join
+IRC_OPSEC = ['']  # list of channels allowed to use the timerboard feature
+
+# XMPP/JABBER SETTINGS
+XMPP_JID = ''
+XMPP_PASSWORD = ''
+XMPP_ROOM = ''
+XMPP_NICK = ''
+XMPP_LOG_LEVEL = ''

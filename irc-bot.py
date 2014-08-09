@@ -98,7 +98,7 @@ def lines_from_socket(socket):
     except timeout:
         print("INFO: It's quiet. Too quiet. Server, are you there?")
         try:
-            irc.command('PING ' + settings.HOST)
+            irc.command('PING ' + settings.IRC_HOST)
             # calling socket.recv() here to check for a PONG could screw with the buffer
             # and if the socket is closed on the server side attempting to send a PING would
             # raise a timeout or ConnectionReset exception anyway.
@@ -309,9 +309,9 @@ def handle_triggers(reply_to, message):
 # pull settings from external module
 # connect to server
 irc = IrcSocket()
-irc.connect((settings.HOST, settings.PORT))
-irc.user(settings.USERNAME, settings.HOSTNAME, settings.SERVERNAME, settings.REALNAME)
-irc.nick(settings.NICKNAME)
+irc.connect((settings.IRC_HOST, settings.IRC_PORT))
+irc.user(settings.IRC_USERNAME, settings.IRC_HOSTNAME, settings.IRC_SERVERNAME, settings.IRC_REALNAME)
+irc.nick(settings.IRC_NICKNAME)
 
 # main bot loop
 while True:
@@ -326,12 +326,12 @@ while True:
 
         # join channels after RPL_WELCOME
         if message['type'] == 'welcome':
-            for channel in settings.CHANNELS:
+            for channel in settings.IRC_CHANNELS:
                 irc.join(channel)
 
             # if operator user/pass is set try to /OPER
-            if settings.OPERUSER is not None and settings.OPERPASS is not None:
-                irc.oper(settings.OPERUSER, settings.OPERPASS)
+            if settings.IRC_OPERUSER is not None and settings.IRC_OPERPASS is not None:
+                irc.oper(settings.IRC_OPERUSER, settings.IRC_OPERPASS)
 
         # set names upon joining channel
         if message['type'] == 'names':
@@ -363,7 +363,7 @@ while True:
 
         # respond commands in chat or pm
         if message['type'] == 'message':
-            if message['recipient'] == settings.NICKNAME:
+            if message['recipient'] == settings.IRC_NICKNAME:
                 handle_triggers(message['nick'], message)
             else:
                 handle_triggers(message['recipient'], message)
