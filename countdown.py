@@ -8,6 +8,11 @@ import os
 from datetime import datetime
 from settings import TIMERSFILENAME
 import re
+import sys
+
+if sys.version_info < (3, 0):
+    reload(sys)
+    sys.setdefaultencoding('utf8')
 
 events = []
 timers_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), TIMERSFILENAME)
@@ -25,7 +30,6 @@ def write_timers():
         print('INFO: Wrote timers.txt')
     except IOError:
         print('PROB: ' + 'Problem writing timers.txt')
-        file.close()
 
 
 def add_event(adatetime, aname):
@@ -107,7 +111,6 @@ def read_timers():
         print('INFO: Read timers.txt')
     except IOError:
         print('PROB: ' + 'Problem reading timers.txt')
-        file.close()
 
 
 def upper_preserving_urls(s):

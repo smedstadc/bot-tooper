@@ -7,17 +7,23 @@
 # TODO Alter get_marketstat_xml to use requests
 
 from settings import TYPEIDSFILENAME
-from xml.etree.ElementTree import parse
-import urllib.request
+import xml.etree.ElementTree as ET
+#import urllib.request
+import requests
 import re
 import os
+import sys
 
+
+if sys.version_info < (3, 0):
+    reload(sys)
+    sys.setdefaultencoding('utf8')
 
 def typeids_from_csv(filename):
     """Returns a dict of {type_name : type_id} from a csv file ordered as type_id, type_name."""
     pairs = []
     try:
-        with open(filename, 'r', encoding='utf-8') as file:
+        with open(filename, 'r') as file:
             for line in file:
                 pairs.append(line.strip('\r\n').split(',', 1))
         return {type_name: type_id for type_id, type_name in pairs}
@@ -70,7 +76,7 @@ def get_price_messages(args, system_id, max_results=10):
                 buy_max_prices = []
                 sell_min_prices = []
                 if xml is not None:
-                    xml = xml.getroot()
+                    #xml = xml.getroot()
                     for item in xml.findall('marketstat/type'):
                         sell_min_prices.append(float(item.find('sell/min').text))
                         buy_max_prices.append(float(item.find('buy/max').text))
@@ -103,7 +109,9 @@ def get_marketstat_xml(typeids, system_id):
         request_url = endpoint + parameters
         print('INFO: ' + 'generated api request: {}'.format(request_url))
         try:
-            xml = parse(urllib.request.urlopen(request_url))
+            response = requests.get(request_url, headers={'User-agent': 'Mozilla/5.0'}, allow_redirects=True, verify=False)
+            print(response.content)
+            xml = ET.fromstring(response.content)
         except IOError:
             xml = None
     else:
