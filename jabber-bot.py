@@ -80,7 +80,7 @@ class JabberBot(sleekxmpp.ClientXMPP):
         # muc::room@server::got_online, or muc::room@server::got_offline.
         self.add_event_handler("muc::%s::got_online" % self.room, self.muc_online)
 
-        self.add_event_handler('message', self.message)
+        self.add_event_handler("message", self.message)
 
     def start(self, event):
         """
@@ -106,12 +106,12 @@ class JabberBot(sleekxmpp.ClientXMPP):
     def message(self, msg):
         if msg['type'] in ('chat', 'normal'):
             for line in self.get_reply_lines(msg):
-                msg.reply(line).send()
+                self.send_message(mto=msg['from'], mfrom=msg['to'], mbody=line)
 
     def muc_message(self, msg):
         if msg['mucnick'] != self.nick and msg['type'] == 'groupchat':
             for line in self.get_reply_lines(msg):
-                msg.reply(line).send()
+                self.send_message(mto=msg['from'].bare, mfrom=msg['to'], mbody=line, mtype='groupchat')
 
     def get_reply_lines(self, msg):
         """
