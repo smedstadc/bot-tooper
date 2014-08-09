@@ -133,74 +133,74 @@ class JabberBot(sleekxmpp.ClientXMPP):
                    for stanza objects and the Message stanza to see
                    how it may be used.
         """
-        if msg['mucnick'] != self.nick:
-            if time_pattern.match(msg['body']) is not None:
-                return ['UTC {}'.format(datetime.utcnow().strftime("%A %B %d, %Y - %H:%M%p"))]
 
-            if upladtime_pattern.match(msg['body']) is not None:
-                return ['UTC {}'.format(datetime.utcnow().isoformat())]
+        if time_pattern.match(msg['body']) is not None:
+            return ['UTC {}'.format(datetime.utcnow().strftime("%A %B %d, %Y - %H:%M%p"))]
 
-            if url_pattern.match(msg['body']) is not None:
-                url_args = re.findall(url_pattern, msg['body'])
-                if len(url_args) > 0:
-                    return ['"'+n+'"' for n in url.get_url_titles(url_args)]
+        if upladtime_pattern.match(msg['body']) is not None:
+            return ['UTC {}'.format(datetime.utcnow().isoformat())]
 
-            m = price_check_pattern.match(msg['body'])
+        if url_pattern.match(msg['body']) is not None:
+            url_args = re.findall(url_pattern, msg['body'])
+            if len(url_args) > 0:
+                return ['"'+n+'"' for n in url.get_url_titles(url_args)]
+
+        m = price_check_pattern.match(msg['body'])
+        if m is not None:
+            return pricecheck.get_price_messages(m.group('item_args').split('; '), m.group('system'))
+
+        if ops_pattern.match(msg['body']) is not None:
+            return countdown.get_countdown_messages()
+
+        addop_usage_hint = 'Usage: .addop <year>-<month>-<day>@<hour>:<minute> <name> OR <days>d<hours>h<minutes>m <name>'
+        if re.match(r'^[.]addop(.+)?$', msg['body']) is not None:
+            m = re.match(addop_pattern, msg['body'])
             if m is not None:
-                return pricecheck.get_price_messages(m.group('item_args').split('; '), m.group('system'))
-
-            if ops_pattern.match(msg['body']) is not None:
-                return countdown.get_countdown_messages()
-
-            addop_usage_hint = 'Usage: .addop <year>-<month>-<day>@<hour>:<minute> <name> OR <days>d<hours>h<minutes>m <name>'
-            if re.match(r'^[.]addop(.+)?$', msg['body']) is not None:
-                m = re.match(addop_pattern, msg['body'])
+                try:
+                    countdown.add_event(datetime(int(m.group('year')), int(m.group('month')), int(m.group('day')),
+                                                 int(m.group('hour')), int(m.group('minute'))), m.group('name'))
+                    return ['Event added.']
+                except ValueError:
+                    return [addop_usage_hint]
+            else:
+                # ref timer format arg
+                m = re.match(addtimer_pattern, msg['body'])
                 if m is not None:
+                    dt = datetime.utcnow() + timedelta(days=int(m.group('days')),
+                                                       hours=int(m.group('hours')),
+                                                       minutes=int(m.group('minutes')))
                     try:
-                        countdown.add_event(datetime(int(m.group('year')), int(m.group('month')), int(m.group('day')),
-                                                     int(m.group('hour')), int(m.group('minute'))), m.group('name'))
+                        countdown.add_event(dt, m.group('name'))
                         return ['Event added.']
                     except ValueError:
                         return [addop_usage_hint]
                 else:
-                    # ref timer format arg
-                    m = re.match(addtimer_pattern, msg['body'])
-                    if m is not None:
-                        dt = datetime.utcnow() + timedelta(days=int(m.group('days')),
-                                                           hours=int(m.group('hours')),
-                                                           minutes=int(m.group('minutes')))
-                        try:
-                            countdown.add_event(dt, m.group('name'))
-                            return ['Event added.']
-                        except ValueError:
-                            return [addop_usage_hint]
+                    return [addop_usage_hint]
+
+        rmop_usage_hint = 'Usage: .rmop <op number>'
+        if re.match(r'^[.]rmop(.+)?$', msg['body']) is not None:
+            m = re.match(rmop_pattern, msg['body'])
+            if m is not None:
+                rmop_args = m.group('rmop_args')
+                try:
+                    rmop_args = sorted(set([int(x) for x in m.group('rmop_args').split(';')]), reverse=True)
+                    if max(rmop_args) > len(countdown.events) or min(rmop_args) < 1:
+                        return ['One or more op numbers out of bounds.']
                     else:
-                        return [addop_usage_hint]
-
-            rmop_usage_hint = 'Usage: .rmop <op number>'
-            if re.match(r'^[.]rmop(.+)?$', msg['body']) is not None:
-                m = re.match(rmop_pattern, msg['body'])
-                if m is not None:
-                    rmop_args = m.group('rmop_args')
-                    try:
-                        rmop_args = sorted(set([int(x) for x in m.group('rmop_args').split(';')]), reverse=True)
-                        if max(rmop_args) > len(countdown.events) or min(rmop_args) < 1:
-                            return ['One or more op numbers out of bounds.']
-                        else:
-                            reply_lines = []
-                            for arg in rmop_args:
-                                reply_lines.append(countdown.remove_event(arg))
-                    except ValueError as e:
-                        #TODO convert these to logging
-                        print('value error')
-                        print(repr(rmop_args))
-                        print(e)
-                        return [rmop_usage_hint]
-                else:
+                        reply_lines = []
+                        for arg in rmop_args:
+                            reply_lines.append(countdown.remove_event(arg))
+                except ValueError as e:
+                    #TODO convert these to logging
+                    print('value error')
+                    print(repr(rmop_args))
+                    print(e)
                     return [rmop_usage_hint]
+            else:
+                return [rmop_usage_hint]
 
-            if help_pattern.match(msg['body']) is not None:
-                return ['Available commands: .help, .time, .upladtime, .jita, .amarr, .dodixie, .rens, .hek, .ops, .addop, .rmop']
+        if help_pattern.match(msg['body']) is not None:
+            return ['Available commands: .help, .time, .upladtime, .jita, .amarr, .dodixie, .rens, .hek, .ops, .addop, .rmop']
 
     def muc_online(self, presence):
         """
