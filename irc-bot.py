@@ -73,7 +73,7 @@ addop_pattern = re.compile(
 addtimer_pattern = re.compile(
     r'^[.]addop (?P<days>\d{1,3})[dD](?P<hours>\d{1,2})[hH](?P<minutes>\d{1,2})[mM] (?P<name>.+)$')
 # .rmop <number>
-rmop_pattern = re.compile(r'^[.]rmop (.+)$')
+rmop_pattern = re.compile(r'^[.]rmop (?P<rmop_args>.+)$')
 pidgin_notice_pattern = re.compile(r'^ ?[(]notice[)] (?P<content>.+)$')
 
 
@@ -175,10 +175,10 @@ def opsec_enabled(reply_to):
        A user with permissions is present in at least one channel with permissions.
     """
     if reply_to.startswith('#'):
-        if reply_to in settings.PROTECTEDCHANNELS:
+        if reply_to in settings.IRC_PROTECTEDCHANNELS:
             return True
     else:
-        for channel in settings.PROTECTEDCHANNELS:
+        for channel in settings.IRC_PROTECTEDCHANNELS:
             if reply_to in irc.names[channel]:
                 return True
     return False
