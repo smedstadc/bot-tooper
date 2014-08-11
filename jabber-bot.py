@@ -31,6 +31,8 @@ if sys.version_info < (3, 0):
 else:
     raw_input = input
 
+# TODO Move argument pattern matching into respective modules.
+# Bot should match triggers. Commands should be responsible for validating input.
 help_pattern = re.compile(r'^[.]help$')
 time_pattern = re.compile(r'^[.]time$')
 upladtime_pattern = re.compile(r'^[.]upladtime$')
@@ -153,30 +155,25 @@ class JabberBot(sleekxmpp.ClientXMPP):
         if ops_pattern.match(msg['body']) is not None:
             return countdown.get_countdown_messages()
 
-        addop_usage_hint = 'Usage: .addop <year>-<month>-<day>@<hour>:<minute> <name> OR <days>d<hours>h<minutes>m <name>'
+        addop_use_hint = 'Usage: .addop <year>-<month>-<day>@<hour>:<minute> <name> OR <days>d<hours>h<minutes>m <name>'
         if re.match(r'^[.]addop(.+)?$', msg['body']) is not None:
+            # Check datetime addop format
             m = re.match(addop_pattern, msg['body'])
             if m is not None:
-                try:
-                    countdown.add_event(datetime(int(m.group('year')), int(m.group('month')), int(m.group('day')),
-                                                 int(m.group('hour')), int(m.group('minute'))), m.group('name'))
+                if countdown.add_datetime(m):
                     return ['Event added.']
-                except ValueError:
-                    return [addop_usage_hint]
+                else:
+                    return [addop_use_hint]
             else:
-                # ref timer format arg
+                # Check countdown addop format
                 m = re.match(addtimer_pattern, msg['body'])
                 if m is not None:
-                    dt = datetime.utcnow() + timedelta(days=int(m.group('days')),
-                                                       hours=int(m.group('hours')),
-                                                       minutes=int(m.group('minutes')))
-                    try:
-                        countdown.add_event(dt, m.group('name'))
+                    if countdown.add_timer(m):
                         return ['Event added.']
-                    except ValueError:
-                        return [addop_usage_hint]
+                    else:
+                        return [addop_use_hint]
                 else:
-                    return [addop_usage_hint]
+                    return [addop_use_hint]
 
         rmop_usage_hint = 'Usage: .rmop <op number>'
         if re.match(r'^[.]rmop(.+)?$', msg['body']) is not None:
@@ -187,7 +184,7 @@ class JabberBot(sleekxmpp.ClientXMPP):
                 return [rmop_usage_hint]
 
         if help_pattern.match(msg['body']) is not None:
-            return ['Available commands: .help, .time, .upladtime, .jita, .amarr, .dodixie, .rens, .hek, .ops, .addop, .rmop']
+            return ['Commands: .help, .time, .upladtime, .jita, .amarr, .dodixie, .rens, .hek, .ops, .addop, .rmop']
 
     def muc_online(self, presence):
         """

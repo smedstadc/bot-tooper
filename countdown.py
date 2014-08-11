@@ -5,7 +5,7 @@
 """
 
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from settings import TIMERSFILENAME
 import re
 import sys
@@ -32,12 +32,32 @@ def write_timers():
         print('PROB: ' + 'Problem writing timers.txt')
 
 
+def add_timer(match):
+    try:
+        add_event((datetime.utcnow() + timedelta(days=int(match.group('days')), hours=int(match.group('hours')),
+                                                 minutes=int(match.group('minutes')))), match.group('name'))
+        return True
+    except ValueError:
+        return False
+    pass
+
+
+def add_datetime(match):
+    try:
+        add_event(datetime(int(match.group('year')), int(match.group('month')), int(match.group('day')),
+                           int(match.group('hour')), int(match.group('minute'))), match.group('name'))
+        return True
+    except ValueError:
+        return False
+    pass
+
+
 def add_event(adatetime, aname):
     """Appends a (datetime, name) tuple to a list of events then sorts it by datetime order"""
     global events
     if aname == '':
         aname = 'MYSTERY TIMER'
-    event = (adatetime, upper_preserving_urls(aname).strip(';'))
+    event = (adatetime, aname)
     events.append(event)
     events = sorted(events, key=lambda list_item: list_item[0])
     write_timers()

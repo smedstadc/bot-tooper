@@ -227,23 +227,18 @@ def addop_trigger(reply_to, message):
         # datetime format arg
         m = re.match(addop_pattern, message['content'])
         if m is not None:
-            try:
-                countdown.add_event(datetime(int(m.group('year')), int(m.group('month')), int(m.group('day')),
-                                             int(m.group('hour')), int(m.group('minute'))), m.group('name'))
+            if countdown.add_datetime(m):
                 irc.privmsg(reply_to, 'Event added.')
-            except ValueError:
+            else:
                 irc.privmsg(reply_to, usage_hint)
+
         else:
             # ref timer format arg
             m = re.match(addtimer_pattern, message['content'])
             if m is not None:
-                dt = datetime.utcnow() + timedelta(days=int(m.group('days')),
-                                                   hours=int(m.group('hours')),
-                                                   minutes=int(m.group('minutes')))
-                try:
-                    countdown.add_event(dt, m.group('name'))
+                if countdown.add_timer(m):
                     irc.privmsg(reply_to, 'Event added.')
-                except ValueError:
+                else:
                     irc.privmsg(reply_to, usage_hint)
             else:
                 irc.privmsg(reply_to, usage_hint)
