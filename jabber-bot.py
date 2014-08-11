@@ -182,21 +182,7 @@ class JabberBot(sleekxmpp.ClientXMPP):
         if re.match(r'^[.]rmop(.+)?$', msg['body']) is not None:
             m = re.match(rmop_pattern, msg['body'])
             if m is not None:
-                rmop_args = m.group('rmop_args')
-                try:
-                    rmop_args = sorted(set([int(x) for x in m.group('rmop_args').split(';')]), reverse=True)
-                    if max(rmop_args) > len(countdown.events) or min(rmop_args) < 1:
-                        return ['One or more op numbers out of bounds.']
-                    else:
-                        reply_lines = []
-                        for arg in rmop_args:
-                            reply_lines.append(countdown.remove_event(arg))
-                except ValueError as e:
-                    #TODO convert these to logging
-                    print('value error')
-                    print(repr(rmop_args))
-                    print(e)
-                    return [rmop_usage_hint]
+                return countdown.remove_event(m.group('rmop_args'))
             else:
                 return [rmop_usage_hint]
 

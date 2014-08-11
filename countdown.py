@@ -43,19 +43,24 @@ def add_event(adatetime, aname):
     write_timers()
 
 
-def remove_event(event_number):
+def remove_event(rmop_args):
     """Deletes an event at event_index and returns a message to the bot."""
     global events
     try:
-        event_number = int(event_number)
-        removed_event_name = events[event_number - 1][1]
-        del events[event_number - 1]
-        write_timers()
-        return 'Removed event #{}: "{}".'.format(event_number, removed_event_name)
-    except IndexError:
-        return 'No event #{} to remove.'.format(event_number)
+        # new
+        rmop_args = sorted(set([int(x) for x in rmop_args.split(';')]), reverse=True)
+        if max(rmop_args) > len(events) or min(rmop_args) < 1:
+            return ['One or more event numbers out of bounds.']
+        else:
+            reply_lines = []
+            for arg in rmop_args:
+                removed_event_name = events[arg - 1][1]
+                del events[arg - 1]
+                write_timers()
+                reply_lines.append('Removed event #{}: "{}".'.format(arg, removed_event_name))
+        return reply_lines
     except ValueError:
-        return 'Invalid event number.'
+        return ['One or more inputs is not a number.']
 
 
 def days_hours_minutes(adelta):

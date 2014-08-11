@@ -255,16 +255,9 @@ def rmop_trigger(reply_to, message):
     if re.match(r'^[.]rmop(.+)?', message['content']) is not None:
         m = re.match(rmop_pattern, message['content'])
         if m is not None:
-            group = m.groups()
-            try:
-                args = sorted(set([int(x) for x in group[0].split('; ')]), reverse=True)
-                if max(args) > len(countdown.events) or min(args) < 1:
-                    irc.privmsg(reply_to, 'One or more op numbers out of bounds.')
-                else:
-                    for arg in args:
-                        irc.privmsg(reply_to, countdown.remove_event(arg))
-            except ValueError:
-                irc.privmsg(reply_to, usage_hint)
+            reply_messages = countdown.remove_event(m.group('rmop_args'))
+            for reply_message in reply_messages:
+                irc.privmsg(reply_to, reply_message)
         else:
             irc.privmsg(reply_to, usage_hint)
 
