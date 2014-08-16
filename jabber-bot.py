@@ -143,7 +143,7 @@ class JabberBot(sleekxmpp.ClientXMPP):
         if upladtime_pattern.match(msg['body']) is not None:
             return ['UTC {}'.format(datetime.utcnow().isoformat())]
 
-        if url_pattern.match(msg['body']) is not None:
+        if url_pattern.search(msg['body']) is not None:
             url_args = re.findall(url_pattern, msg['body'])
             if len(url_args) > 0:
                 return ['"'+n+'"' for n in url.get_url_titles(url_args)]
