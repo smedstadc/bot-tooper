@@ -42,7 +42,7 @@ ping_message_pattern = re.compile(r'^PING :(?P<content>.+)$')
 # :server 001 recipient :Welcome to the servername recipient!username@hostname
 rpl_welcome_pattern = re.compile(r'^.+ 001 .+ :.+$')
 # :nick!user@host PRIVMSG recipient :content
-message_pattern = re.compile(r'^:(?P<nick>.+)!.+@.+ PRIVMSG (?P<recipient>.+) :(?P<content>.+)$')
+message_pattern = re.compile(r'^:(?P<nick>.+)!.+@.+ PRIVMSG (?P<recipient>.\S) :(?P<content>.+)$')
 # :nick!user@host JOIN :#channel
 join_pattern = re.compile(r'^:(?P<nick>.+)!.+@.+ JOIN :(?P<channel>.+)$')
 # :nick!user@host PART #channel :"Leaving"
@@ -57,7 +57,8 @@ rpl_topic_pattern = re.compile(r'^:.+ 332 .+ #.+ :.+$')
 rpl_nick_conflict_pattern = re.compile(r'^:.+ 433 .+ .+ :Nickname is already in use.$')
 # ERROR :Closing link: (test_tooper@c-76-24-157-37.hsd1.ma.comcast.net) [Registration timeout]
 error_pattern = re.compile(r'^ERROR :(?P<content>.+)$')
-
+# :irc.nosperg.com NOTICE #test3 :Replaying up to 15 lines of pre-join history spanning up to 86400 seconds
+skiplines_notice_pattern = re.compile(r'^:irc.nosperg.com NOTICE (?P<channel>#.\S) :Replaying up to (?P<num_skips>\d{1,2}) lines of pre-join history spanning up to \d+ seconds$')
 
 # .command patterns
 help_pattern = re.compile(r'^[.]help$')
@@ -160,6 +161,10 @@ def parse_message(line_received):
     # return nick conflict dict
     if rpl_nick_conflict_pattern.match(line_received) is not None:
         return {'type': 'conflict'}
+
+    m = skiplines_notice_pattern.match(line_received)
+    if m is not None:
+        return {'type': 'skiplines', 'channel': m.group('channel'), 'num_skips': int(m.group('num_skips'))}
 
     # return ERROR dict
     m = error_pattern.match(line_received)
@@ -280,6 +285,7 @@ def pidgin_notice_trigger(reply_to, message):
 
 def handle_triggers(reply_to, message):
     """Checks a message against all possible triggers, respects channel permissions with opsec_enabled."""
+    # detect/set skiplines here
     time_trigger(reply_to, message)
     uplad_time_trigger(reply_to, message)
     url_trigger(reply_to, message)
@@ -301,12 +307,17 @@ irc.connect((settings.IRC_HOST, settings.IRC_PORT))
 irc.user(settings.IRC_USERNAME, settings.IRC_HOSTNAME, settings.IRC_SERVERNAME, settings.IRC_REALNAME)
 irc.nick(settings.IRC_NICKNAME)
 
+# skiplines tracker
+skiplines = {channel: 0 for channel in settings.CHANNELS}
+
+
 # main bot loop
 while True:
     for line_received in lines_from_socket(irc.sock):
         # get message dict
         print('RECV: ' + repr(line_received))
         message = parse_message(line_received)
+        print('INFO: message = ' + repr(message))
 
         # respond to PING with PONG
         if message['type'] == 'ping':
@@ -320,6 +331,12 @@ while True:
             # if operator user/pass is set try to /OPER
             if settings.IRC_OPERUSER is not None and settings.IRC_OPERPASS is not None:
                 irc.oper(settings.IRC_OPERUSER, settings.IRC_OPERPASS)
+
+        # set skiplines if encounter replay notice
+        if message['type'] == 'skiplines':
+            skiplines[message['channel']] = message['num_skips']
+            print('INFO: Updated skiplines.')
+            print('INFO: skiplines = ' + repr(skiplines))
 
         # set names upon joining channel
         if message['type'] == 'names':
@@ -354,4 +371,9 @@ while True:
             if message['recipient'] == settings.IRC_NICKNAME:
                 handle_triggers(message['nick'], message)
             else:
-                handle_triggers(message['recipient'], message)
+                if skiplines[message['recipient']] > 0:
+                    print('INFO: Skipping line.')
+                    skiplines[message['recipient']] -= 1
+                    print('INFO: skiplines = ' + repr(skiplines))
+                else:
+                    handle_triggers(message['recipient'], message)
