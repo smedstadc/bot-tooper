@@ -1,5 +1,4 @@
-# bot-tooper
-## A chat bot geared towards Eve-Online corps.
+# bot-tooper - A chat bot for Eve-Online corps
 
 ### Features:
 - Supports XMPP and IRC
@@ -20,8 +19,7 @@
 ### Setup:
 1. Open sample-settings.py in your favorite text editor.
 2. Follow the directions in the comments
-3a. Run 'python irc-bot.py' for IRC
-3b. Run 'python jabber-bot.py for XMPP
+3. Run 'python irc-bot.py' for IRC or 'python jabber-bot.py' for XMPP
 
 ### Misc:
 If the bot misbehaves or crashes please make a github account (it's painless) and report any issues you have [here](https://github.com/smedstadc/bot-tooper/). If you don't know what happened try piping the output to a text file and reading the last few lines.
