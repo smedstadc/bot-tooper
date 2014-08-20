@@ -42,7 +42,7 @@ ping_message_pattern = re.compile(r'^PING :(?P<content>.+)$')
 # :server 001 recipient :Welcome to the servername recipient!username@hostname
 rpl_welcome_pattern = re.compile(r'^.+ 001 .+ :.+$')
 # :nick!user@host PRIVMSG recipient :content
-message_pattern = re.compile(r'^:(?P<nick>.+)!.+@.+ PRIVMSG (?P<recipient>.\S) :(?P<content>.+)$')
+message_pattern = re.compile(r'^:(?P<nick>.+)!.+@.+ PRIVMSG (?P<recipient>\S+) :(?P<content>.+)$')
 # :nick!user@host JOIN :#channel
 join_pattern = re.compile(r'^:(?P<nick>.+)!.+@.+ JOIN :(?P<channel>.+)$')
 # :nick!user@host PART #channel :"Leaving"
@@ -58,7 +58,7 @@ rpl_nick_conflict_pattern = re.compile(r'^:.+ 433 .+ .+ :Nickname is already in 
 # ERROR :Closing link: (test_tooper@c-76-24-157-37.hsd1.ma.comcast.net) [Registration timeout]
 error_pattern = re.compile(r'^ERROR :(?P<content>.+)$')
 # :irc.nosperg.com NOTICE #test3 :Replaying up to 15 lines of pre-join history spanning up to 86400 seconds
-skiplines_notice_pattern = re.compile(r'^:irc.nosperg.com NOTICE (?P<channel>#.\S) :Replaying up to (?P<num_skips>\d{1,2}) lines of pre-join history spanning up to \d+ seconds$')
+skiplines_notice_pattern = re.compile(r'^:irc.nosperg.com NOTICE (?P<channel>#\S+) :Replaying up to (?P<num_skips>\d{1,2}) lines of pre-join history spanning up to \d+ seconds$')
 
 # .command patterns
 help_pattern = re.compile(r'^[.]help$')
