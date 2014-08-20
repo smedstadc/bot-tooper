@@ -308,7 +308,7 @@ irc.user(settings.IRC_USERNAME, settings.IRC_HOSTNAME, settings.IRC_SERVERNAME, 
 irc.nick(settings.IRC_NICKNAME)
 
 # skiplines tracker
-skiplines = {channel: 0 for channel in settings.CHANNELS}
+skiplines = {channel: 0 for channel in settings.IRC_CHANNELS}
 
 
 # main bot loop
