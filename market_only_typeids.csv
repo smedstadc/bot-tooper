@@ -160,7 +160,7 @@
 503,Torpedo Launcher I
 506,Basic Capacitor Power Relay
 508,Basic Shield Flux Coil
-509,Basic Capacitor Flux Coil
+509,'Basic' Capacitor Flux Coil
 518,Basic Gyrostabilizer
 519,Gyrostabilizer II
 520,Gyrostabilizer I
@@ -366,7 +366,7 @@
 1973,Sensor Booster I
 1977,Tracking Computer I
 1978,Tracking Computer II
-1982,Basic LADAR Backup Array
+1982,Basic Ladar Backup Array
 1983,Basic Gravimetric Backup Array
 1984,Basic Magnetometric Backup Array
 1985,Basic Multi Sensor Backup Array
@@ -556,8 +556,8 @@
 2575,ECM - White Noise Generator II
 2579,Gravimetric Backup Array I
 2580,Gravimetric Backup Array II
-2583,LADAR Backup Array I
-2584,LADAR Backup Array II
+2583,Ladar Backup Array I
+2584,Ladar Backup Array II
 2587,Magnetometric Backup Array I
 2588,Magnetometric Backup Array II
 2589,Genolution Core Augmentation CA-2
@@ -758,32 +758,32 @@
 3234,Zainou 'Deadeye' Sharpshooter ST-904
 3235,Zainou 'Deadeye' Sharpshooter ST-906
 3236,Zainou 'Deadeye' Trajectory Analysis TA-702
-3237,Inherent Implants 'Squire' Energy Management EM-802
-3238,Inherent Implants 'Squire' Energy Management EM-804
-3239,Inherent Implants 'Squire' Energy Management EM-806
-3240,Inherent Implants 'Squire' Energy Systems Operation EO-602
-3241,Inherent Implants 'Squire' Energy Systems Operation EO-604
+3237,Inherent Implants 'Squire' Capacitor Management EM-802
+3238,Inherent Implants 'Squire' Capacitor Management EM-804
+3239,Inherent Implants 'Squire' Capacitor Management EM-806
+3240,Inherent Implants 'Squire' Capacitor Systems Operation EO-602
+3241,Inherent Implants 'Squire' Capacitor Systems Operation EO-604
 3242,Warp Disruptor I
 3244,Warp Disruptor II
-3246,Inherent Implants 'Squire' Energy Systems Operation EO-606
-3247,Inherent Implants 'Squire' Energy Emission Systems ES-702
-3248,Inherent Implants 'Squire' Energy Emission Systems ES-704
-3249,Inherent Implants 'Squire' Energy Emission Systems ES-706
+3246,Inherent Implants 'Squire' Capacitor Systems Operation EO-606
+3247,Inherent Implants 'Squire' Capacitor Emission Systems ES-702
+3248,Inherent Implants 'Squire' Capacitor Emission Systems ES-704
+3249,Inherent Implants 'Squire' Capacitor Emission Systems ES-706
 3250,Inherent Implants 'Squire' Energy Pulse Weapons EP-702
 3251,Inherent Implants 'Squire' Energy Pulse Weapons EP-704
 3252,Inherent Implants 'Squire' Energy Pulse Weapons EP-706
 3253,Inherent Implants 'Squire' Energy Grid Upgrades EU-702
 3254,Inherent Implants 'Squire' Energy Grid Upgrades EU-704
 3255,Inherent Implants 'Squire' Energy Grid Upgrades EU-706
-3256,Inherent Implants 'Squire' Engineering EG-602
-3257,Inherent Implants 'Squire' Engineering EG-604
-3258,Inherent Implants 'Squire' Engineering EG-606
+3256,Inherent Implants 'Squire' Power Grid Management EG-602
+3257,Inherent Implants 'Squire' Power Grid Management EG-604
+3258,Inherent Implants 'Squire' Power Grid Management EG-606
 3262,Zainou 'Gypsy' Electronics Upgrades EU-602
 3263,Zainou 'Gypsy' Electronics Upgrades EU-604
 3264,Zainou 'Gypsy' Electronics Upgrades EU-606
-3265,Zainou 'Gypsy' Electronics EE-602
-3266,Zainou 'Gypsy' Electronics EE-604
-3267,Zainou 'Gypsy' Electronics EE-606
+3265,Zainou 'Gypsy' CPU Management EE-602
+3266,Zainou 'Gypsy' CPU Management EE-604
+3267,Zainou 'Gypsy' CPU Management EE-606
 3268,Zainou 'Gypsy' Signature Analysis SA-702
 3269,Zainou 'Gypsy' Signature Analysis SA-704
 3270,Zainou 'Gypsy' Signature Analysis SA-706
@@ -874,11 +874,11 @@
 3368,Diplomatic Relations
 3373,Starbase Defense Management
 3380,Industry
-3385,Refining
+3385,Reprocessing
 3386,Mining
 3387,Mass Production
-3388,Material Efficiency
-3389,Refinery Efficiency
+3388,Advanced Industry
+3389,Reprocessing Efficiency
 3392,Mechanics
 3393,Repair Systems
 3394,Hull Upgrades
@@ -1415,7 +1415,7 @@
 5053,Heavy Tapered Capacitor Infusion I
 5087,Small Partial E95a Remote Capacitor Transmitter
 5089,Small Murky Remote Capacitor Transmitter
-5091,'Regard' Remote Capacitor Transmitter
+5091,Small 'Regard' Remote Capacitor Transmitter
 5093,Small Asymmetric Remote Capacitor Transmitter
 5135,E5 Prototype Energy Vampire
 5137,Small 'Knave' Energy Drain
@@ -1561,10 +1561,8 @@
 6083,Medium Peroxide Capacitor Power Cell
 6097,Medium Ohm Capacitor Reserve I
 6111,Medium F-4a Ld-Sulfate Capacitor Charge Unit
-6129,Surface Cargo Scanner I
-6131,Prototype Freight Sensors
-6133,Interior Type-E Cargo Identifier
-6135,PL-0 Shipment Probe
+6131,Enduring Cargo Scanner
+6135,Scoped Cargo Scanner
 6157,Supplemental Scanning CPU I
 6158,Prototype Sensor Booster
 6159,Alumel-Wired Sensor Augmentation
@@ -1576,27 +1574,27 @@
 6193,Emergency Magnetometric Scanners
 6194,Emergency Multi-Frequency Scanners
 6195,Reserve Gravimetric Scanners
-6199,Reserve LADAR Scanners
+6199,Reserve Ladar Scanners
 6202,Emergency RADAR Scanners
 6203,Reserve Magnetometric Scanners
 6207,Reserve Multi-Frequency Scanners
 6212,Reserve RADAR Scanners
-6216,Emergency LADAR Scanners
+6216,Emergency Ladar Scanners
 6217,Emergency Gravimetric Scanners
 6218,Protected Gravimetric Backup Cluster I
-6222,Protected LADAR Backup Cluster I
+6222,Protected Ladar Backup Cluster I
 6225,Sealed RADAR Backup Cluster
 6226,Protected Magnetometric Backup Cluster I
 6230,Protected Multi-Frequency Backup Cluster I
 6234,Protected RADAR Backup Cluster I
 6238,Sealed Magnetometric Backup Cluster
 6239,Sealed Multi-Frequency Backup Cluster
-6241,Sealed LADAR Backup Cluster
+6241,Sealed Ladar Backup Cluster
 6242,Sealed Gravimetric Backup Cluster
 6243,Surrogate Gravimetric Reserve Array I
 6244,F-43 Repetitive Gravimetric Backup Sensors
-6251,Surrogate LADAR Reserve Array I
-6252,F-43 Repetitive LADAR Backup Sensors
+6251,Surrogate Ladar Reserve Array I
+6252,F-43 Repetitive Ladar Backup Sensors
 6257,Surplus RADAR Reserve Array
 6258,F-42 Reiterative RADAR Backup Sensors
 6259,Surrogate Magnetometric Reserve Array I
@@ -1609,8 +1607,8 @@
 6284,F-42 Reiterative Magnetometric Backup Sensors
 6285,Surplus Multi-Frequency Reserve Array
 6286,F-42 Reiterative Multi-Frequency Backup Sensors
-6289,Surplus LADAR Reserve Array
-6290,F-42 Reiterative LADAR Backup Sensors
+6289,Surplus Ladar Reserve Array
+6290,F-42 Reiterative Ladar Backup Sensors
 6291,Surplus Gravimetric Reserve Array
 6292,F-42 Reiterative Gravimetric Backup Sensors
 6293,Wavelength Signal Enhancer I
@@ -1637,14 +1635,8 @@
 6487,Supplemental Screen Generator I
 6489,'Benefactor' Ward Reconstructor
 6491,Passive Barrier Compensator I
-6525,Ta3 Perfunctory Vessel Probe
-6527,Rudimentary Ship Scanner I
-6529,Speculative Ship Identifier I
-6531,Practical Type-E Ship Probe
-6567,ML-3 Amphilotite Mining Probe
-6569,Residual Survey Scanner I
-6571,Rock-Scanning Sensor Array I
-6573,'Dactyl' Type-E Asteroid Analyzer
+6527,Compact Ship Scanner
+6569,Scoped Survey Scanner
 6631,Dual Modal Light Laser I
 6633,Dual Afocal Light Maser I
 6635,Dual Modulated Light Energy Beam I
@@ -1781,30 +1773,22 @@
 7965,Omni Positional ECCM Sensor System I
 7966,Ladar Positional ECCM Sensor System I
 7970,Magnetometric Positional ECCM Sensor System I
-7993,Experimental TE-2100 Light Missile Launcher
 7997,XR-3200 Heavy Missile Bay
 8001,Experimental ZW-4100 Torpedo Launcher
 8007,Experimental SV-2000 Rapid Light Missile Launcher
 8023,Upgraded 'Malkuth' Rapid Light Missile Launcher
 8025,Limited 'Limos' Rapid Light Missile Launcher
 8027,Prototype 'Arbalest' Rapid Light Missile Launcher
-8089,Upgraded 'Malkuth' Light Missile Launcher
-8091,Limited 'Limos' Light Missile Launcher
-8093,Prototype 'Arbalest' Light Missile Launcher
+8089,Compact Light Missile Launcher
+8091,Ample Light Missile Launcher
 8101,'Malkuth' Heavy Missile Launcher I
 8103,Advanced 'Limos' Heavy Missile Bay I
 8105,'Arbalest' Heavy Missile Launcher
 8113,Upgraded 'Malkuth' Torpedo Launcher
 8115,Limited 'Limos' Torpedo Launcher
 8117,Prototype 'Arbalest' Torpedo Launcher
-8131,Local Power Plant Manager: Capacitor Flux I
-8133,Beta Reactor Control: Capacitor Flux I
-8135,Type-D Power Core Modification: Capacitor Flux
-8137,Mark I Generator Refitting: Capacitor Flux
-8163,Partial Power Plant Manager: Capacitor Flux
-8165,Alpha Reactor Control: Capacitor Flux
-8167,Type-E Power Core Modification: Capacitor Flux
-8169,Marked Generator Refitting: Capacitor Flux
+8133,Compact Capacitor Flux Coil
+8135,Restrained Capacitor Flux Coil
 8171,Local Power Plant Manager: Capacity Power Relay I
 8173,Beta Reactor Control: Capacitor Power Relay I
 8175,Type-D Power Core Modification: Capacitor Power Relay
@@ -1821,14 +1805,8 @@
 8221,Beta Reactor Control: Diagnostic System I
 8223,Type-D Power Core Modification: Diagnostic System
 8225,Mark I Generator Refitting: Diagnostic System
-8251,Partial Power Plant Manager: Reaction Control
-8253,Alpha Reactor Control: Reaction Control
 8255,Type-E Power Core Modification: Reaction Control
-8257,Marked Generator Refitting: Reaction Control
-8259,Local Power Plant Manager: Reaction Control I
-8261,Beta Reactor Control: Reaction Control I
-8263,Type-D Power Core Modification: Reaction Control
-8265,Mark I Generator Refitting: Reaction Control
+8263,Compact Reactor Control Unit
 8291,Local Power Plant Manager: Reaction Shield Flux I
 8293,Beta Reactor Control: Shield Flux I
 8295,Type-D Power Core Modification: Shield Flux
@@ -1877,14 +1855,7 @@
 8637,Large 'Atonement' Remote Shield Booster
 8639,Large Asymmetric Remote Shield Booster
 8641,Large S95a Remote Shield Booster
-8743,Nanomechanical CPU Enhancer
-8744,Nanoelectrical Co-Processor
-8745,Photonic CPU Enhancer
-8746,Quantum Co-Processor
-8747,Nanomechanical CPU Enhancer I
-8748,Nanoelectrical Co-Processor I
-8749,Photonic CPU Enhancer I
-8750,Quantum Co-Processor I
+8748,Upgraded Co-Processor
 8759,125mm Light 'Scout' Autocannon I
 8785,125mm Light Carbine Repeating Cannon I
 8787,125mm Light Gallium Machine Gun
@@ -2361,8 +2332,8 @@
 12235,Amarr Control Tower
 12236,Gallente Control Tower
 12237,Ship Maintenance Array
-12238,Refining Array
-12239,Medium Intensive Refining Array
+12238,Reprocessing Array
+12239,Compression Array
 12241,Sovereignty
 12243,Science Graduates
 12250,Criminal DNA
@@ -2471,7 +2442,7 @@
 13166,Inherent Implants 'Lancer' Gunnery RF-903
 13202,Megathron Federate Issue
 13209,Armored Warfare Mindlink
-13216,Zainou 'Gypsy' Electronics EE-603
+13216,Zainou 'Gypsy' CPU Management EE-603
 13217,Inherent Implants 'Lancer' Large Energy Turret LE-1003
 13218,Zainou 'Deadeye' Large Hybrid Turret LH-1003
 13219,Eifyr and Co. 'Gunslinger' Large Projectile Turret LP-1003
@@ -2514,12 +2485,12 @@
 13256,Inherent Implants 'Noble' Hull Upgrades HG-1003
 13257,Inherent Implants 'Noble' Mechanic MC-803
 13258,Inherent Implants 'Noble' Repair Systems RS-603
-13259,Inherent Implants 'Squire' Energy Management EM-803
-13260,Inherent Implants 'Squire' Energy Systems Operation EO-603
-13261,Inherent Implants 'Squire' Engineering EG-603
+13259,Inherent Implants 'Squire' Capacitor Management EM-803
+13260,Inherent Implants 'Squire' Capacitor Systems Operation EO-603
+13261,Inherent Implants 'Squire' Power Grid Management EG-603
 13262,Zainou 'Gnome' Shield Emission Systems SE-803
 13263,Zainou 'Gnome' Shield Operation SP-903
-13265,Inherent Implants 'Squire' Energy Emission Systems ES-703
+13265,Inherent Implants 'Squire' Capacitor Emission Systems ES-703
 13267,Janitor
 13278,Archaeology
 13279,Remote Sensing
@@ -3296,7 +3267,6 @@
 15353,Research Tools
 15410,Neophite
 15416,Naiyon's Modified Magnetic Field Stabilizer
-15425,Naiyon's Modified Co-Processor
 15437,Makur's Modified Capacitor Power Relay
 15447,Shaqil's Modified Gyrostabilizer
 15451,Shaqil's Modified Heavy Nosferatu
@@ -3639,7 +3609,7 @@
 16189,Khanid Royal Insignia
 16213,Caldari Control Tower
 16214,Minmatar Control Tower
-16216,Mobile Laboratory
+16216,Research Laboratory
 16220,Rapid Equipment Assembly Array
 16221,Moon Harvesting Array
 16227,Ferox
@@ -3789,10 +3759,7 @@
 16531,5a Prototype Shield Support I
 16533,'Stalwart' Particle Field Magnifier
 16535,'Copasetic' Particle Field Acceleration
-16537,Micro B66 Core Augmentation
-16539,Micro B88 Core Augmentation
-16541,Micro K-Exhaust Core Augmentation
-16543,Micro 'Vigor' Core Augmentation
+16537,Compact Micro Auxiliary Power Core
 16591,Heavy Assault Cruisers
 16594,Procurement
 16595,Daytrading
@@ -4601,7 +4568,7 @@
 19461,Blaque Voucher
 19462,Foiritan Voucher
 19463,Autrech Voucher
-19470,Intensive Refining Array
+19470,Intensive Reprocessing Array
 19500,Zor's Custom Navigation Link
 19534,High-grade Talisman Alpha
 19535,High-grade Talisman Beta
@@ -5210,7 +5177,7 @@
 21510,Process-Interruptive Warp Disruptor
 21512,'Delineative' Warp Scrambler
 21521,Gravimetric Firewall
-21523,LADAR Firewall
+21523,Ladar Firewall
 21525,Magnetometric Firewall
 21527,Multi Sensor Firewall
 21529,RADAR Firewall
@@ -5720,7 +5687,7 @@
 24571,Capital Shield Emission Systems
 24572,Capital Capacitor Emission Systems
 24574,Small Ship Assembly Array
-24575,Capital Ship Assembly Array
+24575,Supercapital Ship Assembly Array
 24592,Amarr Empire Starbase Charter
 24593,Caldari State Starbase Charter
 24594,Gallente Federation Starbase Charter
@@ -5744,7 +5711,7 @@
 24653,Advanced Small Ship Assembly Array
 24654,Medium Ship Assembly Array
 24655,Advanced Medium Ship Assembly Array
-24656,X-Large Ship Assembly Array
+24656,Capital Ship Assembly Array
 24657,Advanced Large Ship Assembly Array
 24658,Ammunition Assembly Array
 24659,Drone Assembly Array
@@ -5807,8 +5774,8 @@
 25540,'Crop' Gas Cloud Harvester
 25542,'Plow' Gas Cloud Harvester
 25544,Gas Cloud Harvesting
-25545,Eifyr and Co. 'Alchemist' Nanite Control NC-903
-25546,Eifyr and Co. 'Alchemist' Nanite Control NC-905
+25545,Eifyr and Co. 'Alchemist' Neurotoxin Control NC-903
+25546,Eifyr and Co. 'Alchemist' Neurotoxin Control NC-905
 25547,Eifyr and Co. 'Alchemist' Neurotoxin Recovery NR-1003
 25548,Eifyr and Co. 'Alchemist' Neurotoxin Recovery NR-1005
 25553,Cryptic Data Interface
@@ -6109,35 +6076,35 @@
 27113,Eifyr and Co. 'Rogue' Warp Drive Operation WD-602
 27114,Eifyr and Co. 'Rogue' Warp Drive Speed WS-615
 27115,Eifyr and Co. 'Rogue' Warp Drive Speed WS-605
-27116,Inherent Implants 'Squire' Energy Management EM-805
-27117,Inherent Implants 'Squire' Energy Management EM-801
-27118,Inherent Implants 'Squire' Energy Systems Operation EO-605
-27119,Inherent Implants 'Squire' Energy Systems Operation EO-601
-27120,Inherent Implants 'Squire' Energy Emission Systems ES-701
-27121,Inherent Implants 'Squire' Energy Emission Systems ES-705
+27116,Inherent Implants 'Squire' Capacitor Management EM-805
+27117,Inherent Implants 'Squire' Capacitor Management EM-801
+27118,Inherent Implants 'Squire' Capacitor Systems Operation EO-605
+27119,Inherent Implants 'Squire' Capacitor Systems Operation EO-601
+27120,Inherent Implants 'Squire' Capacitor Emission Systems ES-701
+27121,Inherent Implants 'Squire' Capacitor Emission Systems ES-705
 27122,Inherent Implants 'Squire' Energy Pulse Weapons EP-705
 27123,Inherent Implants 'Squire' Energy Pulse Weapons EP-701
 27124,Inherent Implants 'Squire' Energy Grid Upgrades EU-705
 27125,Inherent Implants 'Squire' Energy Grid Upgrades EU-701
-27126,Inherent Implants 'Squire' Engineering EG-605
-27127,Inherent Implants 'Squire' Engineering EG-601
+27126,Inherent Implants 'Squire' Power Grid Management EG-605
+27127,Inherent Implants 'Squire' Power Grid Management EG-601
 27128,Zainou 'Gypsy' Electronics Upgrades EU-605
 27129,Zainou 'Gypsy' Electronics Upgrades EU-601
 27130,Zainou 'Gypsy' Signature Analysis SA-705
 27131,Zainou 'Gypsy' Signature Analysis SA-701
-27142,Zainou 'Gypsy' Electronics EE-605
-27143,Zainou 'Gypsy' Electronics EE-601
+27142,Zainou 'Gypsy' CPU Management EE-605
+27143,Zainou 'Gypsy' CPU Management EE-601
 27147,Eifyr and Co. 'Alchemist' Biology BY-805
 27148,Eifyr and Co. 'Alchemist' Biology BY-810
 27149,Inherent Implants 'Highwall' Mining Upgrades MU-1003
 27150,Inherent Implants 'Highwall' Mining Upgrades MU-1005
 27151,Inherent Implants 'Highwall' Mining Upgrades MU-1001
 27167,Zainou 'Beancounter' Industry BX-802
-27169,Zainou 'Beancounter' Refining RX-802
+27169,Zainou 'Beancounter' Reprocessing RX-802
 27170,Zainou 'Beancounter' Industry BX-801
 27171,Zainou 'Beancounter' Industry BX-804
-27174,Zainou 'Beancounter' Refining RX-804
-27175,Zainou 'Beancounter' Refining RX-801
+27174,Zainou 'Beancounter' Reprocessing RX-804
+27175,Zainou 'Beancounter' Reprocessing RX-801
 27176,Zainou 'Beancounter' Metallurgy MY-703
 27177,Zainou 'Beancounter' Research RR-603
 27178,Zainou 'Beancounter' Science SC-803
@@ -6513,7 +6480,7 @@
 28334,Republic Fleet Depleted Uranium M
 28336,Republic Fleet Depleted Uranium S
 28338,Republic Fleet Depleted Uranium XL
-28351,Advanced Mobile Laboratory
+28351,Design Laboratory
 28352,Rorqual
 28361,Drone Synaptic Relay Wiring
 28362,Drone Capillary Fluid
@@ -6522,7 +6489,6 @@
 28365,Drone Epidermal Shielding Chunk
 28366,Drone Coronary Unit
 28367,Compressed Arkonor
-28368,Compressed Arkonor Blueprint
 28374,Capital Industrial Ships
 28375,Republic Fleet Heavy Assault Missile Launcher
 28377,Caldari Navy Heavy Assault Missile Launcher
@@ -6530,7 +6496,6 @@
 28381,Dread Guristas Heavy Assault Missile Launcher
 28383,True Sansha Heavy Assault Missile Launcher
 28385,Compressed Crimson Arkonor
-28386,Compressed Crimson Arkonor Blueprint
 28387,Compressed Prime Arkonor
 28388,Compressed Bistot
 28389,Compressed Monoclinic Bistot
@@ -6589,64 +6554,6 @@
 28442,Compressed Smooth Glacial Mass
 28443,Compressed Thick Blue Ice
 28444,Compressed White Glaze
-28448,Compressed Prime Arkonor Blueprint
-28449,Compressed Bistot Blueprint
-28450,Compressed Monoclinic Bistot Blueprint
-28451,Compressed Triclinic Bistot Blueprint
-28452,Compressed Crokite Blueprint
-28453,Compressed Crystalline Crokite Blueprint
-28454,Compressed Sharp Crokite Blueprint
-28455,Compressed Dark Ochre Blueprint
-28456,Compressed Obsidian Ochre Blueprint
-28457,Compressed Onyx Ochre Blueprint
-28458,Compressed Gneiss Blueprint
-28459,Compressed Iridescent Gneiss Blueprint
-28460,Compressed Prismatic Gneiss Blueprint
-28461,Compressed Hedbergite Blueprint
-28462,Compressed Glazed Hedbergite Blueprint
-28463,Compressed Vitric Hedbergite Blueprint
-28464,Compressed Hemorphite Blueprint
-28465,Compressed Radiant Hemorphite Blueprint
-28466,Compressed Vivid Hemorphite Blueprint
-28467,Compressed Jaspet Blueprint
-28468,Compressed Pristine Jaspet Blueprint
-28469,Compressed Pure Jaspet Blueprint
-28470,Compressed Kernite Blueprint
-28471,Compressed Fiery Kernite Blueprint
-28472,Compressed Luminous Kernite Blueprint
-28473,Compressed Magma Mercoxit Blueprint
-28474,Compressed Mercoxit Blueprint
-28475,Compressed Vitreous Mercoxit Blueprint
-28476,Compressed Omber Blueprint
-28477,Compressed Golden Omber Blueprint
-28478,Compressed Silvery Omber Blueprint
-28479,Compressed Azure Plagioclase Blueprint
-28480,Compressed Plagioclase Blueprint
-28481,Compressed Rich Plagioclase Blueprint
-28482,Compressed Pyroxeres Blueprint
-28483,Compressed Solid Pyroxeres Blueprint
-28484,Compressed Viscous Pyroxeres Blueprint
-28485,Compressed Condensed Scordite Blueprint
-28486,Compressed Massive Scordite Blueprint
-28487,Compressed Scordite Blueprint
-28488,Compressed Bright Spodumain Blueprint
-28489,Compressed Gleaming Spodumain Blueprint
-28490,Compressed Spodumain Blueprint
-28491,Compressed Concentrated Veldspar Blueprint
-28492,Compressed Dense Veldspar Blueprint
-28493,Compressed Veldspar Blueprint
-28494,Compressed Blue Ice Blueprint
-28495,Compressed Clear Icicle Blueprint
-28496,Compressed Dark Glitter Blueprint
-28497,Compressed Enriched Clear Icicle Blueprint
-28498,Compressed Gelidus Blueprint
-28499,Compressed Glacial Mass Blueprint
-28500,Compressed Glare Crust Blueprint
-28501,Compressed Krystallos Blueprint
-28502,Compressed Pristine White Glaze Blueprint
-28503,Compressed Smooth Glacial Mass Blueprint
-28504,Compressed Thick Blue Ice Blueprint
-28505,Compressed White Glaze Blueprint
 28511,Khanid Navy Rocket Launcher
 28514,Khanid Navy Stasis Webifier
 28516,Khanid Navy Warp Disruptor
@@ -6973,11 +6880,11 @@
 30376,Fullerite-C32
 30377,Fullerite-C320
 30378,Fullerite-C540
-30382,Amarr Hybrid Tech Decryptor
-30383,Caldari Hybrid Tech Decryptor
-30384,Minmatar Hybrid Tech Decryptor
-30385,Gallente Hybrid Tech Decryptor
-30386,R.A.M.- Hybrid Technology
+30382,Amarr Subsystems Data Interface
+30383,Caldari Subsystems Data Interface
+30384,Minmatar Subsystems Data Interface
+30385,Gallente Subsystems Data Interface
+30386,R.Db.- Hybrid Technology
 30389,Subsystem Assembly Array
 30464,Metallofullerene Plating
 30466,Electromechanical Interface Nexus
@@ -7577,7 +7484,7 @@
 32207,Freki
 32209,Mimir
 32226,Territorial Claim Unit
-32245,Hyasyoda Mobile Laboratory
+32245,Hyasyoda Research Laboratory
 32246,RSS Core Scanner Probe
 32248,Nugoehuvi Synth Blue Pill Booster
 32250,Sovereignty Blockade Unit
@@ -7604,6 +7511,7 @@
 32442,Mjolnir Citadel Cruise Missile
 32444,Citadel Cruise Launcher I
 32458,Infrastructure Hub
+32459,Civilian Warp Disruptor
 32772,Medium Ancillary Shield Booster
 32774,Small Ancillary Shield Booster
 32780,X-Large Ancillary Shield Booster
@@ -7960,6 +7868,8 @@
 33667,Incursus Aliastra Edition
 33669,Incursus Innerzone Shipping Edition
 33671,Heavy Hull Maintenance Bot I
+33673,Whiptail
+33675,Chameleon
 33677,Police Pursuit Comet
 33681,Gecko
 33683,Mackinaw ORE Development Edition
@@ -7988,7 +7898,7 @@
 33721,Women's 'Corsair' Heels (blue)
 33722,Women's 'Corsair' Heels (brown)
 33723,Women's 'Corsair' Heels (beige)
-33724,Women's 'Corsair' Heels (beige)
+33724,Women's 'Corsair' Heels (gray)
 33725,Women's 'Corsair' Heels (red)
 33726,Women's 'Sanctity' Dress (black/gold)
 33727,Women's 'Sanctity' Dress (brown/gold)
@@ -8026,10 +7936,10 @@
 33759,Women's 'Strut' Pants (red)
 33760,Women's 'Strut' Pants (red gloss)
 33761,Women's 'Strut' Pants (yellow gloss)
-33767,Women's 'New Eden Open I' T-shirt YC114
-33768,Women's 'New Eden Open II' T-shirt YC116
-33769,Men's 'New Eden Open I' T-shirt YC114
-33770,Men's 'New Eden Open II' T-shirt YC116
+33767,Women's 'New Eden Open I' T-shirt YC 114
+33768,Women's 'New Eden Open II' T-shirt YC 116
+33769,Men's 'New Eden Open I' T-shirt YC 114
+33770,Men's 'New Eden Open II' T-shirt YC 116
 33771,Men's 'March' Boots (White)
 33772,Men's 'March' Boots (Graphite)
 33773,Men's 'March' Boots (Brown)
@@ -8087,6 +7997,7 @@
 33850,Federation Navy Drone Navigation Computer
 33852,Sentient Drone Navigation Computer
 33856,Expedition Frigates
+33867,Thukker Component Assembly Array
 33869,Brutix Serpentis Edition
 33871,Cyclone Thukker Tribe Edition
 33873,Ferox Guristas Edition
@@ -8167,6 +8078,101 @@
 33981,Limited Hyperspatial Accelerator
 33983,Experimental Hyperspatial Accelerator
 33985,Prototype Hyperspatial Accelerator
+33988,Guristas Data Sequence
+33989,Women's 'Hover' Tights (black)
+34017,Women's 'Vise' Cybernetic Arm (matte black left)
+34018,Women's 'Vise' Cybernetic Arm (black and orange ringed left)
+34019,Women's 'Vise' Cybernetic Arm (black ringed left)
+34020,Women's 'Vise' Cybernetic Arm (black and yellow left)
+34021,Women's 'Vise' Cybernetic Arm (blue and black ringed left)
+34022,Women's 'Vise' Cybernetic Arm (blue and white left)
+34023,Women's 'Vise' Cybernetic Arm (white and gray ringed left)
+34024,Men's 'Crusher' Cybernetic Arm (black and orange left)
+34025,Men's 'Crusher' Cybernetic Arm (black and red left)
+34026,Men's 'Crusher' Cybernetic Arm (black and yellow left)
+34027,Men's 'Crusher' Cybernetic Arm (blue and white left)
+34028,Men's 'Crusher' Cybernetic Arm (green camo left)
+34029,Men's 'Crusher' Cybernetic Arm (green and yellow left)
+34030,Men's 'Crusher' Cybernetic Arm (gunmetal left)
+34031,Women's 'Vise' Cybernetic Arm (matte black right)
+34032,Women's 'Vise' Cybernetic Arm (black and orange ringed right)
+34033,Women's 'Vise' Cybernetic Arm (black ringed right)
+34034,Women's 'Vise' Cybernetic Arm (black and yellow right)
+34035,Women's 'Vise' Cybernetic Arm (blue and black ringed right)
+34036,Women's 'Vise' Cybernetic Arm (blue and white right)
+34037,Women's 'Vise' Cybernetic Arm (white and gray ringed right)
+34038,Men's 'Crusher' Cybernetic Arm (black and orange right)
+34039,Men's 'Crusher' Cybernetic Arm (black and red right)
+34040,Men's 'Crusher' Cybernetic Arm (black and yellow right)
+34041,Men's 'Crusher' Cybernetic Arm (blue and white right)
+34042,Men's 'Crusher' Cybernetic Arm (green camo  right)
+34043,Men's 'Crusher' Cybernetic Arm (green and yellow right)
+34044,Men's 'Crusher' Cybernetic Arm (gunmetal right)
+34045,Women's 'Hover' Tights (light)
+34046,Women's 'Hover' Tights (orange)
+34047,Women's 'Hover' Tights (pink)
+34048,Women's 'Hover' Tights (red)
+34049,Women's 'Hover' Tights (opaque black)
+34050,Women's 'Hover' Tights (opaque blue)
+34051,Women's 'Hover' Tights (opaque gray)
+34052,Women's 'Hover' Tights (matte black)
+34053,Women's 'Hover' Tights (opaque purple)
+34054,Women's 'Hover' Tights (white)
+34055,Women's 'Hover' Tights (yellow)
+34056,Men's 'Nova' Headwear (black)
+34057,Men's 'Tectonic' Headwear (matte black)
+34058,Men's 'Tectonic' Headwear (white)
+34059,Men's 'Nova' Headwear (silver)
+34060,Men's 'Nova' Headwear (gold)
+34061,Men's 'Nova' Headwear (bronze)
+34062,Men's 'Tectonic' Headwear (metal)
+34063,Men's 'Tectonic' Headwear (shiny black)
+34064,Women's 'Aeriform' Headwear (cyan)
+34065,Women's 'Blades' Headwear (gunmetal)
+34066,Women's 'Aeriform' Headwear (blue)
+34067,Women's 'Blades' Headwear (platinum)
+34068,Women's 'Spiderweb' Headwear (black)
+34069,Women's 'Blades' Headwear (gold)
+34070,Women's 'Aeriform' Headwear (orange)
+34071,Women's 'Blades' Headwear (black)
+34072,Women's 'Spiderweb' Headwear (copper)
+34073,Women's 'Spiderweb' Headwear (metallic)
+34074,Women's 'Blades' Headwear (jade)
+34076,Women's 'Aeriform' Headwear (clear)
+34077,Women's 'Spiderweb' Headwear (golden)
+34078,Women's 'Aeriform' Headwear (black)
+34118,Megathron Quafe Edition
+34122,Limited Jump Drive Economizer
+34124,Experimental Jump Drive Economizer
+34126,Prototype Jump Drive Economizer
+34132,Pilot's Body Resculpt Certificate
+34133,Multiple Pilot Training Certificate
+34156,Men's 'Marshal' Jacket (Caldari)
+34157,Men's 'Marshal' Jacket (Amarr)
+34158,Men's 'Marshal' Jacket (Minmatar)
+34159,Men's 'Marshal' Jacket (Gallente)
+34160,Men's 'Marshal' Jacket (ORE)
+34161,Men's 'Marshal' Jacket (Sisters of EVE)
+34162,Men's 'Marshal' Jacket (Mordu's Legion)
+34163,Men's 'Marshal' Jacket (interBus)
+34164,Men's 'Marshal' Jacket (Angel Cartel)
+34165,Men's 'Marshal' Jacket (Sansha's Nation)
+34166,Men's 'Marshal' Jacket (Blood Raiders)
+34167,Men's 'Marshal' Jacket (Guristas)
+34168,Men's 'Marshal' Jacket (Serpentis)
+34169,Women's 'Gunner' Jacket (Caldari)
+34170,Women's 'Gunner' Jacket (Amarr)
+34171,Women's 'Gunner' Jacket (Minmatar)
+34172,Women's 'Gunner' Jacket (Gallente)
+34173,Women's 'Gunner' Jacket (ORE)
+34174,Women's 'Gunner' Jacket (Sisters of EVE)
+34175,Women's 'Gunner' Jacket (Mordu's Legion)
+34176,Women's 'Gunner' Jacket (interBus)
+34177,Women's 'Gunner' Jacket (Angel Cartel)
+34178,Women's 'Gunner' Jacket (Sansha's Nation)
+34179,Women's 'Gunner' Jacket (Blood Raiders)
+34180,Women's 'Gunner' Jacket (Guristas)
+34181,Women's 'Gunner' Jacket (Serpentis)
 350916,Plasma Cannon
 351063,Heavy Machine Gun
 351071,Assault C-I
@@ -9083,6 +9089,7 @@
 364707,Heavy Machine Gun Rapid Reload
 364709,Heavy Machine Gun Fitting Optimization
 364761,Vehicle Armor Repair Systems
+364769,Vehicle Armor Composition
 364773,Engine Core Calibration
 364776,Shield Fitting Optimization
 364777,Vehicle Shield Regeneration
@@ -9723,3 +9730,34 @@
 366750,'Phantasm' ARN-18 Cloak Field
 366751,'Poltergeist' Ishukone Cloak Field
 366760,Cloak Field  Operation
+367223,Militia Scrambler Rifle
+367226,Militia Rail Rifle
+367227,Militia Combat Rifle
+367228,Militia Plasma Cannon
+367229,Militia Laser Rifle
+367230,Militia Mass Driver
+367382,Nova Knife Fitting Optimization
+367436,Militia Ion Pistol
+367437,Militia Bolt Pistol
+367439,Militia Magsec SMG
+367440,Militia Heavy Machine Gun
+367442,Frontline Special Issue Mk II-A
+367443,Frontline Special Issue Mk II-C
+367450,Frontline Special Issue Mk II-M
+367451,Frontline Special Issue Mk II-G
+367453,Defender Special Issue Mk II-A
+367455,Defender Special Issue Mk II-C
+367456,Defender Special Issue Mk II-M
+367457,Defender Special Issue Mk II-G
+367472,Militia Flaylock Pistol
+367477,Kubo’s GMK-16 Plasma Cannon
+367489,Beacon’s ELI-74 Swarm Launcher
+367500,Symb's FORK-5 Sniper Rifle
+367502,Agimus' Modified AGO-56 Mass Driver
+367517,Kalante's RXS-05 Assault Rifle
+367519,Ghalag's Modified MRT-17 Rail Rifle
+367528,Darth's GIO-66 Scrambler Rifle
+367541,Viktor’s NEG-1 Laser Rifle
+367548,Alex's Modified ZX-030 Heavy Machine Gun
+367549,Alldin's IMP-10 Forge Gun
+367552,Bons' SIN-7 Shotgun
