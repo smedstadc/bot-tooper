@@ -80,7 +80,7 @@ def get_tower_messages():
     reply_messages = []
     with pony.orm.db_session:
         towers = pony.orm.select(tower for tower in Tower)
-        if towers is not None:
+        if len(towers) > 0:
             for tower in towers:
                 if tower.last_siphon_check is None:
                     reply_messages.append("{} never checked.".format(tower.name))

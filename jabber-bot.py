@@ -195,23 +195,23 @@ class JabberBot(sleekxmpp.ClientXMPP):
             if m is not None:
                 return towers.add_tower(m.group('addtower_arg'))
             else:
-                return addtower_usage_hint
+                return [addtower_usage_hint]
 
-        rmtower_usage_hint = 'Usage .rmtower <tower name>'
+        rmtower_usage_hint = 'Usage: .rmtower <tower name>'
         if re.match(r'[.]rmtower(.+)?$', msg['body']) is not None:
             m = re.match(rmtower_pattern, msg['body'])
             if m is not None:
                 return towers.remove_tower(m.group('rmtower_arg'))
             else:
-                return rmtower_usage_hint
+                return [rmtower_usage_hint]
 
-        marktower_usage_hint = 'Usage .marktower <tower name>'
+        marktower_usage_hint = 'Usage: .marktower <tower name>'
         if re.match(r'[.]marktower(.+)?$', msg['body']) is not None:
             m = re.match(marktower_pattern, msg['body'])
             if m is not None:
                 return towers.mark_checked(m.group('marktower_arg'))
             else:
-                return marktower_usage_hint
+                return [marktower_usage_hint]
 
         if re.match(towers_pattern, msg['body']) is not None:
             return towers.get_tower_messages()
