@@ -221,6 +221,8 @@ pip-log.txt
 .idea/
 timers.txt
 settings.py
+irc-settings.py
+jabber-settings.py
 echo.py
 bot-tooper-old.py
 test-marketstat.xml
