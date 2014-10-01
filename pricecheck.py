@@ -114,6 +114,9 @@ def get_marketstat_xml(typeids, system_id):
             xml = ET.fromstring(response.content)
         except IOError:
             xml = None
+        except ET.ParseError:
+            xml = None
+
     else:
         xml = None
     return xml
