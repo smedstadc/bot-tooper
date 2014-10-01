@@ -1,86 +1,68 @@
 #!/usr/bin/env python3
-""" countdown.py
-    Stores events and returns the time remaining until those events when asked.
-
+"""
+countdown.py
+Stores events and returns the time remaining until those events when asked.
 """
 
 import os
 from datetime import datetime, timedelta
-from settings import TIMERSFILENAME
 import re
 import sys
+import pony.orm
 
+##### HOUSKEEPING #####
 if sys.version_info < (3, 0):
     reload(sys)
     sys.setdefaultencoding('utf8')
 
-events = []
-timers_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), TIMERSFILENAME)
+##### SET DB #####
+db = pony.orm.Database("sqlite", "countdown.sqlite", create_db=True)
 
 
-def write_timers():
-    """Writes currently tracked timers to text file. Called by add_event after each timer is added."""
-    try:
-        global events
-        with open(timers_path, 'w') as file:
-            for event in events:
-                dt = event[0]
-                name = event[1]
-                file.write('{};{};{};{};{};{}\n'.format(dt.year, dt.month, dt.day, dt.hour, dt.minute, name))
-        print('INFO: Wrote timers.txt')
-    except IOError:
-        print('PROB: ' + 'Problem writing timers.txt')
+#### MODELS #####
+class Event(db.Entity):
+    """
+    Pony ORM modelfor Event table.
+    """
+    event_id = pony.orm.PrimaryKey(int, auto=True)
+    name = pony.orm.Required(unicode)
+    date_time = pony.orm.Required(datetime)
 
 
+##### MAP MODELS TO DB AND CREATE TABLES UNLESS THEY EXIST #####
+db.generate_mapping(create_tables=True)
+
+
+##### COUNTDOWN METHODS #####
 def add_timer(match):
-    try:
-        add_event((datetime.utcnow() + timedelta(days=int(match.group('days')), hours=int(match.group('hours')),
-                                                 minutes=int(match.group('minutes')))), match.group('name'))
-        return True
-    except ValueError:
-        return False
-    pass
+    date_time = (datetime.utcnow() + timedelta(days=int(match.group('days')), hours=int(match.group('hours')),
+                                               minutes=int(match.group('minutes'))))
+    name = match.group('name')
+    add_event(date_time, name)
+    return True
 
 
 def add_datetime(match):
-    try:
-        add_event(datetime(int(match.group('year')), int(match.group('month')), int(match.group('day')),
-                           int(match.group('hour')), int(match.group('minute'))), match.group('name'))
-        return True
-    except ValueError:
-        return False
-    pass
+    date_time = datetime(int(match.group('year')), int(match.group('month')), int(match.group('day')),
+                         int(match.group('hour')), int(match.group('minute')))
+    name = match.group('name')
+    add_event(date_time, name)
+    return True
 
 
-def add_event(adatetime, aname):
-    """Appends a (datetime, name) tuple to a list of events then sorts it by datetime order"""
-    global events
-    if aname == '':
-        aname = 'MYSTERY TIMER'
-    event = (adatetime, aname)
-    events.append(event)
-    events = sorted(events, key=lambda list_item: list_item[0])
-    write_timers()
+def add_event(date_time, name):
+    name = upper_preserving_urls(name)
+    with pony.orm.db_session:
+        Event(date_time=date_time, name=name)
 
 
 def remove_event(rmop_args):
-    """Deletes an event at event_index and returns a message to the bot."""
-    global events
-    try:
-        # new
-        rmop_args = sorted(set([int(x) for x in rmop_args.split(';')]), reverse=True)
-        if max(rmop_args) > len(events) or min(rmop_args) < 1:
-            return ['One or more event numbers out of bounds.']
-        else:
-            reply_lines = []
-            for arg in rmop_args:
-                removed_event_name = events[arg - 1][1]
-                del events[arg - 1]
-                write_timers()
-                reply_lines.append('Removed event #{}: "{}".'.format(arg, removed_event_name))
-        return reply_lines
-    except ValueError:
-        return ['One or more inputs is not a number.']
+    with pony.orm.db_session:
+        event = Event[rmop_args]
+        name = event.name
+        event_id = event.event_id
+        event.delete()
+    return ["Removed: {} (ID:{})".format(name, event_id)]
 
 
 def days_hours_minutes(adelta):
@@ -88,54 +70,37 @@ def days_hours_minutes(adelta):
     return adelta.days, adelta.seconds // 3600, (adelta.seconds // 60) % 60
 
 
-# TODO Factor out expiration logic to re-use in remove function
 def get_countdown_messages():
-    """ Returns a list of messages reporting the time remaining or elapsed relative to each event in the event list.
-        Events which have been expired for longer than 45 minutes will be removed from the list on the next .ops call.
-        Calls write_timers() if the event list changes.
-
     """
-    global events
-    messages = []
-    if len(events) == 0:
-        messages.append("No upcoming events.")
-    else:
-        count = 0
-        for event in events:
-            name = event[1]
-            time_delta = event[0] - datetime.utcnow()
-            if time_delta.total_seconds() > 0:
-                delta = days_hours_minutes(time_delta)
-                count += 1
-                messages.append(
-                    '{0}: {1:3}d {2:2}h {3:2}m until {4} at {5} UTC'.format(count, delta[0], delta[1], delta[2],
-                                                                               name,
-                                                                               event[0].strftime("%Y-%m-%dT%H:%M")))
-            else:
-                minutes_elapsed = abs(time_delta.total_seconds()) // 60
-                if minutes_elapsed > 30:
-                    events = events[1:]
+    Returns a list of messages reporting the time remaining or elapsed relative to each event in the event list.
+    Events which have been expired for longer than 45 minutes will be removed from the list on the next .ops call.
+    Calls write_timers() if the event list changes.
+    """
+    with pony.orm.db_session:
+        events = Event.order_by(Event.date_time)
+        messages = []
+        if len(events) > 0:
+            for event in events:
+                event_id = event.event_id
+                name = event.name
+                date_time = event.date_time
+                time_delta = event.date_time - datetime.utcnow()
+                if time_delta.total_seconds() > 0:
+                    delta = days_hours_minutes(time_delta)
+                    messages.append(
+                        '{0:4}d {1:2}h {2:2}m until {3} at {4} UTC (ID:{5}) '.format(delta[0], delta[1], delta[2], name,
+                                                                                     date_time.strftime
+                                                                                     ("%Y-%m-%dT%H:%M"), event_id))
                 else:
-                    count += 1
-                    messages.append('{}:  IT\'S HAPPENING:  \"{}\"'.format(count, name))
-    write_timers()
-    return messages
+                    minutes_elapsed = abs(time_delta.total_seconds()) // 60
+                    if minutes_elapsed > 30:
+                        Event[event_id].delete()
+                    else:
+                        messages.append('   IT\'S HAPPENING: \"{}\" (ID:{})'.format(name, event_id))
 
-
-def read_timers():
-    """Reads saved timers into timers list from text file."""
-    global events
-    try:
-        with open(timers_path, 'r') as file:
-            for line in file:
-                line = line.split(';')
-                timestamp, name = [int(x) for x in line[:-1]], upper_preserving_urls(line[-1].strip())
-                event = (datetime(*timestamp), name)
-                events.append(event)
-        events = sorted(events, key=lambda list_item: list_item[0])
-        print('INFO: Read timers.txt')
-    except IOError:
-        print('PROB: ' + 'Problem reading timers.txt')
+        else:
+            messages.append("No upcoming events.")
+        return messages
 
 
 def upper_preserving_urls(s):
@@ -144,4 +109,10 @@ def upper_preserving_urls(s):
     s = re.sub(r'(https?://\S+)', '{}', s)
     return s.upper().format(*urls)
 
-read_timers()
+if __name__ == "__main__":
+    # .addtimer <days>d<hours>h<minutes>m <name>
+    addtimer_pattern = re.compile(
+        r'^[.]addop (?P<days>\d{1,3})[dD](?P<hours>\d{1,2})[hH](?P<minutes>\d{1,2})[mM] (?P<name>.+)$')
+    t1 = '.addop 1d2h3m first op'
+    t2 = '.addop 2d4h6m second op'
+    t3 = '.addop 3d6h9m third op'

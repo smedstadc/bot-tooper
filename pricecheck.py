@@ -8,7 +8,6 @@
 
 from settings import TYPEIDSFILENAME
 import xml.etree.ElementTree as ET
-#import urllib.request
 import requests
 import re
 import os

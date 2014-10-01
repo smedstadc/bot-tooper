@@ -47,7 +47,7 @@ addop_pattern = re.compile(
 addtimer_pattern = re.compile(
     r'^[.]addop (?P<days>\d{1,3})[dD](?P<hours>\d{1,2})[hH](?P<minutes>\d{1,2})[mM] (?P<name>.+)$')
 # .rmop <number>
-rmop_pattern = re.compile(r'^[.]rmop (?P<rmop_args>.+)$')
+rmop_pattern = re.compile(r'^[.]rmop (?P<rmop_args>\d+)$')
 # .addtower <name>
 addtower_pattern = re.compile(r'^[.]addtower (?P<addtower_arg>.+)$')
 # .rmtower <name>
@@ -181,7 +181,7 @@ class JabberBot(sleekxmpp.ClientXMPP):
                 else:
                     return [addop_use_hint]
 
-        rmop_usage_hint = 'Usage: .rmop <op number>'
+        rmop_usage_hint = 'Usage: .rmop <op id>'
         if re.match(r'^[.]rmop(.+)?$', msg['body']) is not None:
             m = re.match(rmop_pattern, msg['body'])
             if m is not None:

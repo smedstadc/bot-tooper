@@ -86,7 +86,7 @@ def get_tower_messages():
                     reply_messages.append("{} never checked.".format(tower.name))
                 else:
                     reply_messages.append("{} checked on {}".format(tower.name,
-                                                                     tower.last_siphon_check.strftime("%b %d at %H:%M UTC")))
+                                                                    tower.last_siphon_check.strftime("%b %d at %H:%M UTC")))
             reply_messages.append("It is now {}".format(datetime.datetime.utcnow().strftime("%b %d at %H:%M UTC")))
             return reply_messages
         else:
