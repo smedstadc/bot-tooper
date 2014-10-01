@@ -20,6 +20,7 @@ import url
 import pricecheck
 import countdown
 import settings
+import towers
 
 # Python versions before 3.0 do not use UTF-8 encoding
 # by default. To ensure that Unicode is handled properly
@@ -47,7 +48,13 @@ addtimer_pattern = re.compile(
     r'^[.]addop (?P<days>\d{1,3})[dD](?P<hours>\d{1,2})[hH](?P<minutes>\d{1,2})[mM] (?P<name>.+)$')
 # .rmop <number>
 rmop_pattern = re.compile(r'^[.]rmop (?P<rmop_args>.+)$')
-
+# .addtower <name>
+addtower_pattern = re.compile(r'^[.]addtower (?P<addtower_arg>.+)$')
+# .rmtower <name>
+rmtower_pattern = re.compile(r'^[.]rmtower (?P<rmtower_arg>.+)$')
+# .marktower <name>
+marktower_pattern = re.compile(r'^[.]marktower (?P<marktower_arg>.+)$')
+towers_pattern = re.compile(r'^[.]towers$')
 
 class JabberBot(sleekxmpp.ClientXMPP):
 
@@ -82,7 +89,6 @@ class JabberBot(sleekxmpp.ClientXMPP):
         # to a single room, use the events muc::room@server::presence,
         # muc::room@server::got_online, or muc::room@server::got_offline.
         self.add_event_handler("muc::%s::got_online" % self.room, self.muc_online)
-
         self.add_event_handler("message", self.message)
 
     def start(self, event):
@@ -182,6 +188,33 @@ class JabberBot(sleekxmpp.ClientXMPP):
                 return countdown.remove_event(m.group('rmop_args'))
             else:
                 return [rmop_usage_hint]
+
+        addtower_usage_hint = 'Usage: .addtower <tower name>'
+        if re.match(r'[.]addtower(.+)?$', msg['body']) is not None:
+            m = re.match(addtower_pattern, msg['body'])
+            if m is not None:
+                return towers.add_tower(m.group('addtower_arg'))
+            else:
+                return [addtower_usage_hint]
+
+        rmtower_usage_hint = 'Usage: .rmtower <tower name>'
+        if re.match(r'[.]rmtower(.+)?$', msg['body']) is not None:
+            m = re.match(rmtower_pattern, msg['body'])
+            if m is not None:
+                return towers.remove_tower(m.group('rmtower_arg'))
+            else:
+                return [rmtower_usage_hint]
+
+        marktower_usage_hint = 'Usage: .marktower <tower name>'
+        if re.match(r'[.]marktower(.+)?$', msg['body']) is not None:
+            m = re.match(marktower_pattern, msg['body'])
+            if m is not None:
+                return towers.mark_checked(m.group('marktower_arg'))
+            else:
+                return [marktower_usage_hint]
+
+        if re.match(towers_pattern, msg['body']) is not None:
+            return towers.get_tower_messages()
 
         if help_pattern.match(msg['body']) is not None:
             return ['Commands: .help, .time, .upladtime, .jita, .amarr, .dodixie, .rens, .hek, .ops, .addop, .rmop']
