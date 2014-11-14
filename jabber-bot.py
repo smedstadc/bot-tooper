@@ -219,6 +219,8 @@ class JabberBot(sleekxmpp.ClientXMPP):
         if help_pattern.match(msg['body']) is not None:
             return ['Commands: .help, .time, .upladtime, .jita, .amarr, .dodixie, .rens, .hek, .ops, .addop, .rmop']
 
+        return []
+
     def muc_online(self, presence):
         """
         Process a presence stanza from a chat room. In this case,

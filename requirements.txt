@@ -1,0 +1,4 @@
+beautifulsoup4
+sleekxmpp
+pony
+requests
