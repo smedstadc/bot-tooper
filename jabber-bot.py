@@ -114,7 +114,7 @@ class JabberBot(sleekxmpp.ClientXMPP):
 
     def message(self, msg):
         if msg['type'] in ('chat', 'normal'):
-            for line in self.get_reply_lines(msg):
+            for line in self.get_reply_lines(msg, pm=True):
                 self.send_message(mto=msg['from'], mfrom=msg['to'], mbody=line)
 
     def muc_message(self, msg):
@@ -122,7 +122,7 @@ class JabberBot(sleekxmpp.ClientXMPP):
             for line in self.get_reply_lines(msg):
                 self.send_message(mto=msg['from'].bare, mfrom=msg['to'], mbody=line, mtype='groupchat')
 
-    def get_reply_lines(self, msg):
+    def get_reply_lines(self, msg, pm=False):
         """
         :rtype list
 
@@ -156,7 +156,10 @@ class JabberBot(sleekxmpp.ClientXMPP):
 
         m = price_check_pattern.match(msg['body'])
         if m is not None:
-            return pricecheck.get_price_messages(m.group('item_args').split('; '), m.group('system'))
+            if pm:
+                return pricecheck.get_price_messages(m.group('item_args').split('; '), m.group('system'), max_results=100)
+            else:
+                return pricecheck.get_price_messages(m.group('item_args').split('; '), m.group('system'))
 
         if ops_pattern.match(msg['body']) is not None:
             return countdown.get_countdown_messages()
