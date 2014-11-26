@@ -35,39 +35,48 @@ db.generate_mapping(create_tables=True)
 
 ##### COUNTDOWN METHODS #####
 def add_timer(match):
-    date_time = (datetime.utcnow() + timedelta(days=int(match.group('days')), hours=int(match.group('hours')),
+    date_time = (datetime.utcnow() + timedelta(days=int(match.group('days')),
+                                               hours=int(match.group('hours')),
                                                minutes=int(match.group('minutes'))))
+
     name = match.group('name')
     add_event(date_time, name)
     return True
 
 
 def add_datetime(match):
-    date_time = datetime(int(match.group('year')), int(match.group('month')), int(match.group('day')),
-                         int(match.group('hour')), int(match.group('minute')))
+    date_time = datetime(int(match.group('year')),
+                         int(match.group('month')),
+                         int(match.group('day')),
+                         int(match.group('hour')),
+                         int(match.group('minute')))
+
     name = match.group('name')
     add_event(date_time, name)
     return True
 
 
-def add_event(date_time, name):
-    name = upper_preserving_urls(name)
+def add_event(date_time, event_name):
+    event_name = upper_preserving_urls(event_name)
     with pony.orm.db_session:
-        Event(date_time=date_time, name=name)
+        Event(date_time=date_time, name=event_name)
 
 
-def remove_event(rmop_args):
+def remove_event(event_id_to_remove):
     with pony.orm.db_session:
-        event = Event[rmop_args]
-        name = event.name
-        event_id = event.event_id
-        event.delete()
-    return ["Removed: {} (ID:{})".format(name, event_id)]
+        event = Event.get(event_id=event_id_to_remove)
+        if event is not None:
+            removed_name = event.name
+            removed_id = event.event_id
+            event.delete()
+            return ["Removed: {} (ID:{}).".format(removed_name, removed_id)]
+        else:
+            return ["Event ID:{} doesn't exist and cannot be removed.".format(event_id_to_remove)]
 
 
-def days_hours_minutes(adelta):
+def days_hours_minutes(time_delta):
     """Returns the value of a time delta as days, hours and minutes."""
-    return adelta.days, adelta.seconds // 3600, (adelta.seconds // 60) % 60
+    return time_delta.days, time_delta.seconds // 3600, (time_delta.seconds // 60) % 60
 
 
 def get_countdown_messages():
@@ -88,9 +97,14 @@ def get_countdown_messages():
                 if time_delta.total_seconds() > 0:
                     delta = days_hours_minutes(time_delta)
                     messages.append(
-                        '{0:4}d {1:2}h {2:2}m until {3} at {4} UTC (ID:{5}) '.format(delta[0], delta[1], delta[2], name,
+                        '{0:4}d {1:2}h {2:2}m until {3} at {4} UTC (ID:{5})'.format(delta[0],
+                                                                                     delta[1],
+                                                                                     delta[2],
+                                                                                     name,
                                                                                      date_time.strftime
-                                                                                     ("%Y-%m-%dT%H:%M"), event_id))
+                                                                                     ("%Y-%m-%dT%H:%M"),
+                                                                                     event_id))
+
                 else:
                     minutes_elapsed = abs(time_delta.total_seconds()) // 60
                     if minutes_elapsed > 30:
@@ -103,12 +117,14 @@ def get_countdown_messages():
         return messages
 
 
-def upper_preserving_urls(s):
+def upper_preserving_urls(string):
     """Returns an uppercase version of the given string, but preserves urls which may be case sensitive."""
-    urls = re.findall(r'(https?://\S+)', s)
-    s = re.sub(r'(https?://\S+)', '{}', s)
-    return s.upper().format(*urls)
+    urls = re.findall(r'(https?://\S+)', string)
+    string = re.sub(r'(https?://\S+)', '{}', string)
+    return string.upper().format(*urls)
 
+
+##### TEST #####
 if __name__ == "__main__":
     # .addtimer <days>d<hours>h<minutes>m <name>
     addtimer_pattern = re.compile(
