@@ -32,7 +32,6 @@ if sys.version_info < (3, 0):
 else:
     raw_input = input
 
-# TODO Move argument pattern matching into respective modules.
 # Bot should match triggers. Commands should be responsible for validating input.
 help_pattern = re.compile(r'^[.]help$')
 time_pattern = re.compile(r'^[.]time$')
@@ -220,7 +219,19 @@ class JabberBot(sleekxmpp.ClientXMPP):
             return towers.get_tower_messages()
 
         if help_pattern.match(msg['body']) is not None:
-            return ['Commands: .help, .time, .upladtime, .jita, .amarr, .dodixie, .rens, .hek, .ops, .addop, .rmop']
+            # return ['Commands: .help, .time, .upladtime, .jita, .amarr, .dodixie, .rens, .hek, .ops, .addop, .rmop']
+            return ['These commands are available in chat, or private message:',
+                    '.help -> display this help message',
+                    '.time/.upladtime -> the current UTC time in human/uplad friendly formats',
+                    '.jita <item name> -> price check a marketable item (also .amarr, .dodixie, .rens, .hek)',
+                    '.ops -> display a text mode timerboard',
+                    '.addop <year>-<month>-<day>@<hour>:<minute> <name> -> add an event by specific time',
+                    '.addop <days>d<hours>h<minutes>m <name> -> add an event by reinforce timer',
+                    '.rmop <id number> -> remove an event',
+                    '.towers -> display towers and the last time they were checked for siphons',
+                    '.addtower <name> -> add a tower',
+                    '.marktower <id number> -> mark a tower that has been checked for siphons',
+                    '.rmtower <id number> -> remove a tower']
 
         return []
 

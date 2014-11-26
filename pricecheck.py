@@ -3,9 +3,6 @@
     Checks the eve-central api marketdata for a given item name and returns price message strings.
 
 """
-
-# TODO Alter get_marketstat_xml to use requests
-
 from settings import TYPEIDSFILENAME
 import xml.etree.ElementTree as ET
 import requests
