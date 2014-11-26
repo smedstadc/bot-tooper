@@ -36,40 +36,40 @@ def add_tower(tower_name):
     with pony.orm.db_session:
         if Tower.get(name=tower_name) is None:
             Tower(name=tower_name)
-            return ["Added: '{}'".format(tower_name)]
+            return ['Tower added.']
         else:
-            return ["'{}' already exists.".format(tower_name)]
+            return ["A tower named '{}' already exists.".format(tower_name)]
 
 
-def remove_tower(tower_name):
+def remove_tower(tower_id_to_remove):
     """
     Removes a tower if it exists.
     Returns a string reply value.
     """
-    tower_name = tower_name.upper().strip()
     with pony.orm.db_session:
-        tower = Tower.get(name=tower_name)
+        tower = Tower.get(id=tower_id_to_remove)
         if tower is not None:
+            removed_id = tower.id
+            removed_name = tower.name
             tower.delete()
-            return ["Removed: '{}'".format(tower_name)]
+            return ["Removed: '{}' (ID:{}).".format(removed_name, removed_id)]
         else:
-            return ["'{}' doesn't exist to delete.".format(tower_name)]
+            return ["Tower ID:{} doesn't exist and cannot be removed.".format(tower_id_to_remove)]
 
 
-def mark_checked(tower_name):
+def mark_checked(tower_id_to_check):
     """
     Sets a tower's last_siphon_checked value to utcnow() if it exists.
     Returns a string reply value.
     """
-    tower_name = tower_name.upper().strip()
     with pony.orm.db_session:
-        tower = Tower.get(name=tower_name)
+        tower = Tower.get(id=tower_id_to_check)
         if tower is not None:
             tower.last_siphon_check = datetime.datetime.utcnow()
-            return ["{} marked as checked on {}.".format(tower_name,
-                                                        tower.last_siphon_check.strftime("%b %d at %H:%M UTC"))]
+            return ["{} marked as checked on {}.".format(tower.name,
+                                                         tower.last_siphon_check.strftime("%b %d at %H:%M UTC"))]
         else:
-            return ["'{}' doesn't exist to mark.".format(tower_name)]
+            return ["'Tower ID:{}' doesn't exist and cannot be marked as checked.".format(tower_id_to_check)]
 
 
 def get_tower_messages():
@@ -83,10 +83,11 @@ def get_tower_messages():
         if len(towers) > 0:
             for tower in towers:
                 if tower.last_siphon_check is None:
-                    reply_messages.append("{} never checked.".format(tower.name))
+                    reply_messages.append("{} never checked (ID:{})".format(tower.name, tower.id))
                 else:
-                    reply_messages.append("{} checked on {}".format(tower.name,
-                                                                    tower.last_siphon_check.strftime("%b %d at %H:%M UTC")))
+                    reply_messages.append("{} checked on {} (ID:{})".format(tower.name,
+                                                                    tower.last_siphon_check.strftime("%b %d at %H:%M UTC"),
+                                                                    tower.id))
             reply_messages.append("It is now {}".format(datetime.datetime.utcnow().strftime("%b %d at %H:%M UTC")))
             return reply_messages
         else:
