@@ -882,16 +882,16 @@
 3392,Mechanics
 3393,Repair Systems
 3394,Hull Upgrades
-3395,Frigate Construction
-3396,Industrial Construction
-3397,Cruiser Construction
-3398,Battleship Construction
+3395,Advanced Small Ship Construction
+3396,Advanced Industrial Ship Construction
+3397,Advanced Medium Ship Construction
+3398,Advanced Large Ship Construction
 3400,Outpost Construction
 3402,Science
 3403,Research
 3405,Biology
 3406,Laboratory Operation
-3408,Reverse Engineering
+3408,Sleeper Encryption Methods
 3409,Metallurgy
 3410,Astrogeology
 3411,Cybernetics
@@ -2135,13 +2135,13 @@
 11441,Plasma Physics
 11442,Nanite Engineering
 11443,Hydromagnetic Physics
-11444,Amarrian Starship Engineering
+11444,Amarr Starship Engineering
 11445,Minmatar Starship Engineering
 11446,Graviton Physics
 11447,Laser Physics
 11448,Electromagnetic Physics
 11449,Rocket Science
-11450,Gallentean Starship Engineering
+11450,Gallente Starship Engineering
 11451,Nuclear Physics
 11452,Mechanical Engineering
 11453,Electronic Engineering
@@ -5196,16 +5196,6 @@
 21557,800mm Heavy 'Jolt' Repeating Cannon I
 21559,1200mm Heavy 'Jolt' Artillery I
 21561,1400mm 'Jolt' Artillery I
-21573,Esoteric Process
-21574,Esoteric Accelerant
-21575,Esoteric Symmetry
-21576,Esoteric Augmentation
-21577,Esoteric Attainment
-21579,Cryptic Process
-21580,Cryptic Accelerant
-21581,Cryptic Symmetry
-21582,Cryptic Augmentation
-21583,Cryptic Attainment
 21584,Sleeper Micro Circuits
 21585,Sleeper Cryo Batteries
 21586,Sleeper Virtual Energizer
@@ -5519,16 +5509,6 @@
 23165,Heat Depressor
 23166,Internal Bulkhead
 23167,Mainframe Bit
-23178,Occult Process
-23179,Occult Accelerant
-23180,Occult Symmetry
-23181,Occult Augmentation
-23182,Occult Attainment
-23183,Incognito Process
-23184,Incognito Accelerant
-23185,Incognito Symmetry
-23186,Incognito Augmentation
-23187,Incognito Attainment
 23414,'Brotherhood' Small Remote Armor Repairer
 23416,'Peace' Large Remote Armor Repairer
 23418,'Radical' Damage Control I
@@ -5778,10 +5758,6 @@
 25546,Eifyr and Co. 'Alchemist' Neurotoxin Control NC-905
 25547,Eifyr and Co. 'Alchemist' Neurotoxin Recovery NR-1003
 25548,Eifyr and Co. 'Alchemist' Neurotoxin Recovery NR-1005
-25553,Cryptic Data Interface
-25554,Occult Data Interface
-25555,Esoteric Data Interface
-25556,Incognito Data Interface
 25561,Signal Distortion Amplifier I
 25563,Signal Distortion Amplifier II
 25565,'Hypnos' Signal Distortion Amplifier I
@@ -5839,10 +5815,6 @@
 25811,Astrometric Acquisition
 25812,Gas Cloud Harvester II
 25821,General Storage
-25851,Occult Ship Data Interface
-25853,Esoteric Ship Data Interface
-25855,Incognito Ship Data Interface
-25857,Cryptic Ship Data Interface
 25861,Salvager I
 25863,Salvaging
 25867,Pashan's Turret Handling Mindlink
@@ -6012,10 +5984,6 @@
 26448,Large Core Defense Field Extender II
 26450,Large Core Defense Field Purger II
 26452,Large Core Defense Operational Solidifier II
-26597,Cryptic Tuner Data Interface
-26599,Esoteric Tuner Data Interface
-26601,Incognito Tuner Data Interface
-26603,Occult Tuner Data Interface
 26840,Raven State Issue
 26842,Tempest Tribal Issue
 26888,Mobile Large Warp Disruptor II
@@ -6880,11 +6848,6 @@
 30376,Fullerite-C32
 30377,Fullerite-C320
 30378,Fullerite-C540
-30382,Amarr Subsystems Data Interface
-30383,Caldari Subsystems Data Interface
-30384,Minmatar Subsystems Data Interface
-30385,Gallente Subsystems Data Interface
-30386,R.Db.- Hybrid Technology
 30389,Subsystem Assembly Array
 30464,Metallofullerene Plating
 30466,Electromechanical Interface Nexus
@@ -7709,18 +7672,6 @@
 33309,Capital Sentry Damage Augmentor II
 33311,Capital Stasis Drone Augmentor I
 33313,Capital Stasis Drone Augmentor II
-33315,Occult Parity
-33316,Optimized Occult Augmentation
-33317,Optimized Occult Attainment
-33318,Cryptic Parity
-33319,Esoteric Parity
-33320,Incognito Parity
-33321,Optimized Cryptic Augmentation
-33322,Optimized Esoteric Augmentation
-33323,Optimized Incognito Augmentation
-33324,Optimized Cryptic Attainment
-33325,Optimized Esoteric Attainment
-33326,Optimized Incognito Attainment
 33329,Genolution 'Auroral' AU-79
 33330,Navy Cap Booster 25
 33332,Navy Cap Booster 50
@@ -8141,6 +8092,21 @@
 34076,Women's 'Aeriform' Headwear (clear)
 34077,Women's 'Spiderweb' Headwear (golden)
 34078,Women's 'Aeriform' Headwear (black)
+34080,Women's 'Eternity' Boots (Black/Gold)
+34083,Women's 'Eternity' Boots (Olive)
+34086,Women's 'Eternity' Boots (Black/Red)
+34088,Women's 'Eternity' Boots (White)
+34089,Women's 'Eternity' Boots (Yellow)
+34091,Women's 'Eternity' Suit Top (Black/Gold)
+34094,Women's 'Eternity' Suit Top (Olive)
+34097,Women's 'Eternity' Suit Top (Black/Red)
+34099,Women's 'Eternity' Suit Top (White)
+34100,Women's 'Eternity' Suit Top (Yellow)
+34102,Women's 'Eternity' Suit (Black/Gold)
+34105,Women's 'Eternity' Suit (Olive)
+34108,Women's 'Eternity' Suit (Black/Red)
+34110,Women's 'Eternity' Suit (White)
+34111,Women's 'Eternity' Suit (Yellow)
 34118,Megathron Quafe Edition
 34122,Limited Jump Drive Economizer
 34124,Experimental Jump Drive Economizer
@@ -8173,6 +8139,66 @@
 34179,Women's 'Gunner' Jacket (Blood Raiders)
 34180,Women's 'Gunner' Jacket (Guristas)
 34181,Women's 'Gunner' Jacket (Serpentis)
+34201,Accelerant Decryptor
+34202,Attainment Decryptor
+34203,Augmentation Decryptor
+34204,Parity Decryptor
+34205,Process Decryptor
+34206,Symmetry Decryptor
+34207,Optimized Attainment Decryptor
+34208,Optimized Augmentation Decryptor
+34210,Men's 'Quafethron' T-shirt
+34211,Women's 'Quafethron' T-shirt
+34260,Surgical Warp Disrupt Probe
+34264,Focused Void Bomb
+34266,Small Higgs Anchor I
+34268,Medium Higgs Anchor I
+34272,Polarized Small Pulse Laser
+34274,Polarized Heavy Pulse Laser
+34276,Polarized Mega Pulse Laser
+34278,Polarized Light Neutron Blaster
+34280,Polarized Heavy Neutron Blaster
+34282,Polarized Neutron Blaster Cannon
+34284,Polarized 200mm AutoCannon
+34286,Polarized 425mm AutoCannon
+34288,Polarized 800mm Repeating Cannon
+34290,Polarized Rocket Launcher
+34292,Polarized Heavy Assault Missile Launcher
+34294,Polarized Torpedo Launcher
+34306,Large Higgs Anchor I
+34308,Capital Higgs Anchor I
+34317,Confessor
+34327,ORE Freighter
+34328,Bowhead
+34339,Moros Interbus Edition
+34341,Naglfar Justice Edition
+34343,Phoenix Wiyrkomi Edition
+34345,Revelation Sarum Edition
+34347,Men's 'Outlaw' Jacket (Blood Raiders)
+34348,Men's 'Outlaw' Jacket (Sansha's Nation)
+34349,Men's 'Outlaw' Jacket (Guristas)
+34350,Women's 'Outlaw' Coat (Sansha's Nation)
+34351,Women's 'Outlaw' Coat (Guristas)
+34353,Women's 'Outlaw' Coat (Blood Raiders)
+34354,Men's 'Outlaw' Pants (Blood Raiders)
+34355,Men's 'Outlaw' Pants (Sansha's Nation)
+34356,Men's 'Outlaw' Pants (Guristas)
+34357,Women's 'Outlaw' Pants (Blood Raiders)
+34358,Women's 'Outlaw' Pants (Sansha's Nation)
+34359,Women's 'Outlaw' Pants (Guristas)
+34360,Men's 'Outlaw' Boots (Blood Raiders)
+34361,Men's 'Outlaw' Boots (Sansha's Nation)
+34362,Men's 'Outlaw' Boots (Guristas)
+34363,Women's 'Outlaw' Boots (Blood Raiders)
+34364,Women's 'Outlaw' Boots (Sansha's Nation)
+34365,Women's 'Outlaw' Boots (Guristas)
+34390,Amarr Tactical Destroyer
+34393,Men's 'Outlaw' Jacket (Burnt Orange)
+34394,Women's 'Outlaw' Coat (Burnt Orange)
+34396,Self-Assembling Nanolattice
+34412,Small Intact Hull Section
+34414,Small Malfunctioning Hull Section
+34416,Small Wrecked Hull Section
 350916,Plasma Cannon
 351063,Heavy Machine Gun
 351071,Assault C-I
@@ -8899,9 +8925,11 @@
 363412,'Terminus' Drop Uplink
 363491,Combat Rifle
 363551,Magsec SMG
+363570,Assault Scrambler Rifle
 363578,Ion Pistol
 363592,Bolt Pistol
 363604,Rail Rifle
+363770,Assault Rail Rifle
 363780,Core Flaylock Pistol
 363781,GN-13 Flaylock Pistol
 363785,'Splashbone' Flaylock Pistol
@@ -9200,6 +9228,7 @@
 365406,Magsec SMG Proficiency
 365407,Magsec SMG Fitting Optimization
 365408,Magsec SMG Rapid Reload
+365409,Assault Combat Rifle
 365420,'LC-225' Saga-II
 365421,'Harbinger' Amarr Medium Frame A-I
 365424,Reactive Deflection Field I
@@ -9752,8 +9781,10 @@
 367472,Militia Flaylock Pistol
 367477,Kubo’s GMK-16 Plasma Cannon
 367489,Beacon’s ELI-74 Swarm Launcher
+367499,Skill Tree Reset and Refund
 367500,Symb's FORK-5 Sniper Rifle
 367502,Agimus' Modified AGO-56 Mass Driver
+367511,Luis' Modified VC-107 Combat Rifle
 367517,Kalante's RXS-05 Assault Rifle
 367519,Ghalag's Modified MRT-17 Rail Rifle
 367528,Darth's GIO-66 Scrambler Rifle
@@ -9761,3 +9792,105 @@
 367548,Alex's Modified ZX-030 Heavy Machine Gun
 367549,Alldin's IMP-10 Forge Gun
 367552,Bons' SIN-7 Shotgun
+367578,Jara Kumora - Contract
+367586,Militia Nova Knives
+367587,Militia Flaylock Pistol Blueprint
+367589,Militia Bolt Pistol Blueprint
+367590,Militia Ion Pistol Blueprint
+367591,Militia Nova Knife Blueprint
+367592,Militia Magsec SMG Blueprint
+367600,APEX 'Dominus' Sentinel
+367621,Militia Scrambler Rifle Blueprint
+367622,Militia Laser Rifle Blueprint
+367623,Militia Rail Rifle Blueprint
+367624,Militia Combat Rifle Blueprint
+367625,Militia Plasma Cannon Blueprint
+367627,Militia Heavy Machine Gun Blueprint
+367628,Militia Forge Gun Blueprint
+367629,Militia Mass Driver Blueprint
+367630,Militia Flux Grenade
+367631,Militia Flux Grenade Blueprint
+367632,Militia AV Grenade
+367633,Militia AV Grenade Blueprint
+367634,'Quafe' Sentinel G-I
+367650,'Quafe' Sentinel C-I
+367651,'Quafe' Sentinel A-I
+367652,'Quafe' Sentinel M-I
+367653,'Quafe' Assault G-I
+367654,'Quafe' Assault A-I
+367655,'Quafe' Assault M-I
+367656,'Quafe' Scout C-I
+367657,'Quafe' Scout A-I
+367658,'Quafe' Scout M-I
+367677,APEX 'Shogun' Sentinel
+367679,APEX 'Atlas' Sentinel
+367681,APEX 'Warlord' Sentinel
+367685,APEX 'Rasetsu' Assault
+367687,APEX 'Spartan' Assault
+367689,APEX 'Nomad' Assault
+367691,APEX 'Opus' Assault
+367693,APEX 'Kampo' Logistics
+367695,APEX 'Chiron' Logistics
+367697,APEX 'Shaman' Logistics
+367699,APEX 'Seraph' Logistics
+367701,APEX 'Hawk' Scout
+367703,APEX 'Serpent' Scout
+367705,APEX 'Tiger' Scout
+367707,APEX 'Dragon' Scout
+367709,APEX 'Samurai' Commando
+367711,APEX 'Centurion' Commando
+367713,APEX 'Renegade' Commando
+367715,APEX 'Paladin' Commando
+367716,Archduke's Modified Sentinel mk.0
+367738,Frame's Modified Assault ck.0
+367742,Scotsman's Modified Scout gk.0
+367751,Logibro's Modified Logistics mk.0
+367760,Rattati's Modified Assault gk.0
+367765,Encrypted Strongbox
+367770,Hacked Decryptor Key
+367811,State 'Shogun' Sentinel
+367813,Republic Assault Combat Rifle
+367848,Federation Burst Assault Rifle
+367854,Imperial 'Opus' Assault
+367856,Republic 'Shaman' Logistics
+367863,Federation 'Serpent' Scout
+367864,Federation 'Centurion' Commando
+367885,Storm Raider's Modified Commando ak.0
+367895,Archduke's Modified Sentinel mk.0 (Master)
+367896,Logibro's Modified Logistics mk.0 (Master)
+367897,Rattati's Modified Assault gk.0 (Master)
+367898,Storm Raider's Modified Commando ak.0 (Master)
+367899,Frame's Modified Assault ck.0 (Master)
+367900,Scotsman's Modified Scout gk.0 (Master)
+367948,Federation 'Atlas' Sentinel
+367955,State 'Rasetsu' Assault
+367959,Imperial 'Seraph' Logistics
+367960,Republic 'Tiger' Scout
+367963,Republic 'Renegade' Commando
+367987,APEX 'Atlas' Sentinel vX.1
+367988,APEX 'Nomad' Assault vX.1
+367989,APEX 'Dragon' Scout vX.1
+367992,Militia Assault Combat Rifle
+367994,Militia Assault Scrambler Rifle
+367996,Militia Assault Rail Rifle
+367998,Republic 'Warlord' Sentinel
+367999,Federation 'Spartan' Assault
+368000,State 'Kampo' Logistics
+368001,Imperial 'Dragon' Scout
+368003,Imperial 'Paladin' Commando
+368014,Imperial Assault Scrambler Rifle
+368015,State Assault Rail Rifle
+368016,Federation Breach Assault Rifle
+368022,Imperial 'Dominus' Sentinel
+368023,Republic 'Nomad' Assault
+368024,Federation 'Chiron' Logistics
+368025,State 'Hawk' Scout
+368026,State 'Samurai' Commando
+368061,Amarr Combat Standard Loadout
+368062,Amarr Combat Advanced Loadout
+368064,Gallente Combat Standard Loadout
+368065,Gallente Combat Advanced Loadout
+368066,Minmatar Combat Standard Loadout
+368067,Minmatar Combat Advanced Loadout
+368069,Caldari Combat Standard Loadout
+368071,Caldari Combat Advanced Loadout
