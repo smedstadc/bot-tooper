@@ -52,9 +52,9 @@ def remove_tower(tower_id_to_remove):
             removed_id = tower.id
             removed_name = tower.name
             tower.delete()
-            return ["Removed: '{}' (ID:{}).".format(removed_name, removed_id)]
+            return ["Removed: '{}' (ID: {}).".format(removed_name, removed_id)]
         else:
-            return ["Tower ID:{} doesn't exist and cannot be removed.".format(tower_id_to_remove)]
+            return ["Tower ID: {} doesn't exist and cannot be removed.".format(tower_id_to_remove)]
 
 
 def mark_checked(tower_id_to_check):
@@ -69,7 +69,7 @@ def mark_checked(tower_id_to_check):
             return ["{} marked as checked on {}.".format(tower.name,
                                                          tower.last_siphon_check.strftime("%b %d at %H:%M UTC"))]
         else:
-            return ["'Tower ID:{}' doesn't exist and cannot be marked as checked.".format(tower_id_to_check)]
+            return ["'Tower ID: {}' doesn't exist and cannot be marked as checked.".format(tower_id_to_check)]
 
 
 def get_tower_messages():
@@ -83,9 +83,9 @@ def get_tower_messages():
         if len(towers) > 0:
             for tower in towers:
                 if tower.last_siphon_check is None:
-                    reply_messages.append("{} never checked (ID:{})".format(tower.name, tower.id))
+                    reply_messages.append("{} never checked (ID: {})".format(tower.name, tower.id))
                 else:
-                    reply_messages.append("{} checked on {} (ID:{})".format(tower.name,
+                    reply_messages.append("{} checked on {} (ID: {})".format(tower.name,
                                                                     tower.last_siphon_check.strftime("%b %d at %H:%M UTC"),
                                                                     tower.id))
             reply_messages.append("It is now {}".format(datetime.datetime.utcnow().strftime("%b %d at %H:%M UTC")))

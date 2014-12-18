@@ -69,9 +69,9 @@ def remove_event(event_id_to_remove):
             removed_name = event.name
             removed_id = event.event_id
             event.delete()
-            return ["Removed: {} (ID:{}).".format(removed_name, removed_id)]
+            return ["Removed: {} (ID: {}).".format(removed_name, removed_id)]
         else:
-            return ["Event ID:{} doesn't exist and cannot be removed.".format(event_id_to_remove)]
+            return ["Event ID: {} doesn't exist and cannot be removed.".format(event_id_to_remove)]
 
 
 def days_hours_minutes(time_delta):
@@ -110,7 +110,7 @@ def get_countdown_messages():
                     if minutes_elapsed > 30:
                         Event[event_id].delete()
                     else:
-                        messages.append('   IT\'S HAPPENING: \"{}\" (ID:{})'.format(name, event_id))
+                        messages.append('   IT\'S HAPPENING: \"{}\" (ID: {})'.format(name, event_id))
 
         else:
             messages.append("No upcoming events.")
