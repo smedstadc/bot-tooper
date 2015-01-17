@@ -113,7 +113,7 @@
 400,Small Shield Booster II
 405,Micro Remote Shield Booster I
 406,Micro Remote Shield Booster II
-421,Basic Capacitor Recharger
+421,'Basic' Capacitor Recharger
 434,1MN Microwarpdrive I
 438,1MN Afterburner II
 439,1MN Afterburner I
@@ -158,7 +158,7 @@
 499,Light Missile Launcher I
 501,Heavy Missile Launcher I
 503,Torpedo Launcher I
-506,Basic Capacitor Power Relay
+506,'Basic' Capacitor Power Relay
 508,Basic Shield Flux Coil
 509,'Basic' Capacitor Flux Coil
 518,Basic Gyrostabilizer
@@ -258,7 +258,7 @@
 1183,Small Armor Repairer II
 1185,Small Capacitor Battery I
 1190,Small Remote Capacitor Transmitter II
-1192,Basic Overdrive Injector System
+1192,'Basic' Overdrive Injector System
 1193,Basic EM Plating
 1195,Cap Recharger I
 1197,EM Plating I
@@ -277,8 +277,8 @@
 1231,Hemorphite
 1232,Dark Ochre
 1236,Overdrive Injector System II
-1240,Basic Reinforced Bulkheads
-1242,Basic Nanofiber Internal Structure
+1240,'Basic' Reinforced Bulkheads
+1242,'Basic' Nanofiber Internal Structure
 1244,Overdrive Injector System I
 1246,Capacitor Flux Coil I
 1248,Capacitor Flux Coil II
@@ -299,7 +299,7 @@
 1302,Basic Adaptive Nano Plating
 1304,Adaptive Nano Plating I
 1306,Adaptive Nano Plating II
-1315,Basic Expanded Cargohold
+1315,'Basic' Expanded Cargohold
 1317,Expanded Cargohold I
 1319,Expanded Cargohold II
 1333,Reinforced Bulkheads I
@@ -307,15 +307,15 @@
 1351,Basic Reactor Control Unit
 1353,Reactor Control Unit I
 1355,Reactor Control Unit II
-1401,Basic Inertia Stabilizers
-1403,Inertia Stabilizers I
-1405,Inertia Stabilizers II
+1401,'Basic' Inertial Stabilizers
+1403,Inertial Stabilizers I
+1405,Inertial Stabilizers II
 1419,Basic Shield Power Relay
 1422,Shield Power Relay II
 1436,Auto Targeting System II
 1445,Capacitor Power Relay I
 1447,Capacitor Power Relay II
-1537,Basic Power Diagnostic System
+1537,'Basic' Power Diagnostic System
 1539,Power Diagnostic System I
 1541,Power Diagnostic System II
 1547,Small Proton Smartbomb I
@@ -1361,14 +1361,7 @@
 4405,Drone Damage Amplifier II
 4409,Target Spectrum Breaker
 4411,Target Breaker Amplification
-4421,F-a10 Buffer Capacitor Regenerator
-4423,Industrial Capacitor Recharger
-4425,AGM Capacitor Charge Array
-4427,Secondary Parallel Link-Capacitor
-4431,F-b10 Nominal Capacitor Regenerator
-4433,Barton Reactor Capacitor Recharger I
-4435,Eutectic Capacitor Charge Array
-4437,Fixed Parallel Link-Capacitor I
+4435,Eutectic Compact Cap Recharger
 4471,5W Infectious Power System Malfunction
 4473,Small Rudimentary Energy Destabilizer I
 4475,Small Unstable Power Fluctuator I
@@ -1429,14 +1422,9 @@
 5217,Dual Afocal Pulse Maser I
 5219,Dual Modulated Pulse Energy Beam I
 5221,Dual Anode Pulse Particle Stream I
-5231,EP-R Argon Ion Basic Excavation Pulse
 5233,Single Diode Basic Mining Laser
-5235,Xenon Basic Drilling Beam
-5237,Rubin Basic Particle Bore Stream
-5239,EP-S Gaussian Excavation Pulse
-5241,Dual Diode Mining Laser I
-5243,XeCl Drilling Beam I
-5245,Cu Vapor Particle Bore Stream I
+5239,EP-S Gaussian Scoped Mining Laser
+5245,Particle Bore Compact Mining Laser
 5279,F-23 Reciprocal Remote Sensor Booster
 5280,Connected Remote Sensor Booster
 5281,Coadjunct Linked Remote Sensor Booster
@@ -1465,46 +1453,12 @@
 5441,Fleeting Progressive Warp Scrambler I
 5443,Faint Epsilon Warp Scrambler I
 5445,Initiated Harmonic Warp Scrambler I
-5479,Marked Modified SS Expanded Cargo
-5481,Partial Hull Conversion Expanded Cargo
-5483,Alpha Hull Mod Expanded Cargo
-5485,Type-E Altered SS Expanded Cargo
-5487,Mark I Modified SS Expanded Cargo
-5489,Local Hull Conversion Expanded Cargo I
-5491,Beta Hull Mod Expanded Cargo
-5493,Type-D Altered SS Expanded Cargo
-5519,Marked Modified SS Inertial Stabilizers
-5521,Partial Hull Conversion Inertial Stabilizers
-5523,Alpha Hull Mod Inertial Stabilizers
-5525,Type-E Altered SS Inertial Stabilizers
-5527,Mark I Modified SS Inertial Stabilizers
-5529,Local Hull Conversion Inertial Stabilizers I
-5531,Beta Hull Mod Inertial Stabilizers
-5533,Type-D Altered SS Inertial Stabilizers
-5559,Partial Hull Conversion Nanofiber Structure
-5561,Local Hull Conversion Nanofiber Structure I
-5591,Alpha Hull Mod Nanofiber Structure
-5593,Type-E Altered SS Nanofiber Structure
-5595,Marked Modified SS Nanofiber Structure
-5597,Beta Hull Mod Nanofiber Structure
-5599,Type-D Altered SS Nanofiber Structure
-5601,Mark I Modified SS Nanofiber Structure
-5611,Partial Hull Conversion Overdrive Injector
-5613,Alpha Hull Mod Overdrive Injector
-5615,Type-E Altered SS Overdrive Injector
-5617,Marked Modified SS Overdrive Injector
-5627,Local Hull Conversion Overdrive Injector I
-5629,Beta Hull Mod Overdrive Injector
-5631,Type-D Altered SS Overdrive Injector
-5633,Mark I Modified SS Overdrive Injector
-5643,Local Hull Conversion Reinforced Bulkheads I
-5645,Beta Hull Mod Reinforced Bulkheads
-5647,Type-D Altered SS Reinforced Bulkheads
-5649,Mark I Modified SS Reinforced Bulkheads
-5675,Partial Hull Conversion Reinforced Bulkheads
-5677,Alpha Hull Mod Reinforced Bulkheads
-5679,Type-E Altered SS Reinforced Bulkheads
-5681,Marked Modified SS Reinforced Bulkheads
+5493,Type-D Restrained Expanded Cargo
+5533,Type-D Restrained Inertial Stabilizers
+5599,Type-D Restrained Nanofiber Structure
+5631,Type-D Restrained Overdrive Injector
+5647,Type-D Restrained Reinforced Bulkheads
+5649,Mark I Compact Reinforced Bulkheads
 5683,Medium Inefficient Hull Repair Unit
 5693,Small Inefficient Hull Repair Unit
 5697,Large Inefficient Hull Repair Unit
@@ -1789,23 +1743,9 @@
 8117,Prototype 'Arbalest' Torpedo Launcher
 8133,Compact Capacitor Flux Coil
 8135,Restrained Capacitor Flux Coil
-8171,Local Power Plant Manager: Capacity Power Relay I
-8173,Beta Reactor Control: Capacitor Power Relay I
-8175,Type-D Power Core Modification: Capacitor Power Relay
-8177,Mark I Generator Refitting: Capacitor Power Relay
-8203,Partial Power Plant Manager: Capacity Power Relay
-8205,Alpha Reactor Control: Capacitor Power Relay
-8207,Type-E Power Core Modification: Capacitor Power Relay
-8209,Marked Generator Refitting: Capacitor Power Relay
-8211,Partial Power Plant Manager: Diagnostic System
-8213,Alpha Reactor Control: Diagnostic System
-8215,Type-E Power Core Modification: Diagnostic System
-8217,Marked Generator Refitting: Diagnostic System
-8219,Local Power Plant Manager: Diagnostic System I
-8221,Beta Reactor Control: Diagnostic System I
-8223,Type-D Power Core Modification: Diagnostic System
-8225,Mark I Generator Refitting: Diagnostic System
-8255,Type-E Power Core Modification: Reaction Control
+8175,Type-D Restrained Capacitor Power Relay
+8177,Mark I Compact Capacitor Power Relay
+8225,Mark I Compact Power Diagnostic System
 8263,Compact Reactor Control Unit
 8291,Local Power Plant Manager: Reaction Shield Flux I
 8293,Beta Reactor Control: Shield Flux I
@@ -5166,11 +5106,11 @@
 21484,'Full Duplex' Ballistic Targeting System
 21486,'Kindred' Stabilization Actuator I
 21488,Monophonic Stabilization Actuator I
-21491,Synthetic Hull Conversion Overdrive Injector I
-21493,Limited Expanded 'Archiver' Cargo I
-21496,Synthetic Hull Conversion Reinforced Bulkheads I
-21498,Synthetic Hull Conversion Inertia Stabilizers I
-21500,Synthetic Hull Conversion Nanofiber Structure I
+21491,Synthetic Hull Conversion Overdrive Injector
+21493,Limited Expanded 'Archiver' Cargo
+21496,Synthetic Hull Conversion Reinforced Bulkheads
+21498,Synthetic Hull Conversion Inertia Stabilizers
+21500,Synthetic Hull Conversion Nanofiber Structure
 21504,Small 'Integrative' Hull Repair Unit
 21506,Medium 'Integrative' Hull Repair Unit
 21508,Large 'Integrative' Hull Repair Unit
@@ -5352,14 +5292,12 @@
 22572,Praetor EV-900
 22576,Ice Harvester Upgrade I
 22578,Mining Upgrades
-22609,Erin Mining Laser Upgrade
-22611,Elara Mining Laser Upgrade
-22613,Carpo Mining Laser Upgrade
-22615,Aoede Mining Laser Upgrade
-22617,Crisium Ice Harvester Upgrade
-22619,Frigoris Ice Harvester Upgrade
-22621,Anguis Ice Harvester Upgrade
-22623,Ingenii Ice Harvester Upgrade
+22611,Elara Restrained Mining Laser Upgrade
+22613,'Carpo' Mining Laser Upgrade
+22615,'Aoede' Mining Laser Upgrade
+22619,Frigoris Restrained Ice Harvester Upgrade
+22621,'Anguis' Ice Harvester Upgrade
+22623,'Ingenii' Ice Harvester Upgrade
 22634,Medium Biochemical Reactor Array
 22715,Republic Special Ops Field Enhancer - Gamma
 22760,Imperial Special Ops Field Enhancer - Standard
@@ -7801,7 +7739,7 @@
 33631,Maelstrom Nefantar Edition
 33633,Maelstrom Krusual Edition
 33635,Hyperion Aliastra Edition
-33637,Hyperion Innerzone Shipping Edition
+33637,Hyperion Inner Zone Shipping Edition
 33639,Omen Kador Edition
 33641,Omen Tash-Murkon Edition
 33643,Caracal Nugoeihuvi Edition
@@ -7809,7 +7747,7 @@
 33647,Stabber Nefantar Edition
 33649,Stabber Krusual Edition
 33651,Thorax Aliastra Edition
-33653,Thorax Innerzone Shipping Edition
+33653,Thorax Inner Zone Shipping Edition
 33655,Punisher Kador Edition
 33657,Punisher Tash-Murkon Edition
 33659,Merlin Nugoeihuvi Edition
@@ -7817,7 +7755,7 @@
 33663,Rifter Nefantar Edition
 33665,Rifter Krusual Edition
 33667,Incursus Aliastra Edition
-33669,Incursus Innerzone Shipping Edition
+33669,Incursus Inner Zone Shipping Edition
 33671,Heavy Hull Maintenance Bot I
 33673,Whiptail
 33675,Chameleon
@@ -8199,6 +8137,34 @@
 34412,Small Intact Hull Section
 34414,Small Malfunctioning Hull Section
 34416,Small Wrecked Hull Section
+34417,Manufacturing Union’s Placard
+34418,The Galactic Party Planning Guide
+34419,Jump Fatigue Recovery Agent
+34420,Cooking With Veldspar
+34421,Chribba’s Modified Strip Miner
+34422,Rooks & Kings – The Clarion Call Compilation
+34423,Pre-Completed CSM 10 Ballot Paper
+34424,Titanium Plated Cranial Shielding
+34425,SCC Guidelines – Lotteries For Dummies
+34426,Sort Dragon’s Guide To Diplomacy
+34427,Polaris Eviction Notice
+34428,Jump Portal Generation Instruction Holoreel
+34429,Vincent Pryce’s Warp Disruption Field Generator
+34430,My God, It’s Full Of Holes!
+34431,Guillome Renard’s Sleeper Loot Stash
+34432,Sisters Of EVE Charity Statue
+34433,The Damsel’s Drunk Bodyguard
+34434,Alice Saki’s Good Posting Guide
+34435,Soxfour’s Spaceboots
+34436,The Friend Ship
+34441,Dominix Quafe Edition
+34443,Tristan Quafe Edition
+34445,Vexor Quafe Edition
+34481,Domination Inertial Stabilizers
+34483,Shadow Serpentis Inertial Stabilizers
+34485,ORE Reinforced Bulkheads
+34487,Syndicate Reinforced Bulkheads
+34489,ORE Expanded Cargohold
 350916,Plasma Cannon
 351063,Heavy Machine Gun
 351071,Assault C-I
@@ -9894,3 +9860,21 @@
 368067,Minmatar Combat Advanced Loadout
 368069,Caldari Combat Standard Loadout
 368071,Caldari Combat Advanced Loadout
+368242,Boundless Packed Remote Explosive
+368243,Packed Remote Explosive
+368244,F/45 Packed Remote Explosive
+368245,X-MS15 Snowball Launcher
+368518,CreoDron Methana vX.1
+368519,X-MS Snowball Launcher
+368524,Imperial Scout A-I
+368574,Imperial Scout A/1-Series
+368579,Imperial Scout ak.0
+368586,State Scout C-I
+368594,State Scout C/1-Series
+368614,State Scout ck.0
+368615,State Commando C-I
+368616,State Commando C/1-Series
+368617,State Commando ck.0
+368618,State Sentinel C-I
+368619,State Sentinel C/1-Series
+368620,State Sentinel ck.0
