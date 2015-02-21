@@ -7,18 +7,18 @@
 DBFILENAME = 'sqlite-latest.sqlite'
 
 # IRC SETTINGS
-IRC_HOST = 'irc.server.com'
+IRC_HOST = 'irc.nosperg.com'
 IRC_PORT = 6667  # default IRC port is 6667, but your specific server may be different
-IRC_NICKNAME = 'nickname' #  Can't be taken by someone else on the server.
-IRC_USERNAME = 'username'
-IRC_HOSTNAME = 'hostname'
-IRC_SERVERNAME = 'servername'
-IRC_REALNAME = 'realname'
+IRC_NICKNAME = 'test_tooper' #  Can't be taken by someone else on the server.
+IRC_USERNAME = 'test'
+IRC_HOSTNAME = 'test'
+IRC_SERVERNAME = 'test'
+IRC_REALNAME = 'test_fucking_tooper'
 IRC_PASSWORD = ''  # IRC AUTH SUPPORT NOT YET IMPLEMENTED THIS DOES NOTHING
 IRC_OPERUSER = None  # Required if the bot has oper privs for spam/kick/ban/mode on any channels
 IRC_OPERPASS = None  # ^
-IRC_CHANNELS = ['#test1', '#test2', '#test3']  # list of channels for the bot to join
-IRC_OPSEC = ['']  # list of channels allowed to use the timerboard feature
+IRC_CHANNELS = ['#test1']  # list of channels for the bot to join
+IRC_PROTECTEDCHANNELS = ['']
 
 # XMPP/JABBER SETTINGS
 XMPP_JID = ''
