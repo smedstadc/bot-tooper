@@ -156,9 +156,9 @@ class JabberBot(sleekxmpp.ClientXMPP):
         m = price_check_pattern.match(msg['body'])
         if m is not None:
             if pm:
-                return pricecheck.get_price_messages(m.group('item_args').split('; '), m.group('system'), max_results=100)
+                return pricecheck.get_price_messages(m.group('item_args').strip(), m.group('system'), max_results=100)
             else:
-                return pricecheck.get_price_messages(m.group('item_args').split('; '), m.group('system'))
+                return pricecheck.get_price_messages(m.group('item_args').strip(), m.group('system'))
 
         if ops_pattern.match(msg['body']) is not None:
             return countdown.get_countdown_messages()

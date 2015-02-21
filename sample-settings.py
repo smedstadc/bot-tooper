@@ -3,9 +3,8 @@
 # 2. Edit each value to match your desired settings.
 # 3. Run the bot (ex: python3 bot.py)
 
-# change these if you rename the timers or typeids files
-TIMERSFILENAME = 'timers.txt'
-TYPEIDSFILENAME = 'market_only_typeids.csv'
+# Change this if you re-name the static data export
+DBFILENAME = 'sqlite-latest.sqlite'
 
 # IRC SETTINGS
 IRC_HOST = 'irc.server.com'

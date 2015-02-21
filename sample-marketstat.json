@@ -1,0 +1,197 @@
+[
+  {
+    "buy": {
+      "forQuery": {
+        "bid": true,
+        "types": [34],
+        "regions": [],
+        "systems": [30000142],
+        "hours": 24,
+        "minq": 10001
+      },
+      "volume": 10963467274,
+      "wavg": 5.539554691870921,
+      "avg": 5.228076923076923,
+      "variance": 0.7258463017751479,
+      "stdDev": 0.8519661388665326,
+      "median": 5.535,
+      "fivePercent": 5.77,
+      "max": 5.77,
+      "min": 2.0,
+      "highToLow": true,
+      "generated": 1424467830852
+    },
+    "all": {
+      "forQuery": {
+        "bid": null,
+        "types": [34],
+        "regions": [],
+        "systems": [30000142],
+        "hours": 24,
+        "minq": 10001
+      },
+      "volume": 38529785955,
+      "wavg": 6.023350314548614,
+      "avg": 6.246806282722516,
+      "variance": 0.8064992242537203,
+      "stdDev": 0.8980530186206828,
+      "median": 6.07,
+      "fivePercent": 4.234596112898111,
+      "max": 10.0,
+      "min": 0.5,
+      "highToLow": false,
+      "generated": 1424467831088
+    },
+    "sell": {
+      "forQuery": {
+        "bid": false,
+        "types": [34],
+        "regions": [],
+        "systems": [30000142],
+        "hours": 24,
+        "minq": 10001
+      },
+      "volume": 27166318681,
+      "wavg": 6.299921376332029,
+      "avg": 6.443353658536591,
+      "variance": 0.419664972486615,
+      "stdDev": 0.6478155389357491,
+      "median": 6.12,
+      "fivePercent": 5.938806788931187,
+      "max": 10.0,
+      "min": 5.93,
+      "highToLow": false,
+      "generated": 1424467831098
+    }
+  },
+  {
+    "buy": {
+      "forQuery": {
+        "bid": true,
+        "types": [35],
+        "regions": [],
+        "systems": [30000142],
+        "hours": 24,
+        "minq": 10001
+      },
+      "volume": 6038069592,
+      "wavg": 11.667128062834358,
+      "avg": 11.335116279069767,
+      "variance": 1.4835412655489455,
+      "stdDev": 1.218007087643149,
+      "median": 12.06,
+      "fivePercent": 12.244051181235822,
+      "max": 12.28,
+      "min": 5.0,
+      "highToLow": true,
+      "generated": 1424467833378
+    },
+    "all": {
+      "forQuery": {
+        "bid": null,
+        "types": [35],
+        "regions": [],
+        "systems": [30000142],
+        "hours": 24,
+        "minq": 10001
+      },
+      "volume": 11034904562,
+      "wavg": 12.076035173426813,
+      "avg": 12.07847058823529,
+      "variance": 6.136911778546711,
+      "stdDev": 2.477279107921978,
+      "median": 12.18,
+      "fivePercent": 3.3087567036882235,
+      "max": 17.4,
+      "min": 0.25,
+      "highToLow": false,
+      "generated": 1424467833369
+    },
+    "sell": {
+      "forQuery": {
+        "bid": false,
+        "types": [35],
+        "regions": [],
+        "systems": [30000142],
+        "hours": 24,
+        "minq": 10001
+      },
+      "volume": 4491834970,
+      "wavg": 13.941900105904828,
+      "avg": 13.466000000000003,
+      "variance": 2.001849,
+      "stdDev": 1.414867131571018,
+      "median": 13.555,
+      "fivePercent": 12.440720454150195,
+      "max": 17.4,
+      "min": 12.38,
+      "highToLow": false,
+      "generated": 1424467833170
+    }
+  },
+  {
+    "buy": {
+      "forQuery": {
+        "bid": true,
+        "types": [36],
+        "regions": [],
+        "systems": [30000142],
+        "hours": 24,
+        "minq": 10001
+      },
+      "volume": 1224922866,
+      "wavg": 54.02147645853482,
+      "avg": 53.28916666666667,
+      "variance": 81.43924097222224,
+      "stdDev": 9.024369283901354,
+      "median": 55.085,
+      "fivePercent": 59.52595689687724,
+      "max": 59.7,
+      "min": 20.0,
+      "highToLow": true,
+      "generated": 1424467829989
+    },
+    "all": {
+      "forQuery": {
+        "bid": null,
+        "types": [36],
+        "regions": [],
+        "systems": [30000142],
+        "hours": 24,
+        "minq": 10001
+      },
+      "volume": 2373214136,
+      "wavg": 57.53037402862075,
+      "avg": 59.34467741935484,
+      "variance": 101.27830392819979,
+      "stdDev": 10.063712233972105,
+      "median": 59.07,
+      "fivePercent": 38.57342236594124,
+      "max": 78.98,
+      "min": 1.0,
+      "highToLow": false,
+      "generated": 1424467829980
+    },
+    "sell": {
+      "forQuery": {
+        "bid": false,
+        "types": [36],
+        "regions": [],
+        "systems": [30000142],
+        "hours": 24,
+        "minq": 10001
+      },
+      "volume": 1111015512,
+      "wavg": 63.15672267289641,
+      "avg": 63.170581395348826,
+      "variance": 10.093026406165496,
+      "stdDev": 3.176952377069177,
+      "median": 61.644999999999996,
+      "fivePercent": 60.808211210171784,
+      "max": 78.98,
+      "min": 60.0,
+      "highToLow": false,
+      "generated": 1424467829997
+    }
+  }
+]
