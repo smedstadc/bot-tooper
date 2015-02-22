@@ -2,3 +2,4 @@ beautifulsoup4
 sleekxmpp
 pony
 requests
+expiringdict

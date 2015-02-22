@@ -120,8 +120,6 @@ class GetMarkettypesJson(unittest.TestCase):
 class GetPriceMessages(unittest.TestCase):
 
     def test_valid_item_name(self):
-        expected_result = ['Tritanium, sell: 5.85, buy: 5.84, volume: 39,970,440,116',
-                           'Alloyed Tritanium Bar, sell: 15,379.91, buy: 14,500.00, volume: 702,195']
         result = pricecheck.get_price_messages('tritanium', 'jita')
         self.assertEquals(len(result), 2)
 
@@ -138,15 +136,15 @@ class Wildcards(unittest.TestCase):
 
     def test_no_items(self):
         result = pricecheck._wildcards([])
-        self.assertEquals(result, '')
+        self.assertEquals(result, '()')
 
     def test_one_item(self):
         result = pricecheck._wildcards([1])
-        self.assertEquals(result, '?')
+        self.assertEquals(result, '(?)')
 
     def test_multiple_items(self):
         result = pricecheck._wildcards([1, 2, 3])
-        self.assertEquals(result, '?,?,?')
+        self.assertEquals(result, '(?,?,?)')
 
 
 if __name__ == '__main__':

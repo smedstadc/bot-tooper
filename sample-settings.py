@@ -4,7 +4,7 @@
 # 3. Run the bot (ex: python3 bot.py)
 
 # Change this if you re-name the static data export
-DBFILENAME = 'sqlite-latest.sqlite'
+DB_FILENAME = 'sqlite-latest.sqlite'
 
 # IRC SETTINGS
 IRC_HOST = 'irc.nosperg.com'
