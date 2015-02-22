@@ -9,7 +9,7 @@ DB_FILENAME = 'sqlite-latest.sqlite'
 # IRC SETTINGS
 IRC_HOST = 'irc.nosperg.com'
 IRC_PORT = 6667  # default IRC port is 6667, but your specific server may be different
-IRC_NICKNAME = 'test_tooper' #  Can't be taken by someone else on the server.
+IRC_NICKNAME = 'test_tooper'  #  Can't be taken by someone else on the server.
 IRC_USERNAME = 'test'
 IRC_HOSTNAME = 'test'
 IRC_SERVERNAME = 'test'

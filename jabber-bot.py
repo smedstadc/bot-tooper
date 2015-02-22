@@ -55,6 +55,7 @@ rmtower_pattern = re.compile(r'^[.]rmtower (?P<rmtower_arg>.+)$')
 marktower_pattern = re.compile(r'^[.]marktower (?P<marktower_arg>.+)$')
 towers_pattern = re.compile(r'^[.]towers$')
 
+
 class JabberBot(sleekxmpp.ClientXMPP):
 
     """
@@ -103,13 +104,9 @@ class JabberBot(sleekxmpp.ClientXMPP):
                      event does not provide any additional
                      data.
         """
-        self.get_roster()
+        # self.get_roster()
         self.send_presence()
-        self.plugin['xep_0045'].joinMUC(self.room,
-                                        self.nick,
-                                        # If a room password is needed, use:
-                                        # password=the_room_password,
-                                        wait=True)
+        self.plugin['xep_0045'].joinMUC(self.room, self.nick, wait=True)
 
     def message(self, msg):
         if msg['type'] in ('chat', 'normal'):
@@ -219,7 +216,6 @@ class JabberBot(sleekxmpp.ClientXMPP):
             return towers.get_tower_messages()
 
         if help_pattern.match(msg['body']) is not None:
-            # return ['Commands: .help, .time, .upladtime, .jita, .amarr, .dodixie, .rens, .hek, .ops, .addop, .rmop']
             return ['These commands are available in chat, or private message:',
                     '.help -> display this help message',
                     '.time/.upladtime -> the current UTC time in human/uplad friendly formats',
@@ -237,25 +233,15 @@ class JabberBot(sleekxmpp.ClientXMPP):
 
     def muc_online(self, presence):
         """
-        Process a presence stanza from a chat room. In this case,
-        presences from users that have just come online are
-        handled by sending a welcome message that includes
-        the user's nickname and role in the room.
+        Process a presence stanza from a chat room.
 
         Arguments:
-            presence -- The received presence stanza. See the
-                        documentation for the Presence stanza
-                        to see how else it may be used.
+            presence -- The received presence stanza.
         """
-        pass  # disable this for now
-        # if presence['muc']['nick'] != self.nick:
-        #     self.send_message(mto=presence['from'].bare,
-        #                       mbody="Hello, %s %s" % (presence['muc']['role'],
-        #                                               presence['muc']['nick']),
-        #                       mtype='groupchat')
+        pass  # do nothing
 
 
-if __name__ == '__main__':
+def main():
     # Setup the command line arguments.
     optp = OptionParser()
 
@@ -321,3 +307,7 @@ if __name__ == '__main__':
         print("Done")
     else:
         print("Unable to connect.")
+
+
+if __name__ == '__main__':
+    main()
