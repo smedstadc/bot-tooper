@@ -15,7 +15,7 @@ if sys.version_info < (3, 0):
     reload(sys)
     sys.setdefaultencoding('utf8')
 
-database_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), settings.DB_FILENAME)
+database_path = settings.DB_FILENAME
 marketstat_cache = ExpiringDict(max_len=100, max_age_seconds=1800)
 
 
