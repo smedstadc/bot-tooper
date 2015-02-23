@@ -50,6 +50,7 @@ def get_price_messages(item_name, system_name):
             messages = []
             for item_json in marketstat_json:
                 messages.append(get_message_string(item_json, type_names))
+        messages = trim_responses(messages)
         return messages
     else:
         return ["Usage: .jita|amarr|dodixie|hek|rens <item_name>"]
@@ -96,6 +97,16 @@ def get_message_string(item_json, type_names):
         item_json["sell"]["min"],
         item_json["buy"]["max"],
         item_json["all"]["volume"])
+
+
+def trim_responses(responses):
+    if len(responses) >= 10:
+        num_extra = len(responses[9:])
+        first_nine = responses[:9]
+        first_nine.append("...and {} more lines. Try a narrower search term?".format(num_extra))
+        return first_nine
+    else:
+        return responses
 
 
 def get_type_ids(item_name):
