@@ -6,8 +6,11 @@ Stores events and returns the time remaining until those events when asked.
 from datetime import datetime, timedelta
 import re
 import pony.orm
+import os
 
-db = pony.orm.Database("sqlite", "timers_plugin.sqlite", create_db=True)
+db_path = os.path.join(os.getcwd(), 'db', 'timers_plugin.sqlite')
+db = pony.orm.Database("sqlite", db_path, create_db=True)
+
 # .addop <year-month-day@hour:minute> <name>
 datetime_args_pattern = re.compile(
     r'^(?P<year>\d{4})-(?P<month>\d{1,2})-(?P<day>\d{1,2})[@Tt](?P<hour>\d{1,2}):(?P<minute>\d{1,2}) (?P<name>.+)$')

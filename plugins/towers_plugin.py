@@ -4,8 +4,10 @@ Enables commands to retrieve the last datetime that towers were checked for a si
 
 import pony.orm
 import datetime
+import os
 
-db = pony.orm.Database("sqlite", "towers_plugin.sqlite", create_db=True)
+db_path = os.path.join(os.getcwd(), 'db', 'towers_plugin.sqlite')
+db = pony.orm.Database("sqlite", db_path, create_db=True)
 
 
 def init_plugin(command_dict, database=db):

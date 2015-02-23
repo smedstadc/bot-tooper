@@ -6,9 +6,10 @@ import requests
 import sqlite3
 import json
 from expiringdict import ExpiringDict
+import os
 
 
-database_path = 'sqlite-latest.sqlite'
+database_path = os.path.join(os.getcwd(), 'db', 'sqlite-latest.sqlite')
 marketstat_cache = ExpiringDict(max_len=100, max_age_seconds=1800)
 
 

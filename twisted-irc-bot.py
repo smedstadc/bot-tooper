@@ -7,11 +7,6 @@ from glob import glob
 import sys
 
 
-def main(host, port, channel, nickname):
-    reactor.connectTCP(host, int(port), BotTooperFactory(channel, nickname))
-    reactor.run()
-
-
 class BotTooper(irc.IRCClient):
 
     def __init__(self, nickname):
@@ -84,6 +79,11 @@ class BotTooperFactory(protocol.ClientFactory):
 
     def clientConnectionFailed(self, connector, reason):
         reactor.stop()
+
+
+def main(host, port, channel, nickname):
+    reactor.connectTCP(host, int(port), BotTooperFactory(channel, nickname))
+    reactor.run()
 
 if __name__ == "__main__":
     argh.dispatch_command(main)
