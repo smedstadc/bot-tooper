@@ -3,3 +3,5 @@ sleekxmpp
 pony
 requests
 expiringdict
+twisted
+argh

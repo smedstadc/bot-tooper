@@ -5,6 +5,7 @@ Enables commands to retrieve the last datetime that towers were checked for a si
 import pony.orm
 import datetime
 
+
 ##### SET DB #####
 db = pony.orm.Database("sqlite", "towers.sqlite", create_db=True)
 
@@ -93,8 +94,3 @@ def get_tower_messages():
         else:
             reply_messages.append("Not tracking any towers yet.")
             return reply_messages
-
-
-##### TEST #####
-if __name__ == "__main__":
-    pass
