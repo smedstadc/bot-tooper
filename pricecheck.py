@@ -81,8 +81,9 @@ def get_type_ids(item_name):
         query_string = "SELECT typeID " \
                        "FROM invTypes WHERE " \
                        "typeName LIKE ? " \
-                       "AND marketGroupID " \
-                       "NOT NULL AND published = 1"
+                       "AND typeName NOT LIKE '% blueprint'" \
+                       "AND marketGroupID NOT NULL " \
+                       "AND published = 1"
         result = get_cursor().execute(query_string, ("%" + item_name + "%",)).fetchall()
         return [row[0] for row in result]
     else:
