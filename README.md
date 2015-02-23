@@ -1,4 +1,5 @@
-# bot-tooper - A chat bot for Eve-Online corps
+# bot-tooper
+## A chat bot for Eve-Online corps
 
 ### Features:
 - Supports XMPP and IRC
@@ -13,9 +14,10 @@
 ### Requires:
 - Python 2.7.x
 - beautifulsoup4
-- requests
 - sleekxmpp
 - pony
+- requests
+- expiringdict
 
 ### Setup:
 1. Open sample-settings.py in your favorite text editor.
