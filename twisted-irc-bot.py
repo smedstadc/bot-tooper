@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from twisted.internet import reactor, protocol
 from twisted.words.protocols import irc
 import argh
@@ -25,9 +26,9 @@ class BotTooper(irc.IRCClient):
     def privmsg(self, user, channel, message):
         user = user.split('!', 1)[0]
         reply_to = self.get_reply_target(channel, user)
-        response = self.get_response(message)
-        if response:
-            for line in response:
+        responses = self.get_response(message)
+        if responses:
+            for line in responses:
                 self.msg(reply_to, line)
 
     def get_reply_target(self, channel, user):
@@ -57,15 +58,14 @@ class BotTooper(irc.IRCClient):
         plugin_path = os.path.join(os.getcwd(), 'plugins')
         sys.path.append(plugin_path)
         plugin_files = glob(os.path.join(plugin_path, '*_plugin.py'))
+        print "Loading plugins from {}".format(plugin_path)
         for plugin_file in plugin_files:
             path, name = os.path.split(plugin_file)
             name = name.split('.', 1)[0]
             plugin = __import__(name)
-            if self.is_valid_plugin(plugin):
-                plugin.init_plugin(self.commands)
-
-    def is_valid_plugin(self, plugin):
-        return True
+            # TODO: confirm plugin has required attributes
+            print "Initializing: {}".format(name)
+            plugin.init_plugin(self.commands)
 
 
 class BotTooperFactory(protocol.ClientFactory):

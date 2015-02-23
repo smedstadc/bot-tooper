@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 countdown.py
 Stores events and returns the time remaining until those events when asked.
@@ -142,13 +141,3 @@ def upper_preserving_urls(string):
     urls = re.findall(r'(https?://\S+)', string)
     string = re.sub(r'(https?://\S+)', '{}', string)
     return string.upper().format(*urls)
-
-
-##### TEST #####
-if __name__ == "__main__":
-    # .addtimer <days>d<hours>h<minutes>m <name>
-    addtimer_pattern = re.compile(
-        r'^[.]addop (?P<days>\d{1,3})[dD](?P<hours>\d{1,2})[hH](?P<minutes>\d{1,2})[mM] (?P<name>.+)$')
-    t1 = '.addop 1d2h3m first op'
-    t2 = '.addop 2d4h6m second op'
-    t3 = '.addop 3d6h9m third op'
