@@ -1,5 +1,5 @@
 #Plugins
-##The plugin system is intended as a simple way to extend the bots with custom commands. It has a few simple rules.
+##The plugin system is intended as a simple way to extend the bot with custom commands. It has a few simple rules.
 
 - Plugins live in the /plugins directory. Drop your plugin file here and restart the bot. It should load automatically.
 - Plugin filenames must be in the form of "*_plugin.py" this is intended to avoid conflicts with python modules in the 
