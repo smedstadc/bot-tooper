@@ -1,8 +1,8 @@
 from datetime import datetime
 
 
-def init_plugin(command_dict):
-    command_dict['.time'] = utc_time
+def init_plugin(trigger_map):
+    trigger_map.map_command(".time", utc_time)
 
 
 def utc_time():

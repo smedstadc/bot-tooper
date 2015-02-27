@@ -28,13 +28,13 @@ class Event(db.Entity):
     date_time = pony.orm.Required(datetime)
 
 
-def init_plugin(command_dict, database=db):
+def init_plugin(trigger_map, database=db):
     # Map models to tables and create tables if they don't exist.
     database.generate_mapping(create_tables=True)
     pony.orm.sql_debug(False)
-    command_dict[".ops"] = get_countdown_messages
-    command_dict[".addop"] = add_op
-    command_dict[".rmop"] = remove_event
+    trigger_map.map_command(".ops", get_countdown_messages)
+    trigger_map.map_command(".addop", add_op)
+    trigger_map.map_command(".rmop", remove_event)
 
 
 def add_op(args=None):
@@ -104,11 +104,10 @@ def days_hours_minutes(time_delta):
 def get_countdown_messages():
     """
     Returns a list of messages reporting the time remaining or elapsed relative to each event in the event list.
-    Events which have been expired for longer than 45 minutes will be removed from the list on the next .ops call.
-    Calls write_timers() if the event list changes.
+    Events which have been expired for longer than 30 minutes will be removed from the list on the next .ops call.
     """
     with pony.orm.db_session:
-        events = Event.order_by(Event.date_time)
+        events = Event.select().order_by(Event.date_time)
         messages = []
         if len(events) > 0:
             for event in events:
@@ -120,12 +119,12 @@ def get_countdown_messages():
                     delta = days_hours_minutes(time_delta)
                     messages.append(
                         '{0:4}d {1:2}h {2:2}m until {3} at {4} UTC (ID:{5})'.format(delta[0],
-                                                                                     delta[1],
-                                                                                     delta[2],
-                                                                                     name,
-                                                                                     date_time.strftime
-                                                                                     ("%Y-%m-%dT%H:%M"),
-                                                                                     event_id))
+                                                                                    delta[1],
+                                                                                    delta[2],
+                                                                                    name,
+                                                                                    date_time.strftime(
+                                                                                        "%Y-%m-%dT%H:%M"),
+                                                                                    event_id))
 
                 else:
                     minutes_elapsed = abs(time_delta.total_seconds()) // 60
@@ -134,7 +133,7 @@ def get_countdown_messages():
                     else:
                         messages.append('   IT\'S HAPPENING: \"{}\" (ID: {})'.format(name, event_id))
 
-        else:
+        if len(messages) == 0:
             messages.append("No upcoming events.")
         return messages
 

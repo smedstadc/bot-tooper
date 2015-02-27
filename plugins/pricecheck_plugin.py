@@ -13,12 +13,12 @@ database_path = os.path.join(os.getcwd(), 'db', 'sqlite-latest.sqlite')
 marketstat_cache = ExpiringDict(max_len=100, max_age_seconds=1800)
 
 
-def init_plugin(command_dict):
-    command_dict[".jita"] = check_jita
-    command_dict[".amarr"] = check_amarr
-    command_dict[".dodixie"] = check_dodixie
-    command_dict[".hek"] = check_hek
-    command_dict[".rens"] = check_rens()
+def init_plugin(trigger_map):
+    trigger_map.map_command(".jita", check_jita)
+    trigger_map.map_command(".amarr", check_amarr)
+    trigger_map.map_command(".dodixie", check_dodixie)
+    trigger_map.map_command(".hex", check_hek)
+    trigger_map.map_command(".rens", check_rens)
 
 
 def check_jita(item=None):
@@ -118,6 +118,11 @@ def get_type_ids(item_name):
                        "AND typeName NOT LIKE '% blueprint'" \
                        "AND marketGroupID NOT NULL " \
                        "AND published = 1"
+        # try to find an exact match first
+        result = get_cursor().execute(query_string, (item_name,)).fetchall()
+        if result:
+            return [row[0] for row in result]
+        # otherwise return partial matches
         result = get_cursor().execute(query_string, ("%" + item_name + "%",)).fetchall()
         return [row[0] for row in result]
     else:

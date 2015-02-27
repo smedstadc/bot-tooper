@@ -7,9 +7,8 @@ response_cache = ExpiringDict(max_len=100, max_age_seconds=180)
 EveStatus = namedtuple('EveStatus', ['online', 'player_count'])
 
 
-def init_plugin(command_dict):
-    command_dict[".eve"] = get_status_message
-    command_dict[".evestatus"] = get_status_message
+def init_plugin(trigger_map):
+    trigger_map.map_command(".eve", get_status_message)
 
 
 def get_status_message():

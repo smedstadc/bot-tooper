@@ -2,17 +2,15 @@
 from twisted.internet import reactor, protocol
 from twisted.words.protocols import irc
 import argh
-import os
-from glob import glob
-import sys
+from commandmap import CommandMap
 
 
 class BotTooper(irc.IRCClient):
 
     def __init__(self, nickname):
         self.nickname = nickname
-        self.commands = {}
-        self.load_plugins()
+        self.commands = CommandMap()
+        self.commands.load_plugins()
 
     def signedOn(self):
         # called on connect
@@ -34,33 +32,21 @@ class BotTooper(irc.IRCClient):
 
     def get_response(self, message):
         message = message.split(None, 1)
-        command = self.commands.get(message[0])
+        command = self.commands.get_command(message[0])
         if command:
-            if len(message) > 1:
-                return command(message[1])
+            if len(message) > 1 and command.arity > 1:
+                return command.func(message[1])
             else:
-                return command()
+                return command.func()
         else:
             return None
 
     def is_private_message(self, channel):
         return channel == self.nickname
 
-    def is_channel_message(self, channel):
+    @staticmethod
+    def is_channel_message(channel):
         return channel.startswith('#')
-
-    def load_plugins(self):
-        plugin_path = os.path.join(os.getcwd(), 'plugins')
-        sys.path.append(plugin_path)
-        plugin_files = glob(os.path.join(plugin_path, '*_plugin.py'))
-        print "Loading plugins from {}".format(plugin_path)
-        for plugin_file in plugin_files:
-            path, name = os.path.split(plugin_file)
-            name = name.split('.', 1)[0]
-            plugin = __import__(name)
-            # TODO: confirm plugin has required attributes
-            print "Initializing: {}".format(name)
-            plugin.init_plugin(self.commands)
 
 
 class BotTooperFactory(protocol.ClientFactory):

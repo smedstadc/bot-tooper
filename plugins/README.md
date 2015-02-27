@@ -8,6 +8,7 @@ system path.
 it a reference to the commands dictionary so the plugin can map any number of trigger strings to functions.
 - Plugin functions mapped to triggers are expected to return a list of strings. In lieu of no response they should
 return an empty list.
-- Plugin functions mapped to triggers that expect an argument string must use a keyword to default the value to None.
+- Plugin functions mapped to triggers that expect an argument string must use a keyword to default the value to None and
+by convention they should return a usage hint if they are called with args=None.
 
 ###The plugin system is a work in progress and may change significantly.
