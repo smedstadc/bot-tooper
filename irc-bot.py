@@ -17,22 +17,19 @@ logger = logging.getLogger('bot-tooper-irc')
 
 
 class BotTooper(irc.IRCClient):
-
-    def __init__(self, nickname, channel, operuser=None, operpass=None):
+    def __init__(self, nickname):
         self.nickname = nickname
-        self.channel = channel
-        self.operuser = operuser
-        self.operpass = operpass
         self.commands = CommandMap()
         self.commands.load_plugins(exclude=('towers_plugin', 'timers_plugin'))
+        self.commands.map_command(".help", self.help)
 
     def signedOn(self):
         # called on connect
         logger.debug("Welcome received, joining channel.")
-        self.join(self.channel)
-        if self.operuser and self.operpass:
+        self.join(self.factory.channel)
+        if self.factory.operuser and self.factory.operpass:
             logger.debug("Operator credentials set, sending OPER.")
-            self.sendLine("OPER {} {}".format(self.operuser, self.operpass))
+            self.sendLine("OPER {} {}".format(self.factory.operuser, self.factory.operpass))
 
     def privmsg(self, user, channel, message):
         logger.debug("RECV user={} channel={} message={}".format(repr(user), repr(channel), repr(message)))
@@ -64,9 +61,11 @@ class BotTooper(irc.IRCClient):
     def is_private_message(self, channel):
         return channel == self.nickname
 
-    @staticmethod
-    def is_channel_message(channel):
-        return channel.startswith('#')
+    def is_channel_message(self, channel):
+        return channel == self.factory.channel
+
+    def help(self):
+        return ["Available commands: {}".format(', '.join(sorted(self.commands.triggers())))]
 
 
 class BotTooperFactory(protocol.ClientFactory):
@@ -77,9 +76,9 @@ class BotTooperFactory(protocol.ClientFactory):
         self.operpass = operpass
 
     def buildProtocol(self, addr):
-        proto = BotTooper(self.nickname, self.channel, self.operuser, self.operpass)
-        proto.factory = self
-        return proto
+        protokol = BotTooper(self.nickname)
+        protokol.factory = self
+        return protokol
 
     def clientConnectionLost(self, connector, reason):
         logger.debug("Lost connection. Stopping.")

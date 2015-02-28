@@ -15,11 +15,12 @@ logging.basicConfig()
 logger = logging.getLogger('pricecheck_plugin')
 logger.setLevel(logging.DEBUG)
 
+
 def init_plugin(trigger_map):
     trigger_map.map_command(".jita", check_jita)
     trigger_map.map_command(".amarr", check_amarr)
     trigger_map.map_command(".dodixie", check_dodixie)
-    trigger_map.map_command(".hex", check_hek)
+    trigger_map.map_command(".hek", check_hek)
     trigger_map.map_command(".rens", check_rens)
 
 

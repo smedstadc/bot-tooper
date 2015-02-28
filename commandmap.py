@@ -57,3 +57,6 @@ class CommandMap(object):
                     logger.debug("Failed to initialize {} because it does not define init_plugin()".format(name))
             else:
                 logger.debug("Skipped {} because it is in the exclude list.".format(name))
+
+    def triggers(self):
+        return self.commands.keys()
