@@ -81,8 +81,8 @@ class BotTooperFactory(protocol.ClientFactory):
         return protokol
 
     def clientConnectionLost(self, connector, reason):
-        logger.debug("Lost connection. Stopping.")
-        reactor.stop()
+        logger.debug("Lost connection. Reconnecting.")
+        connector.connect()
 
     def clientConnectionFailed(self, connector, reason):
         logger.debug("Connection failed. Stopping.")
