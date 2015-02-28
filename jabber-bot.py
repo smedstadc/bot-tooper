@@ -35,6 +35,7 @@ class BotTooper(sleekxmpp.ClientXMPP):
         self.add_event_handler("message", self.direct_message)
         self.commands = CommandMap()
         self.commands.load_plugins()
+        self.commands.map_command(".help", self.help)
 
     def session_start(self, event):
         """Process the session_start event."""
@@ -74,6 +75,9 @@ class BotTooper(sleekxmpp.ClientXMPP):
                 return command.func()
         else:
             return None
+
+    def help(self):
+        return ["Available commands: {}".format(', '.join(sorted(self.commands.triggers())))]
 
 
 def main(jid, password, room, nick, verbose=False):
