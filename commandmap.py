@@ -7,7 +7,7 @@ import sys
 Command = namedtuple('Command', ['func', 'arity'])
 
 
-class CommandMap:
+class CommandMap(object):
     def __init__(self):
         self.commands = {}
 
