@@ -3,18 +3,34 @@ from twisted.internet import reactor, protocol
 from twisted.words.protocols import irc
 import argh
 from commandmap import CommandMap
+import logging
+import sys
+
+# ensure python2 is using unicode
+if sys.version_info < (3, 0):
+    reload(sys)
+    sys.setdefaultencoding('utf8')
+
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger('bot-tooper-irc')
 
 
 class BotTooper(irc.IRCClient):
 
-    def __init__(self, nickname):
+    def __init__(self, nickname, channel, operuser=None, operpass=None):
         self.nickname = nickname
+        self.channel = channel
+        self.operuser = operuser
+        self.operpass = operpass
         self.commands = CommandMap()
         self.commands.load_plugins()
 
     def signedOn(self):
         # called on connect
-        self.join(self.factory.channel)
+        self.join(self.channel)
+        if self.operuser and self.operpass:
+            self.sendLine("OPER {} {}".format(self.operuser, self.operpass))
 
     def privmsg(self, user, channel, message):
         user = user.split('!', 1)[0]
@@ -50,12 +66,14 @@ class BotTooper(irc.IRCClient):
 
 
 class BotTooperFactory(protocol.ClientFactory):
-    def __init__(self, channel, nickname):
+    def __init__(self, channel, nickname, operuser=None, operpass=None):
         self.channel = channel
         self.nickname = nickname
+        self.operuser = operuser
+        self.operpass = operpass
 
     def buildProtocol(self, addr):
-        proto = BotTooper(self.nickname)
+        proto = BotTooper(self.nickname, self.channel, self.operuser, self.operpass)
         proto.factory = self
         return proto
 
@@ -67,8 +85,8 @@ class BotTooperFactory(protocol.ClientFactory):
         reactor.stop()
 
 
-def main(host, port, channel, nickname):
-    reactor.connectTCP(host, int(port), BotTooperFactory(channel, nickname))
+def main(host, port, channel, nickname, operuser=None, operpass=None, verbose=False):
+    reactor.connectTCP(host, int(port), BotTooperFactory(channel, nickname, operuser, operpass))
     reactor.run()
 
 if __name__ == "__main__":
