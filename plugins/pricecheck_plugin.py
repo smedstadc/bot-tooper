@@ -7,11 +7,13 @@ import sqlite3
 import json
 from expiringdict import ExpiringDict
 import os
-
+import logging
 
 database_path = os.path.join(os.getcwd(), 'db', 'sqlite-latest.sqlite')
 marketstat_cache = ExpiringDict(max_len=100, max_age_seconds=1800)
-
+logging.basicConfig()
+logger = logging.getLogger('pricecheck_plugin')
+logger.setLevel(logging.DEBUG)
 
 def init_plugin(trigger_map):
     trigger_map.map_command(".jita", check_jita)
@@ -151,6 +153,7 @@ def get_solar_system_id(solar_system_name):
 
 
 def get_cursor():
+    logger.debug("Getting DB cursor from {}".format(database_path))
     return sqlite3.connect(database_path).cursor()
 
 
