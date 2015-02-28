@@ -24,20 +24,24 @@ class BotTooper(irc.IRCClient):
         self.operuser = operuser
         self.operpass = operpass
         self.commands = CommandMap()
-        self.commands.load_plugins()
+        self.commands.load_plugins(exclude=('towers_plugin', 'timers_plugin'))
 
     def signedOn(self):
         # called on connect
+        logger.debug("Welcome received, joining channel.")
         self.join(self.channel)
         if self.operuser and self.operpass:
+            logger.debug("Operator credentials set, sending OPER.")
             self.sendLine("OPER {} {}".format(self.operuser, self.operpass))
 
     def privmsg(self, user, channel, message):
+        logger.debug("RECV user={} channel={} message={}".format(repr(user), repr(channel), repr(message)))
         user = user.split('!', 1)[0]
         reply_to = self.get_reply_target(channel, user)
         responses = self.get_response(message)
         if responses:
             for line in responses:
+                logger.debug("SEND reply_to={} line={}".format(reply_to, line))
                 self.msg(reply_to, line)
 
     def get_reply_target(self, channel, user):
@@ -78,14 +82,18 @@ class BotTooperFactory(protocol.ClientFactory):
         return proto
 
     def clientConnectionLost(self, connector, reason):
-        # try to reconnect if disconnected
+        logger.debug("Lost connection. Attempting to reconnect.")
         connector.connect()
 
     def clientConnectionFailed(self, connector, reason):
+        logger.debug("Connection failed. Stopping.")
         reactor.stop()
 
 
 def main(host, port, channel, nickname, operuser=None, operpass=None, verbose=False):
+    if verbose:
+        logger.setLevel(logging.DEBUG)
+    logger.debug("Attempting to connect.")
     reactor.connectTCP(host, int(port), BotTooperFactory(channel, nickname, operuser, operpass))
     reactor.run()
 
