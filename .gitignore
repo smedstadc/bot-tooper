@@ -228,3 +228,5 @@ bot-tooper-old.py
 test-marketstat.xml
 test.py
 *.sqlite
+*.bz2
+*.md5
