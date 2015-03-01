@@ -60,3 +60,7 @@ class CommandMap(object):
 
     def triggers(self):
         return self.commands.keys()
+
+if __name__ == "__main__":
+    c = CommandMap()
+    c.load_plugins()

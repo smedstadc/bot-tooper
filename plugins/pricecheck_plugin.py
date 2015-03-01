@@ -9,7 +9,7 @@ from expiringdict import ExpiringDict
 import os
 import logging
 
-database_path = os.path.join(os.getcwd(), 'db', 'sqlite-latest.sqlite')
+database_path = os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), os.pardir), 'db', 'sqlite-latest.sqlite'))
 marketstat_cache = ExpiringDict(max_len=100, max_age_seconds=1800)
 logging.basicConfig()
 logger = logging.getLogger('pricecheck_plugin')
@@ -160,3 +160,6 @@ def get_cursor():
 
 def _wildcards(args):
     return '({})'.format(','.join(['?']*len(args)))
+
+if __name__ == "__main__":
+    print database_path

@@ -5,3 +5,4 @@ expiringdict
 twisted
 argh
 lxml
+pathlib

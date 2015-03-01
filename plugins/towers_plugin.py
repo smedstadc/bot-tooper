@@ -6,8 +6,8 @@ import pony.orm
 import datetime
 import os
 
-db_path = os.path.join(os.getcwd(), 'db', 'towers_plugin.sqlite')
-db = pony.orm.Database("sqlite", db_path, create_db=True)
+database_path = os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), os.pardir), 'db', 'towers_plugin.sqlite'))
+db = pony.orm.Database("sqlite", database_path, create_db=True)
 
 
 def init_plugin(trigger_map, database=db):

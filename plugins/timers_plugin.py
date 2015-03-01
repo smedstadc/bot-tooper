@@ -8,8 +8,8 @@ import re
 import pony.orm
 import os
 
-db_path = os.path.join(os.getcwd(), 'db', 'timers_plugin.sqlite')
-db = pony.orm.Database("sqlite", db_path, create_db=True)
+database_path = os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), os.pardir), 'db', 'timers_plugin.sqlite'))
+db = pony.orm.Database("sqlite", database_path, create_db=True)
 
 # .addop <year-month-day@hour:minute> <name>
 datetime_args_pattern = re.compile(
