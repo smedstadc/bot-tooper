@@ -160,6 +160,3 @@ def get_cursor():
 
 def _wildcards(args):
     return '({})'.format(','.join(['?']*len(args)))
-
-if __name__ == "__main__":
-    print database_path

@@ -40,7 +40,7 @@ class CommandMap(object):
 
     def load_plugins(self, exclude=('')):
         """Imports each file matching ./plugins/*_plugin.py and calls it's init_plugin() function, passing self."""
-        plugin_path = os.path.join(os.getcwd(), 'plugins')
+        plugin_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'plugins'))
         sys.path.append(plugin_path)
         plugin_files = glob(os.path.join(plugin_path, '*_plugin.py'))
         logger.debug("Loading plugins from {}".format(plugin_path))
@@ -60,7 +60,3 @@ class CommandMap(object):
 
     def triggers(self):
         return self.commands.keys()
-
-if __name__ == "__main__":
-    c = CommandMap()
-    c.load_plugins()
