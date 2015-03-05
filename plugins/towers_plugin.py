@@ -1,5 +1,5 @@
 """
-Enables commands to retrieve the last datetime that towers were checked for a siphon.
+Commands to retrieve the last datetime that towers were checked for a siphon.
 """
 
 import pony.orm

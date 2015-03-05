@@ -1,3 +1,5 @@
+"""A plugin to report the current UTC time to users who ask."""
+
 from datetime import datetime
 
 

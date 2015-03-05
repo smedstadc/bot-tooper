@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+"""An extensible, Eve: Online chat bot for IRC built using twisted."""
+
 from twisted.internet import reactor, protocol
 from twisted.words.protocols import irc
 import argh

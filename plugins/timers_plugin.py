@@ -1,5 +1,5 @@
 """
-countdown.py
+timers_plugin.py
 Stores events and returns the time remaining until those events when asked.
 """
 

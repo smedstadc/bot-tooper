@@ -1,3 +1,5 @@
+"""A plugin to reports the status of Eve: Online game servers."""
+
 import requests
 from expiringdict import ExpiringDict
 from lxml import etree
