@@ -1,13 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-"""
-    SleekXMPP: The Sleek XMPP Library
-    Copyright (C) 2010  Nathanael C. Fritz
-    This file is part of SleekXMPP.
-
-    See the file LICENSE for copying permission.
-"""
+"""An extensible, Eve: Online chat bot for Jabber built using sleekxmpp."""
 
 import sys
 import logging
@@ -49,9 +42,10 @@ class BotTooper(sleekxmpp.ClientXMPP):
         if msg['type'] in ('chat', 'normal'):
             responses = self.get_responses(msg)
             if responses:
-                for line in responses:
-                    logger.debug("SEND reply_to={} message={}".format(msg['from'], line))
-                    self.send_message(mto=msg['from'], mfrom=msg['to'], mbody=line)
+                if len(responses) > 1:
+                    responses = "\n".join(responses)
+                logger.debug("SEND reply_to={} message={}".format(msg['from'], repr(responses)))
+                self.send_message(mto=msg['from'], mfrom=msg['to'], mbody=responses)
 
     def groupchat_message(self, msg):
         """Process incoming message stanzas from any chat room."""
@@ -60,9 +54,10 @@ class BotTooper(sleekxmpp.ClientXMPP):
         if msg['mucnick'] != self.nick and msg['type'] == 'groupchat':
             responses = self.get_responses(msg)
             if responses:
-                for line in responses:
-                    logger.debug("SEND reply_to={} type='groupchat' message={}".format(msg['from'].bare, line))
-                    self.send_message(mto=msg['from'].bare, mfrom=msg['to'], mbody=line, mtype='groupchat')
+                if len(responses) > 1:
+                    responses = "\n".join(responses)
+                logger.debug("SEND reply_to={} type='groupchat' message={}".format(msg['from'].bare, repr(responses)))
+                self.send_message(mto=msg['from'].bare, mfrom=msg['to'], mbody=responses, mtype='groupchat')
 
     def get_responses(self, msg):
         """Return a list of responses to initialized triggers if any. Return an empty list if not."""
