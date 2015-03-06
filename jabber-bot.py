@@ -43,9 +43,10 @@ class BotTooper(sleekxmpp.ClientXMPP):
             responses = self.get_responses(msg)
             if responses:
                 if len(responses) > 1:
-                    responses = "\n".join(responses)
-                logger.debug("SEND reply_to={} message={}".format(msg['from'], repr(responses)))
-                self.send_message(mto=msg['from'], mfrom=msg['to'], mbody=responses)
+                    responses = ["\n".join([""] + responses)]
+                for response in responses:
+                    logger.debug("SEND reply_to={} message={}".format(msg['from'], response))
+                    self.send_message(mto=msg['from'], mfrom=msg['to'], mbody=response)
 
     def groupchat_message(self, msg):
         """Process incoming message stanzas from any chat room."""
@@ -55,9 +56,10 @@ class BotTooper(sleekxmpp.ClientXMPP):
             responses = self.get_responses(msg)
             if responses:
                 if len(responses) > 1:
-                    responses = "\n".join(responses)
-                logger.debug("SEND reply_to={} type='groupchat' message={}".format(msg['from'].bare, repr(responses)))
-                self.send_message(mto=msg['from'].bare, mfrom=msg['to'], mbody=responses, mtype='groupchat')
+                    responses = ["\n".join([""] + responses)]
+                for response in responses:
+                    logger.debug("SEND reply_to={} type='groupchat' message={}".format(msg['from'].bare, response))
+                    self.send_message(mto=msg['from'].bare, mfrom=msg['to'], mbody=response, mtype='groupchat')
 
     def get_responses(self, msg):
         """Return a list of responses to initialized triggers if any. Return an empty list if not."""
