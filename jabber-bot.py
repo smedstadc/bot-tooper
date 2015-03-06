@@ -38,19 +38,16 @@ class BotTooper(sleekxmpp.ClientXMPP):
 
     def direct_message(self, msg):
         """Process incoming message stanzas from any user."""
-        logger.debug("RECV {}".format(repr(msg)))
         if msg['type'] in ('chat', 'normal'):
             responses = self.get_responses(msg)
             if responses:
                 if len(responses) > 1:
                     responses = ["\n".join([""] + responses)]
                 for response in responses:
-                    logger.debug("SEND reply_to={} message={}".format(msg['from'], response))
                     self.send_message(mto=msg['from'], mfrom=msg['to'], mbody=response)
 
     def groupchat_message(self, msg):
         """Process incoming message stanzas from any chat room."""
-        logger.debug("RECV {}".format(repr(msg)))
         # Infinite loops are bad. Don't reply to self.
         if msg['mucnick'] != self.nick and msg['type'] == 'groupchat':
             responses = self.get_responses(msg)
@@ -58,7 +55,6 @@ class BotTooper(sleekxmpp.ClientXMPP):
                 if len(responses) > 1:
                     responses = ["\n".join([""] + responses)]
                 for response in responses:
-                    logger.debug("SEND reply_to={} type='groupchat' message={}".format(msg['from'].bare, response))
                     self.send_message(mto=msg['from'].bare, mfrom=msg['to'], mbody=response, mtype='groupchat')
 
     def get_responses(self, msg):
