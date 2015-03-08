@@ -118,7 +118,7 @@ def get_countdown_messages():
                 if time_delta.total_seconds() > 0:
                     delta = days_hours_minutes(time_delta)
                     messages.append(
-                        '{0:4}d {1:2}h {2:2}m until {3} at {4} UTC (ID:{5})'.format(delta[0],
+                        '{0:4}d {1:2}h {2:2}m until {3} at {4} UTC (ID: {5})'.format(delta[0],
                                                                                     delta[1],
                                                                                     delta[2],
                                                                                     name,
