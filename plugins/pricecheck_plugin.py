@@ -9,7 +9,8 @@ from expiringdict import ExpiringDict
 import os
 import logging
 
-database_path = os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), os.pardir), 'db', 'sqlite-latest.sqlite'))
+database_path = os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), os.pardir),
+                                             'db', 'sqlite-latest.sqlite'))
 marketstat_cache = ExpiringDict(max_len=100, max_age_seconds=1800)
 logging.basicConfig()
 logger = logging.getLogger('pricecheck_plugin')
@@ -96,7 +97,7 @@ def get_marketstat_request_url(system_id, type_ids):
 
 
 def get_message_string(item_json, type_names):
-    return '{}, sell: {:,.2f}, buy: {:,.2f}, volume: {:,}'.format(
+    return '{}, sell: {:,.2f}  buy: {:,.2f}  volume: {:,}'.format(
         type_names[item_json["all"]["forQuery"]["types"][0]],
         item_json["sell"]["min"],
         item_json["buy"]["max"],
