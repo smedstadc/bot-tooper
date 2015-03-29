@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""An extensible, Eve: Online chat bot for IRC built using twisted."""
+"""An extensible Eve: Online chat bot for IRC built using twisted."""
 
 from twisted.internet import reactor, protocol
 from twisted.words.protocols import irc
@@ -35,13 +35,7 @@ class BotTooper(irc.IRCClient):
 
     def privmsg(self, user, channel, message):
         logger.debug("RECV user={} channel={} message={}".format(repr(user), repr(channel), repr(message)))
-        user = user.split('!', 1)[0]
-        reply_to = self.get_reply_target(channel, user)
-        responses = self.get_response(message)
-        if responses:
-            for line in responses:
-                logger.debug("SEND reply_to={} line={}".format(reply_to, line))
-                self.msg(reply_to, line)
+        reactor.callInThread(self.respond_to_commands, message, self.get_reply_target(channel, user.split('!', 1)[0]))
 
     def get_reply_target(self, channel, user):
         if self.is_private_message(channel):
@@ -49,16 +43,20 @@ class BotTooper(irc.IRCClient):
         elif self.is_channel_message(channel):
             return channel
 
-    def get_response(self, message):
+    def respond_to_commands(self, message, reply_to):
         message = message.split(None, 1)
         command = self.commands.get_command(message[0])
         if command:
             if len(message) > 1 and command.arity > 1:
-                return command.func(message[1])
+                self.send_responses(command.func(message[1]), reply_to)
             else:
-                return command.func()
-        else:
-            return None
+                self.send_responses(command.func(), reply_to)
+
+    def send_responses(self, responses, reply_to):
+        if responses:
+            for line in responses:
+                logger.debug("SEND reply_to={} line={}".format(reply_to, line))
+                self.msg(reply_to, line)
 
     def is_private_message(self, channel):
         return channel == self.nickname
