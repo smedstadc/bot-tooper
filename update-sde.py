@@ -49,8 +49,11 @@ if __name__ == "__main__":
         print("Decompressing archive...")
         with bz2.BZ2File(sde_path) as archive:
             with open(os.path.join(destpath, 'sqlite-latest.sqlite'), 'wb') as destfile:
-                data = archive.read()
-                destfile.write(data)
+                while True:
+                    data = archive.read(4096)
+                    if not data:
+                        break
+                    destfile.write(data)
         print("Done.")
     else:
         print("Verify FAIL. Stopping.")
