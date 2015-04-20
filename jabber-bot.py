@@ -24,8 +24,8 @@ class BotTooper(sleekxmpp.ClientXMPP):
         self.room = room
         self.nick = nick
         self.add_event_handler("session_start", self.session_start)
-        self.add_event_handler("groupchat_message", self.groupchat_message)
-        self.add_event_handler("message", self.direct_message)
+        self.add_event_handler("groupchat_message", self.groupchat_message, threaded=True)
+        self.add_event_handler("message", self.direct_message, threaded=True)
         self.commands = CommandMap()
         self.commands.load_plugins()
         self.commands.map_command(".help", self.help)
