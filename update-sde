@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """Quick and dirty script to grab eve-sde sqlite dump from fuzzwork.co.uk"""
 from __future__ import print_function
 from __future__ import with_statement
