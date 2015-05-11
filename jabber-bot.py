@@ -13,7 +13,7 @@ if sys.version_info < (3, 0):
     reload(sys)
     sys.setdefaultencoding('utf8')
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(filename='jabber-bot.log', level=logging.DEBUG)
 logger = logging.getLogger('bot-tooper-jabber')
 
 
