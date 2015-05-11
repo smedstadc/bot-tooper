@@ -5,7 +5,6 @@ from glob import glob
 import sys
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger('commandmap')
 
 Command = namedtuple('Command', ['func', 'arity'])

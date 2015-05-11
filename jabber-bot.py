@@ -2,19 +2,22 @@
 # -*- coding: utf-8 -*-
 """An extensible, Eve: Online chat bot for Jabber built using sleekxmpp."""
 
+import os
 import sys
 import logging
 import sleekxmpp
 import argh
 from commandmap import CommandMap
 
+log_file_name = 'jabber.log'
+logging.basicConfig(filename=log_file_name, level=logging.INFO)
+logger = logging.getLogger('jabber_bot')
+logger.error("DID THIS WORK?")
+
 # ensure python2 is using unicode
 if sys.version_info < (3, 0):
     reload(sys)
     sys.setdefaultencoding('utf8')
-
-logging.basicConfig(filename='jabber-bot.log', level=logging.DEBUG)
-logger = logging.getLogger('bot-tooper-jabber')
 
 
 class BotTooper(sleekxmpp.ClientXMPP):
@@ -76,7 +79,6 @@ class BotTooper(sleekxmpp.ClientXMPP):
 def main(jid, password, room, nick, verbose=False):
     if verbose:
         logger.setLevel(logging.DEBUG)
-
     xmpp = BotTooper(jid, password, room, nick)
     xmpp.register_plugin('xep_0030')  # Service Discovery
     xmpp.register_plugin('xep_0045')  # Multi-User Chat
@@ -84,9 +86,9 @@ def main(jid, password, room, nick, verbose=False):
     logger.debug("Attempting to connect.")
     if xmpp.connect():
         xmpp.process(block=False)
-        logger.info("Connected.")
+        logger.debug("Connected.")
     else:
-        logger.info("Unable to connect.")
+        logger.debug("Unable to connect.")
 
 
 if __name__ == '__main__':

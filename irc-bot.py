@@ -13,9 +13,9 @@ if sys.version_info < (3, 0):
     reload(sys)
     sys.setdefaultencoding('utf8')
 
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger('bot-tooper-irc')
+log_file_name = 'irc.log'
+logging.basicConfig(filename=log_file_name, level=logging.INFO)
+logger = logging.getLogger('irc.bot')
 
 
 class BotTooper(irc.IRCClient):

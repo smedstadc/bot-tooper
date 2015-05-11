@@ -12,9 +12,6 @@ import logging
 database_path = os.path.abspath(os.path.join(os.path.join(os.path.dirname(__file__), os.pardir),
                                              'db', 'sqlite-latest.sqlite'))
 marketstat_cache = ExpiringDict(max_len=100, max_age_seconds=1800)
-logging.basicConfig()
-logger = logging.getLogger('pricecheck_plugin')
-logger.setLevel(logging.DEBUG)
 
 
 def init_plugin(trigger_map):
@@ -66,7 +63,7 @@ def get_marketstat_json(system_id, type_ids):
     if len(type_ids) > 0:
         request_url = get_marketstat_request_url(system_id, type_ids)
         if len(request_url) > 2048:
-            print "URL too long."
+            logging.debug("URL too long.")
             return None
         response = marketstat_cache.get(request_url)
         if response is not None:
@@ -81,10 +78,10 @@ def get_marketstat_json(system_id, type_ids):
                 elif response.status_code == 400:
                     return None
             except IOError:
-                print "Problem encountered with HTTP request."
+                logging.debug("Problem encountered with HTTP request.")
                 return None
             except ValueError:
-                print "Problem encountered decoding JSON response."
+                logging.debug("Problem encountered decoding JSON response.")
                 return None
     else:
         return None
@@ -159,7 +156,7 @@ def get_solar_system_id(solar_system_name):
 
 
 def get_cursor():
-    logger.debug("Getting DB cursor from {}".format(database_path))
+    # logging.debug("Getting DB cursor from {}".format(database_path))
     return sqlite3.connect(database_path).cursor()
 
 
