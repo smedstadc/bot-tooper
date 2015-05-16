@@ -106,11 +106,12 @@ def get_message_string(item_json, type_names):
 
 
 def trim_responses(responses):
-    if len(responses) >= 10:
-        num_extra = len(responses[9:])
-        first_nine = responses[:9]
-        first_nine.append("...and {} more lines. Try a narrower search term?".format(num_extra))
-        return first_nine
+    max_responses = 7
+    if len(responses) >= max_responses:
+        num_extra = len(responses[max_responses - 1:])
+        allowed_responses = responses[:max_responses - 1]
+        allowed_responses.append("...and {} more lines. Try a narrower search term?".format(num_extra))
+        return allowed_responses
     else:
         return responses
 

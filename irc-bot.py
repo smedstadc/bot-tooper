@@ -7,6 +7,7 @@ import argh
 from commandmap import CommandMap
 import logging
 import sys
+import time
 
 # ensure python2 is using unicode
 if sys.version_info < (3, 0):
@@ -32,6 +33,12 @@ class BotTooper(irc.IRCClient):
         if self.factory.operuser and self.factory.operpass:
             logger.debug("Operator credentials set, sending OPER.")
             self.sendLine("OPER {} {}".format(self.factory.operuser, self.factory.operpass))
+    
+    def kickedFrom(self, channel, kicker, message):
+        logger.debug("Kicked from {} by {} because {}.".format(channel, kicker, message))
+        logger.debug("Waiting 10 seconds before rejoin.")
+        time.sleep(10)
+        self.join(self.factory.channel)
 
     def privmsg(self, user, channel, message):
         logger.debug("RECV user={} channel={} message={}".format(repr(user), repr(channel), repr(message)))
@@ -44,6 +51,7 @@ class BotTooper(irc.IRCClient):
             return channel
 
     def respond_to_commands(self, message, reply_to):
+        # TODO: "before_commands" callback for history ignore plugin?
         message = message.split(None, 1)
         command = self.commands.get_command(message[0])
         if command:

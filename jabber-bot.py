@@ -12,7 +12,6 @@ from commandmap import CommandMap
 log_file_name = 'jabber.log'
 logging.basicConfig(filename=log_file_name, level=logging.INFO)
 logger = logging.getLogger('jabber_bot')
-logger.error("DID THIS WORK?")
 
 # ensure python2 is using unicode
 if sys.version_info < (3, 0):
