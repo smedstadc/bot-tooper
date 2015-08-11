@@ -43,9 +43,9 @@ def check_rens(item=None):
 
 
 def get_price_messages(item_name, system_name):
-    item_name = item_name.strip()
     if item_name:
-        messages = ["Sorry, I can't find {} on the market.".format(item_name)]
+        item_name = item_name.strip()
+	messages = ["Sorry, I can't find {} on the market.".format(item_name)]
         type_ids = get_type_ids(item_name)
         type_names = get_type_names(*type_ids)
         marketstat_json = get_marketstat_json(get_solar_system_id(system_name), type_ids)
