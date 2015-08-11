@@ -64,10 +64,15 @@ class BotTooper(sleekxmpp.ClientXMPP):
         message = msg["body"].split(None, 1)
         command = self.commands.get_command(message[0])
         if command:
-            if len(message) > 1 and command.arity > 1:
-                return command.func(message[1])
-            else:
-                return command.func()
+            try:
+                if len(message) > 1 and command.arity > 1:
+                    return command.func(message[1])
+                else:
+                    return command.func()
+            except Exception as e:
+                logger.debug("Unhandled exception: {}".format(e))
+                self.disconnect()
+                sys.exit()
         else:
             return None
 
